@@ -5,159 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Школа «ШляхдоМрій» | Магічні Уроки СилаВолії</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
     
     <style>
         /* ======================================= */
-        /* БАЗОВІ СТИЛІ (СТИЛЬ: СТАРИЙ ПАПІР І КОМІКС) */
+        /* БАЗОВІ СТИЛІ                           */
         /* ======================================= */
 
         :root {
-            /* Кольори (з головної сторінки) */
-            --color-paper: #FFF8E1;
-            --color-ink: #4B371C;
-            --color-light-accent: #F4D03F;
-            --color-joy: #C73B8F;
-            --color-primary: #38761D;
-            --color-rainbow-start: #ff8c69;
-            --color-rainbow-end: #6699ff;
-            
-            /* Специфічні кольори для школи (адаптовані) */
-            --color-artifact-border: #9c27b0; 
-            --color-lecturer: #1a237e;
+            /* Кольори */
+            --color-light: #E0F7FA;
+            --color-joy: #FF69B4;
+            --color-primary: #4CAF50;
+            --color-shadow: #455A64;
+            --color-rainbow-start: #ffc0cb;
+            --color-rainbow-end: #9be2fe;
+            --color-school-bg: #fff8e1;       /* Колір пергаменту */
+            --color-artifact-border: #9c27b0; /* Фіолетовий */
 
             /* Шрифти */
-            --font-heading: 'Gochi Hand', cursive;
-            --font-body: 'Kalam', cursive;
+            --font-heading: 'Luckiest Guy', cursive;
+            --font-body: 'Nunito', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: var(--font-body);
-            color: var(--color-ink);
-            background-color: var(--color-paper);
-            line-height: 1.7;
-            overflow-x: hidden;
+            color: var(--color-shadow);
+            background-color: var(--color-school-bg);
+            line-height: 1.6;
+            overflow-x: hidden; /* Запобігає горизонтальному скролу */
         }
 
-        h1, h2, h3, h4 {
+        h1, h2, h3 {
             font-family: var(--font-heading);
-            color: var(--color-ink);
-            text-shadow: 2px 2px 0px var(--color-light-accent), 4px 4px 0px rgba(0, 0, 0, 0.1);
+            color: var(--color-shadow);
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7);
             margin-bottom: 0.5em;
-            text-transform: uppercase;
             line-height: 1.2;
         }
 
-        section { padding: 60px 20px; text-align: center; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
 
-        /* --- Кнопки (CTA) - Коміксний стиль --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px; /* Захисні відступи */
+        }
+
+        /* --- Кнопки (CTA) --- */
         .cta-button {
             display: inline-block;
             padding: 15px 30px;
+            border-radius: 50px;
             background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
             color: white;
             font-family: var(--font-heading);
-            font-size: 1.3em;
+            font-size: 1.2em;
             text-decoration: none;
-            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
-            border: 3px solid var(--color-ink);
-            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
             cursor: pointer;
-            margin-top: 15px;
-            white-space: nowrap;
+            margin-top: 15px; /* Відступ зверху */
         }
         
         .cta-button:hover {
-            transform: translate(1px, 1px);
-            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* --- Картки --- */
         .card {
-            background-color: white; /* Або var(--color-paper) для більшого "retro" */
-            border-radius: 15px;
+            background-color: white;
+            border-radius: 20px;
             padding: 25px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(75, 55, 28, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             height: 100%;
-            text-align: left;
+            text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-between; /* Розтягує контент, кнопка знизу */
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* ======================================= */
         /* СЕКЦІЇ ШКОЛИ                            */
         /* ======================================= */
 
-        /* Header (як Hero Section) */
-        .school-header {
-            background: linear-gradient(135deg, var(--color-rainbow-end) 0%, var(--color-paper) 50%, var(--color-rainbow-start) 100%);
-            border-bottom: 5px dashed var(--color-ink);
-            padding: 80px 20px;
-        }
-        
-        .school-header h1 {
-            font-size: 3.5em;
-            text-shadow: 3px 3px 0px white;
-        }
-
         /* 1. Секція Артефактів */
         .artifacts-section {
-            background-color: var(--color-paper); /* Тепер фон як папір */
+            background-color: var(--color-light);
+            padding-bottom: 80px;
         }
 
         .artifacts-grid {
             display: grid;
+            /* Адаптивна сітка: мінімум 280px */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
 
         .artifact-card {
-            border-top: 6px solid var(--color-artifact-border); /* Акцент зверху */
-            border-right: 1px solid rgba(75, 55, 28, 0.2);
-            border-bottom: 1px solid rgba(75, 55, 28, 0.2);
-            border-left: 1px solid rgba(75, 55, 28, 0.2);
+            border-top: 8px solid var(--color-artifact-border);
+            text-align: left;
+            align-items: flex-start; /* Вирівнювання по лівому краю */
         }
         
         .artifact-card h4 {
             color: var(--color-artifact-border);
             font-size: 1.8em;
             margin: 10px 0;
-            text-shadow: none; /* Прибираємо тінь для підзаголовків карток, щоб було чіткіше */
         }
         
         .artifact-card strong {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: var(--color-joy);
-            font-family: var(--font-body);
-            font-weight: 700;
+        }
+        
+        .artifact-card p {
+            flex-grow: 1; /* Текст займає вільне місце */
+            margin-bottom: 15px;
         }
         
         .artifact-icon {
-            font-size: 3.5em;
-            display: block;
-            margin-bottom: 15px;
+            font-size: 3em;
+            color: var(--color-artifact-border);
+            margin-bottom: 10px;
         }
 
 
         /* 2. Секція Уроків */
         .lessons-section {
-            background-color: #fcf6e9; /* Трохи темніший папір для контрасту */
-            border-top: 3px solid var(--color-ink);
-            border-bottom: 3px solid var(--color-ink);
+            background-color: var(--color-school-bg);
         }
 
         .lesson-grid {
@@ -168,39 +163,31 @@
         }
 
         .lesson-card {
-            border-bottom: 6px solid var(--color-primary);
+            border-bottom: 5px solid var(--color-primary);
+            text-align: left;
+            align-items: flex-start;
         }
 
         .lesson-card h3 {
              margin-top: 10px;
-             font-size: 1.8em;
         }
 
         .lesson-card .lecturer {
             font-weight: bold;
-            color: var(--color-lecturer);
+            color: #1a237e;
             margin-bottom: 10px;
             display: block;
-            font-family: var(--font-heading);
-            font-size: 1.1em;
+        }
+        
+        .lesson-card p {
+            flex-grow: 1;
         }
         
         /* 3. Секція Іспиту */
         .exam-section {
-            background-color: #fce4ec; /* Залишаємо рожевий, але з паперовою текстурою в уяві */
-            position: relative;
-            padding: 60px 20px;
-            border-bottom: 5px solid var(--color-ink);
-        }
-        
-        .exam-section::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 100%);
+            background-color: #fce4ec; 
+            border-top: 5px solid var(--color-joy);
+            padding: 50px 20px;
         }
         
         .exam-section h2 {
@@ -209,19 +196,9 @@
         }
 
         .diploma-icon {
-            font-size: 5em;
-            display: block;
+            font-size: 4em;
+            display: block; /* Щоб іконка була блоком */
             margin-bottom: 20px;
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
-        }
-
-        /* Футер */
-        footer {
-            background-color: var(--color-ink);
-            color: var(--color-paper);
-            padding: 40px 20px;
-            font-size: 1.1em;
-            text-align: center;
         }
 
         /* ======================================= */
@@ -229,12 +206,12 @@
         /* ======================================= */
 
         @media (max-width: 768px) {
-            h1 { font-size: 2.5em; }
-            h2 { font-size: 2em; }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
             
             section { padding: 40px 15px; }
 
-            .school-header p { font-size: 1.2em; }
+            .school-header p { font-size: 1.1em; }
 
             .artifacts-grid, .lesson-grid { gap: 20px; }
             
@@ -249,8 +226,8 @@
                 padding: 20px;
             }
             
-            .artifact-icon { font-size: 3em; }
-            .diploma-icon { font-size: 4em; }
+            .artifact-icon { font-size: 2.5em; }
+            .diploma-icon { font-size: 3em; }
         }
     </style>
 </head>
@@ -261,7 +238,7 @@
             <h1>ШКОЛА «ШЛЯХДОМРІЙ»</h1>
             <p style="font-size: 1.5em; font-weight: 700;">Тут магія починається з бажання знати.</p>
             
-            <p style="max-width: 800px; margin: 20px auto; font-size: 1.2em;">
+            <p style="max-width: 800px; margin: 20px auto;">
                 Щоб стати справжнім СилаВолієм, потрібно вчитися! Разом із Луною, нашим Розумом, ми вивчаємо найважливіші предмети: 
                 <strong>Заклинання Радості</strong>, <strong>Зілля Зоряного Сяйва</strong> та <strong>Мову Дружби</strong>.
             </p>
@@ -270,14 +247,13 @@
 
     <section class="artifacts-section">
         <div class="container">
-            <h2>Чарівні Артефакти</h2>
-            <p>Інструменти для твоєї магії</p>
+            <h2>Чарівні Артефакти: Інструменти для Твоєї Магії</h2>
             
             <div class="artifacts-grid">
                 
                 <div class="card artifact-card">
                     <span class="artifact-icon">🔋</span>
-                    <h4>«ДОДАЙСИЛ»</h4>
+                    <h4>«додайсил»</h4>
                     <strong>Призначення: Підсилювач Магії</strong>
                     <p>
                         Реагує на щирі емоції. Чим сильніше ти віриш у себе, тим потужніша твоя магія. Цей артефакт вчить нас <strong>самодовірі</strong>.
@@ -287,7 +263,7 @@
 
                 <div class="card artifact-card">
                     <span class="artifact-icon">📖</span>
-                    <h4>КНИГА «ЗБИРАЙЗНАНЬ»</h4>
+                    <h4>Книга «ЗбирайЗнань»</h4>
                     <strong>Призначення: Енциклопедія Світу</strong>
                     <p>
                         Легендарна книга, що містить всю магію світу і реагує на <strong>допитливість</strong>. Вона розкриває свої сторінки лише тим, хто справді прагне знати.
@@ -297,7 +273,7 @@
 
                 <div class="card artifact-card">
                     <span class="artifact-icon">🖍️</span>
-                    <h4>ОЛІВЕЦЬ «ФАРБОСВІТ»</h4>
+                    <h4>Олівець «ФарбоСвіт»</h4>
                     <strong>Призначення: Інструмент Творчості</strong>
                     <p>
                         Втілює думки в реальність, навчаючи <strong>відповідальності</strong> за свої бажання. Що намалюєш, те й збудеться!
@@ -310,39 +286,39 @@
 
     <section class="lessons-section">
         <div class="container">
-            <h2>ТВОЇ НАСТУПНІ УРОКИ</h2>
-            <p>Обирай урок, який допоможе тобі стати ще могунішим!</p>
+            <h2>Твої Наступні Уроки</h2>
+            <p>Обирай урок, який допоможе тобі стати ще могутнішим!</p>
             
             <div class="lesson-grid">
                 
                 <div class="card lesson-card">
                     <span class="artifact-icon" style="color: #ffc107;">☀️</span>
-                    <h3>ЗАКЛИНАННЯ РАДОСТІ</h3>
+                    <h3>Заклинання Радості</h3>
                     <span class="lecturer">Викладач: Краш</span>
                     <p>
                         Навчися знаходити позитив у маленьких речах і створювати потужні Заклинання Сміху.
                     </p>
-                    <a href="lesson_joy.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: linear-gradient(45deg, #ffc107, #ff9800);">ПОЧАТИ УРОК</a>
+                    <a href="lesson_joy.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: #ffc107;">ПОЧАТИ УРОК</a>
                 </div>
 
                 <div class="card lesson-card">
                     <span class="artifact-icon" style="color: var(--color-rainbow-end);">🧪</span>
-                    <h3>ЗІЛЛЯ ЗОРЯНОГО СЯЙВА</h3>
+                    <h3>Зілля Зоряного Сяйва</h3>
                     <span class="lecturer">Викладач: Фін</span>
                     <p>
                         Як перетворювати сумні думки на світлі ідеї та варити найсмачніші зілля на основі емоцій.
                     </p>
-                    <a href="lesson_potion.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: linear-gradient(45deg, var(--color-rainbow-end), #2196F3);">ПОЧАТИ УРОК</a>
+                    <a href="lesson_potion.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: var(--color-rainbow-end);">ПОЧАТИ УРОК</a>
                 </div>
 
                 <div class="card lesson-card">
                     <span class="artifact-icon" style="color: var(--color-joy);">💬</span>
-                    <h3>МОВА ДРУЖБИ</h3>
+                    <h3>Мова Дружби</h3>
                     <span class="lecturer">Викладач: Луна</span>
                     <p>
                         Навчись слухати, розуміти та вирішувати конфлікти за допомогою мудрості та емпатії.
                     </p>
-                    <a href="lesson_friendship.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: linear-gradient(45deg, var(--color-joy), #9c27b0);">ПОЧАТИ УРОК</a>
+                    <a href="lesson_friendship.html" class="cta-button" style="font-size: 0.9em; padding: 10px 20px; background: var(--color-joy);">ПОЧАТИ УРОК</a>
                 </div>
                 
             </div>
@@ -352,15 +328,15 @@
     <section class="exam-section">
         <div class="container">
             <span class="diploma-icon">📜✨</span>
-            <h2>ФІНАЛЬНИЙ ІСПИТ: "СЛОВОСТРІЛ"</h2>
+            <h2>ФІНАЛЬНИЙ ІСПИТ: "СловоСтріл"</h2>
             <p>
                 Іспит на силу слів! Використовуй тільки добрі та чесні слова, щоб створити найпотужнішу магію, адже НаноПут ненавидить щирість!
             </p>
             
-            <p style="font-weight: bold; font-size: 1.2em; margin-top: 20px; color: var(--color-ink);">
+            <p style="font-weight: bold; font-size: 1.2em; margin-top: 20px;">
                 Нагорода: Диплом Справжнього СилаВолія та доступ до ексклюзивних історій!
             </p>
-            <a href="final_exam.html" class="cta-button" style="font-size: 1.5em; margin-top: 30px;">СТАТИ СИЛАВОЛІЄМ</a>
+            <a href="final_exam.html" class="cta-button" style="font-size: 1.5em; margin-top: 20px;">СТАТИ СИЛАВОЛІЄМ (Пройти Тест)</a>
         </div>
     </section>
 
