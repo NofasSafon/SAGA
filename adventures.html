@@ -9,17 +9,17 @@
     
     <style>
         /* ======================================= */
-        /* БАЗОВІ СТИЛІ (З style.css)             */
+        /* БАЗОВІ СТИЛІ                           */
         /* ======================================= */
 
         :root {
-            /* Кольори за архітектурою бренду */
-            --color-light: #E0F7FA;          /* Небесно-блакитний (Світло/Фон) */
-            --color-joy: #FF69B4;            /* Яскравий Рожевий (Акцент/Луна) */
-            --color-primary: #4CAF50;        /* Зелений (Надія) */
-            --color-shadow: #455A64;         /* Сірий Хмаринковий (Текст/Супротивник) */
-            --color-story-bg: #fffde7;       /* Дуже світлий кремовий (папір) */
-            --color-lesson: #8BC34A;         /* Лаймовий (Урок) */
+            /* Кольори */
+            --color-light: #E0F7FA;          /* Небесно-блакитний */
+            --color-joy: #FF69B4;            /* Яскравий Рожевий */
+            --color-primary: #4CAF50;        /* Зелений */
+            --color-shadow: #455A64;         /* Сірий Хмаринковий */
+            --color-story-bg: #fffde7;       /* Кремовий папір */
+            --color-lesson: #8BC34A;         /* Лаймовий */
 
             /* Шрифти */
             --font-heading: 'Luckiest Guy', cursive;
@@ -37,6 +37,7 @@
             color: var(--color-shadow);
             background-color: var(--color-story-bg);
             line-height: 1.6;
+            overflow-x: hidden; /* Запобігає горизонтальному скролу */
         }
 
         h1, h2, h3 {
@@ -44,6 +45,7 @@
             color: var(--color-shadow);
             text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7);
             margin-bottom: 0.5em;
+            line-height: 1.2;
         }
 
         section {
@@ -54,12 +56,13 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 15px; /* Захисні відступи по краях */
         }
 
         /* --- Кнопки (CTA) --- */
         .cta-button {
             display: inline-block;
-            padding: 10px 20px; /* Трохи менші кнопки для карток */
+            padding: 12px 25px;
             border-radius: 50px;
             background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
             color: white;
@@ -89,27 +92,40 @@
             text-align: left;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            transform: scale(1.03);
+            transform: translateY(-5px); /* Плаваючий ефект замість scale, краще для мобільних */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* ======================================= */
-        /* СЕКЦІЇ ІСТОРІЙ                         */
+        /* СЕКЦІЇ ІСТОРІЙ                          */
         /* ======================================= */
 
         /* 1. Секція Заголовка */
         .adventures-header {
             background: var(--color-light);
             border-bottom: 5px solid var(--color-joy);
+            padding-top: 80px;
+        }
+
+        .adventures-header p {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         /* 2. Каталог Історій */
+        .adventure-catalogue {
+            padding-top: 40px;
+        }
+
         .adventure-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Адаптивна сітка: мінімум 280px */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
@@ -117,32 +133,32 @@
         .story-card h3 {
             color: var(--color-shadow);
             margin-bottom: 5px;
+            font-size: 1.5em;
         }
 
-        .story-image-placeholder {
-            height: 150px;
-            background-color: #f0f0f0;
+        .story-image {
+            width: 100%;
+            height: 200px; /* Фіксована висота для однакового вигляду */
+            object-fit: cover; /* Картинка обрізається, але не деформується */
             border-radius: 10px;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            color: #999;
+            background-color: #f0f0f0; /* Колір на випадок, якщо картинка не завантажиться */
         }
-	    .story-image {
-			width: 100%; /* Занимает 100% доступной ширины родителя */
-			height: auto; /* Высота подстраивается автоматически */	
-			}
+
         .conflict-tag {
             display: inline-block;
             background-color: #ffccbc;
             color: var(--color-shadow);
-            font-size: 0.9em;
+            font-size: 0.85em;
             padding: 5px 10px;
             border-radius: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 700;
+        }
+        
+        /* Основний текст картки розтягується */
+        .story-card p {
+            flex-grow: 1; 
         }
 
         .moral-lesson {
@@ -152,29 +168,40 @@
             background-color: #f1f8e9;
             font-style: italic;
             font-weight: 600;
+            font-size: 0.95em;
         }
         
         /* 3. Секція Анонсу */
         .announcement-section {
             background-color: var(--color-light);
             border-top: 2px dashed var(--color-joy);
+            text-align: left;
+        }
+        
+        .announcement-section h2 {
+            text-align: center;
         }
 
         .announcement-list {
             list-style: none;
             padding: 0;
             margin: 20px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .announcement-list li {
-            padding: 10px 0;
+            padding: 15px 0;
             border-bottom: 1px dotted #ccc;
         }
 
         .announcement-list strong {
-            color: var(--color-shadow);
+            display: block; /* Заголовок анонсу на новому рядку */
+            color: var(--color-primary);
             font-family: var(--font-heading);
-            font-size: 1.1em;
+            font-size: 1.2em;
+            margin-bottom: 5px;
         }
 
         footer {
@@ -182,8 +209,34 @@
             color: white;
             padding: 30px 20px;
             font-size: 0.9em;
+            text-align: center;
         }
 
+        /* ======================================= */
+        /* МЕДІА-ЗАПИТИ (АДАПТИВНІСТЬ)             */
+        /* ======================================= */
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            
+            section { padding: 40px 15px; }
+
+            .adventures-header { padding-top: 40px; }
+            
+            .adventure-grid { gap: 20px; }
+            
+            /* Кнопка на всю ширину на мобільному */
+            .cta-button {
+                width: 100%;
+                text-align: center;
+                display: block; 
+            }
+            
+            .story-image {
+                height: 180px; /* Трохи менша висота для мобільних */
+            }
+        }
     </style>
 </head>
 <body>
@@ -204,57 +257,53 @@
             <div class="adventure-grid">
                 
                 <div class="card story-card">
-                    <!-- <div class="story-image-placeholder">Ілюстрація: Сірий Туман</div> -->
-					<img src="img/adv01.jpg" alt="Таємниця сірого туману" class="story-image">
+                    <img src="img/adv01.jpg" alt="Таємниця сірого туману" class="story-image">
                     <h3>Таємниця сірого туману</h3>
-                    <span class="conflict-tag">Конфлікт: Смуток (Демон НаноПут) </span>
+                    <div><span class="conflict-tag">Конфлікт: Смуток (Демон НаноПут)</span></div>
                     <p>
                         Фін, Краш і Луна стикаються з першою великою загрозою, вчаться використовувати веселковий дим, дзвін радості та мудрість разом.
                     </p>
                     <div class="moral-lesson">
-                        **Урок:** Навіть найменша радість перемагає найбільший смуток.
+                        <strong>Урок:</strong> Навіть найменша радість перемагає найбільший смуток.
                     </div>
                     <a href="stor/story01.pdf" class="cta-button">ЧИТАТИ ПРИГОДУ</a>
                 </div>
 
                 <div class="card story-card">
-                  <!-- <div class="story-image-placeholder">Ілюстрація: Цукерковий будинок</div> */ -->
-				<img src="img/adv02.jpg" alt="Цукерковий будинок" class="story-image">
+                    <img src="img/adv02.jpg" alt="Цукерковий будинок" class="story-image">
                     <h3>Місто Солодких Мрій</h3>
-                    <span class="conflict-tag">Конфлікт: Егоїзм (Тінь Сум краде мрії) </span>
+                    <div><span class="conflict-tag">Конфлікт: Егоїзм (Тінь Сум)</span></div>
                     <p>
                         Герої вирушають до міста, збудованого з льодяників, щоб повернути вкрадені мрії. Вони дізнаються, що щастя має бути спільним.
                     </p>
                     <div class="moral-lesson">
-                        **Урок:** Щастям не можна володіти, ним можна лише ділитися.
+                        <strong>Урок:</strong> Щастям не можна володіти, ним можна лише ділитися.
                     </div>
                     <a href="story_sweet_dreams.html" class="cta-button">ЧИТАТИ ПРИГОДУ</a>
                 </div>
 
                 <div class="card story-card">
-                 <!--   <div class="story-image-placeholder">Ілюстрація: Сонні Жучки</div> -->
-				 <img src="img/adv03.jpg" alt="Сонні Жучки" class="story-image">
+                    <img src="img/adv03.jpg" alt="Сонні Жучки" class="story-image">
                     <h3>Таємниця Зниклих Зірок</h3>
-                    <span class="conflict-tag">Конфлікт: Неусвідомлена шкода (Сонні Жучки) </span>
+                    <div><span class="conflict-tag">Конфлікт: Неусвідомлена шкода</span></div>
                     <p>
                         Подорож на Небесні Хмари, де мешкають Сонні Жучки. Герої з'ясовують, як їхні власні дії впливають на світ.
                     </p>
                     <div class="moral-lesson">
-                        **Урок:** Твої мрії та дії впливають на інших.
+                        <strong>Урок:</strong> Твої мрії та дії впливають на інших.
                     </div>
                     <a href="story_missing_stars.html" class="cta-button">ЧИТАТИ ПРИГОДУ</a>
                 </div>
                 
                 <div class="card story-card">
-                   <!-- <div class="story-image-placeholder">Ілюстрація: Павук і веселка</div> -->
-					<img src="img/adv04.jpg" alt="Павук і веселка" class="story-image">
+                    <img src="img/adv04.jpg" alt="Павук і веселка" class="story-image">
                     <h3>Дерево Кольорових Мрій</h3>
-                    <span class="conflict-tag">Конфлікт: Жадібність (Лінивий Павук) </span>
+                    <div><span class="conflict-tag">Конфлікт: Жадібність</span></div>
                     <p>
                         Пригода в Лісі Шепотів, де герої протистоять жадібності, яка загрожує поглинути всі кольори світу.
                     </p>
                     <div class="moral-lesson">
-                        **Урок:** Мрії стають яскравішими, коли ними ділишся.
+                        <strong>Урок:</strong> Мрії стають яскравішими, коли ними ділишся.
                     </div>
                     <a href="story_color_tree.html" class="cta-button">ЧИТАТИ ПРИГОДУ</a>
                 </div>
@@ -266,17 +315,21 @@
     <section class="announcement-section">
         <div class="container">
             <h2>Скоро на сайті: Нові Битви за Мрії!</h2>
-            <p>Наш всесвіт постійно розширюється, готуючи десятки нових пригод[cite: 86], які допоможуть героям рости:</p>
+            <p>Наш всесвіт постійно розширюється, готуючи десятки нових пригод, які допоможуть героям рости:</p>
+            
             
             <ul class="announcement-list">
                 <li>
-                    <strong>Місто Заводних Сердець</strong>Історія про боротьбу не зі смутком, а з емоційною порожнечею та рутиною.
+                    <strong>Місто Заводних Сердець</strong>
+                    Історія про боротьбу не зі смутком, а з емоційною порожнечею та рутиною.
                 </li>
                 <li>
-                    <strong>Дзеркальне Озеро</strong>Пригода, де герої борються не із зовнішнім ворогом, а з власними внутрішніми страхами.
+                    <strong>Дзеркальне Озеро</strong>
+                    Пригода, де герої борються не із зовнішнім ворогом, а з власними внутрішніми страхами.
                 </li>
                 <li>
-                    <strong>Садівник Сумних Дурниць</strong>Дослідження ідеї про те, що всі емоції, навіть меланхолія, мають свою красу та цінність.
+                    <strong>Садівник Сумних Дурниць</strong>
+                    Дослідження ідеї про те, що всі емоції, навіть меланхолія, мають свою красу та цінність.
                 </li>
             </ul>
         </div>
