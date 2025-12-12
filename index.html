@@ -3,288 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СилаВолії: Радість, Дружба, Доброта — це наймогутніша магія</title>
+    <title>СилаВолії: Радість, Дружба, Доброта</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     
-    <style>
-        /* ======================================= */
-        /* БАЗОВІ СТИЛІ (СТИЛЬ: СТАРИЙ ПАПІР І КОМІКС) */
-        /* ======================================= */
-
-        :root {
-            /* Кольори */
-            --color-paper: #FFF8E1;          
-            --color-ink: #4B371C;            
-            --color-light-accent: #F4D03F;   
-            --color-joy: #C73B8F;            
-            --color-primary: #38761D;        
-            --color-rainbow-start: #ff8c69;  
-            --color-rainbow-end: #6699ff;    
-
-            /* Шрифти */
-            --font-heading: 'Gochi Hand', cursive;
-            --font-body: 'Kalam', cursive; 
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-body);
-            color: var(--color-ink);
-            background-color: var(--color-paper);
-            line-height: 1.7; 
-            overflow-x: hidden; /* Запобігає горизонтальному скролу */
-        }
-
-        h1, h2, h3 {
-            font-family: var(--font-heading);
-            color: var(--color-ink);
-            text-shadow: 2px 2px 0px var(--color-light-accent), 4px 4px 0px rgba(0, 0, 0, 0.1); 
-            margin-bottom: 0.5em;
-            text-transform: uppercase;
-            line-height: 1.2;
-        }
-
-        section {
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px; /* Додатковий відступ з боків для мобільних */
-        }
-
-        /* --- Кнопки (CTA) --- */
-        .cta-group {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
-            color: white;
-            font-family: var(--font-heading);
-            font-size: 1.3em;
-            text-decoration: none;
-            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3); 
-            border: 3px solid var(--color-ink); 
-            border-radius: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-            white-space: nowrap; /* Щоб текст не розривався */
-        }
-        
-        .cta-button.secondary {
-            background: var(--color-ink);
-            box-shadow: 5px 5px 0px rgba(var(--color-ink), 0.3);
-            border: 3px solid var(--color-light-accent);
-        }
-
-        .cta-button:hover {
-            transform: translate(1px, 1px); 
-            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
-        }
-
-        /* --- Картки --- */
-        .card {
-            background-color: var(--color-paper);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-            border: 1px solid rgba(75, 55, 28, 0.2); 
-            transition: all 0.3s;
-            height: 100%;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px); 
-            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* ======================================= */
-        /* СЕКЦІЇ                                  */
-        /* ======================================= */
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--color-rainbow-start) 0%, var(--color-light-accent) 50%, var(--color-rainbow-end) 100%);
-            color: var(--color-ink);
-            padding: 80px 20px 100px; /* Трохи менше зверху, більше знизу */
-            border-bottom: 5px dashed var(--color-ink);
-        }
-
-        .hero-section h1 {
-            font-size: 4.5em;
-            text-shadow: 3px 3px 0px white;
-        }
-
-        .hero-section p {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
-        
-        .hero-image {
-            max-width: 80%;
-            height: auto;
-            margin-top: 30px;
-            border-radius: 15px;
-            border: 3px solid var(--color-ink);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
-        }
-
-        /* Conflict Section */
-        .conflict-section {
-            background-color: #f7e1e6;
-            padding-bottom: 80px;
-            border-bottom: 5px solid var(--color-ink); 
-            position: relative;
-        }
-        
-        .conflict-section::after {
-            content: "✨";
-            position: absolute;
-            bottom: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 4em;
-            text-shadow: 0 0 10px var(--color-light-accent);
-            z-index: 2;
-        }
-
-        /* Trio Section */
-        .trio-preview-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .trio-block {
-            flex: 1;
-            min-width: 250px; /* Щоб блоки не ставали надто вузькими */
-            max-width: 350px;
-            text-align: center;
-            padding: 20px;
-            background: rgba(255,255,255,0.4);
-            border-radius: 15px;
-        }
-
-        .trio-block h4 {
-            color: var(--color-joy);
-            font-size: 1.8em;
-            margin-top: 10px;
-        }
-
-        .trio-icon {
-            font-size: 4em;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* Catalogue Section */
-        .content-catalogue {
-            background-color: var(--color-paper);
-            padding-top: 80px;
-        }
-
-        .content-catalogue-container {
-            display: grid;
-            /* Адаптивна сітка: автоматично заповнює простір */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .content-catalogue .card-link {
-            text-decoration: none;
-            color: var(--color-ink);
-            display: block;
-            height: 100%;
-        }
-
-        .content-catalogue .card h3 {
-            color: var(--color-primary);
-            font-size: 1.8em;
-        }
-
-        footer {
-            background-color: var(--color-ink);
-            color: var(--color-paper);
-            padding: 40px 20px;
-            font-size: 1.1em;
-            text-align: center;
-        }
-
-        footer .hero-image {
-            max-width: 200px;
-            border-color: var(--color-paper);
-            margin-bottom: 20px;
-            margin-top: 0;
-        }
-
-        /* ======================================= */
-        /* МЕДІА-ЗАПИТИ (АДАПТИВНІСТЬ)             */
-        /* ======================================= */
-
-        /* Планшети та менше (до 1024px) */
-        @media (max-width: 1024px) {
-            .hero-section h1 { font-size: 3.5em; }
-        }
-
-        /* Мобільні телефони (до 768px) */
-        @media (max-width: 768px) {
-            
-            /* Загальні відступи */
-            section { padding: 40px 15px; }
-            
-            /* HERO секція */
-            .hero-section { padding-top: 40px; }
-            .hero-section h1 { font-size: 2.5em; margin-bottom: 15px; }
-            .hero-section p { font-size: 1.3em; line-height: 1.4; }
-            .hero-image { max-width: 100%; }
-
-            /* Кнопки на мобільному стають на всю ширину */
-            .cta-group { flex-direction: column; width: 100%; }
-            .cta-button { 
-                width: 100%; 
-                text-align: center; 
-                margin: 5px 0; 
-                box-sizing: border-box;
-            }
-
-            /* Тріо героїв */
-            .trio-preview-container { gap: 20px; }
-            .trio-block { width: 100%; max-width: 100%; }
-
-            /* Шрифт заголовків секцій */
-            h2 { font-size: 2em; }
-        }
-
-        /* Дуже малі екрани (до 480px) */
-        @media (max-width: 480px) {
-            .hero-section h1 { font-size: 2em; }
-            .content-catalogue-container { grid-template-columns: 1fr; } /* Одна колонка */
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -297,8 +20,8 @@
 
             <div class="cta-group">
                 <a href="heroes.html"     class="cta-button">  ГЕРОЇ  </a>
-				<a href="world.html" class="cta-button">СИЛАВОЛІЯ</a>
-				<a href="adventures.html" class="cta-button"> ПРИГОДИ </a>
+                <a href="adventures.html" class="cta-button"> ПРИГОДИ </a>
+                <a href="school.html"     class="cta-button">  ШКОЛА  </a>
             </div>
         </div>
     </header>
@@ -360,7 +83,7 @@
                             <h3>СВІТ</h3>
                             <p>Досліджуй інтерактивну карту чарівних локацій — від Міста Солодких Мрій до Сирних Гір.</p>
                         </div>
-                        <p class="cta-button secondary" style="font-size: 0.9em; padding: 10px 20px; width:100%; text-align:center; margin-top: 20px;">ДО КАРТИ</p>
+                        <p class="cta-button secondary">ДО КАРТИ</p>
                     </div>
                 </a>
 
@@ -371,7 +94,7 @@
                             <h3>ІСТОРІЇ</h3>
                             <p>Читай нові глави про перемогу світла над смутком. Кожна розповідь — це урок доброти.</p>
                         </div>
-                        <p class="cta-button secondary" style="font-size: 0.9em; padding: 10px 20px; width:100%; text-align:center; margin-top: 20px;">ЧИТАТИ ЗАРАЗ</p>
+                        <p class="cta-button secondary">ЧИТАТИ ЗАРАЗ</p>
                     </div>
                 </a>
 
@@ -382,7 +105,7 @@
                             <h3>ШКОЛА</h3>
                             <p>Пройди магічні уроки Луни, познайомся з артефактами та отримай Диплом СилаВолія.</p>
                         </div>
-                        <p class="cta-button secondary" style="font-size: 0.9em; padding: 10px 20px; width:100%; text-align:center; margin-top: 20px;">ПРОЙТИ ТЕСТ</p>
+                        <p class="cta-button secondary">ПРОЙТИ ТЕСТ</p>
                     </div>
                 </a>
                 
@@ -392,7 +115,7 @@
 
     <footer>
         <div class="container">
-            <img src="img/12.jpg" alt="Герої СилаВолії" class="hero-image">
+            <img src="img/12.jpg" alt="Герої СилаВолії" class="hero-image footer-img">
             <p>&copy; 2025 СИЛАВОЛІЇ. Світ, що живиться дитячим сміхом та мріями.</p>
         </div>
     </footer>
