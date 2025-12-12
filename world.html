@@ -9,7 +9,7 @@
     
     <style>
         /* ======================================= */
-        /* БАЗОВІ СТИЛІ (Збережені)               */
+        /* БАЗОВІ СТИЛІ                           */
         /* ======================================= */
 
         :root {
@@ -25,10 +25,26 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-body); color: var(--color-shadow); background-color: var(--color-light); line-height: 1.6; }
-        h1, h2, h3 { font-family: var(--font-heading); color: var(--color-shadow); text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7); margin-bottom: 0.5em; }
+        
+        body { 
+            font-family: var(--font-body); 
+            color: var(--color-shadow); 
+            background-color: var(--color-light); 
+            line-height: 1.6;
+            overflow-x: hidden; /* Захист від горизонтального скролу */
+            scroll-behavior: smooth; /* Плавна прокрутка до якорів */
+        }
+
+        h1, h2, h3 { 
+            font-family: var(--font-heading); 
+            color: var(--color-shadow); 
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7); 
+            margin-bottom: 0.5em; 
+            line-height: 1.2;
+        }
+
         section { padding: 60px 20px; text-align: center; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 
         /* Кнопки */
         .cta-button {
@@ -45,65 +61,121 @@
             background-color: white; border-radius: 20px; padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s;
             height: 100%; text-align: left;
-            /* Для анімації появи */
-            opacity: 0; 
-            transform: translateY(30px);
+            opacity: 0; transform: translateY(30px); /* Для анімації */
+            display: flex; flex-direction: column;
         }
         
-        /* Клас для активації анімації */
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .card.visible { opacity: 1; transform: translateY(0); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
 
-        .card:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
-
-        /* Секції */
+        /* ======================================= */
+        /* СЕКЦІЯ: КАРТА СВІТУ                    */
+        /* ======================================= */
         .world-map-section { background-color: #e0f2f1; padding-bottom: 80px; }
-        .map-image { width: 100%; max-width: 1000px; height: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); margin: 40px auto 20px; display: block; }
+        
+        .map-image { 
+            width: 100%; max-width: 1000px; height: auto; 
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+            margin: 40px auto 20px; display: block; 
+        }
 
-        .location-list { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+        .location-list { 
+            display: flex; justify-content: center; gap: 15px; 
+            flex-wrap: wrap; margin-top: 20px; 
+        }
+        
         .location-tag {
-            background-color: var(--color-joy); color: white; padding: 8px 15px;
-            border-radius: 20px; font-weight: bold; cursor: pointer; transition: background-color 0.2s, transform 0.2s;
+            background-color: var(--color-joy); color: white; padding: 10px 20px;
+            border-radius: 20px; font-weight: bold; cursor: pointer; 
+            transition: background-color 0.2s, transform 0.2s;
+            user-select: none; /* Щоб текст не виділявся при швидкому кліку */
         }
-        .location-tag:hover { background-color: #ff45a6; transform: scale(1.1); }
-        .location-tag.active { background-color: var(--color-primary); box-shadow: 0 0 10px var(--color-primary); }
+        .location-tag:hover { background-color: #ff45a6; transform: scale(1.05); }
+        .location-tag.active { background-color: var(--color-primary); box-shadow: 0 0 15px var(--color-primary); transform: scale(1.1); }
 
-        /* --- НОВЕ: Блок опису локації --- */
+        /* Блок опису локації */
         #location-description {
-            margin-top: 20px; padding: 20px; background: white; border-radius: 15px;
-            border-left: 5px solid var(--color-joy); max-width: 800px; margin-left: auto; margin-right: auto;
-            display: none; /* Приховано за замовчуванням */
-            animation: fadeIn 0.5s ease-in-out;
+            margin-top: 30px; padding: 25px; background: white; border-radius: 15px;
+            border-left: 8px solid var(--color-joy); max-width: 800px; margin-left: auto; margin-right: auto;
+            display: none; text-align: left;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
 
+        /* ======================================= */
+        /* СЕКЦІЯ: КОНФЛІКТ                       */
+        /* ======================================= */
         .conflict-story { background-color: #fff9c4; transition: background-color 1s ease; }
-        .conflict-story.purified { background: linear-gradient(135deg, #e1f5fe, #f3e5f5); } /* Колір після "перемоги" */
+        .conflict-story.purified { background: linear-gradient(135deg, #e1f5fe, #f3e5f5); }
 
         .nanoput-details {
-            max-width: 800px; margin: 20px auto; background-color: #fff; padding: 20px;
+            max-width: 800px; margin: 20px auto; background-color: #fff; padding: 30px;
             border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--color-dark-conflict);
-            transition: border-color 1s ease;
+            border-left: 8px solid var(--color-dark-conflict);
+            transition: border-color 1s ease, box-shadow 1s ease;
         }
         
+        /* ======================================= */
+        /* СЕКЦІЯ: ПРИГОДИ                        */
+        /* ======================================= */
         .adventure-catalogue { background-color: white; }
-        .adventure-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-        .adventure-card h3 { color: var(--color-joy); }
-        .moral-lesson { margin-top: 10px; font-style: italic; border-top: 1px dashed #eee; padding-top: 10px; }
-        .future-adventures { margin-top: 40px; padding: 20px; background-color: #e3f2fd; border-radius: 15px; border-left: 5px solid #42a5f5; }
-		
-		.adventure-image {
-			width: 100%; /* Занимает 100% доступной ширины родителя */
-			height: auto; /* Высота подстраивается автоматически */	
-			}
-        /* Анімація */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .adventure-grid { 
+            display: grid; 
+            /* Адаптивна сітка */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; margin-top: 40px; 
+        }
+        
+        .adventure-card h3 { color: var(--color-joy); font-size: 1.5em; }
+        
+        .adventure-image {
+            width: 100%; height: 200px; object-fit: cover;
+            border-radius: 10px; margin-bottom: 15px;
+            background-color: #f0f0f0;
         }
 
+        .moral-lesson { 
+            margin-top: auto; /* Притискає урок до низу перед кнопкою */
+            font-style: italic; border-top: 1px dashed #eee; padding-top: 10px; margin-bottom: 15px;
+        }
+        
+        .future-adventures { 
+            margin-top: 40px; padding: 30px; 
+            background-color: #e3f2fd; border-radius: 15px; 
+            border-left: 8px solid #42a5f5; 
+            text-align: left;
+        }
+
+        footer {
+            background-color: var(--color-shadow);
+            color: white;
+            padding: 30px 20px;
+            font-size: 0.9em;
+        }
+
+        /* ======================================= */
+        /* МЕДІА-ЗАПИТИ (АДАПТИВНІСТЬ)             */
+        /* ======================================= */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1.8em; }
+            
+            section { padding: 40px 15px; }
+
+            /* Карта */
+            .location-tag { 
+                padding: 8px 12px; font-size: 0.9em; flex: 1 1 40%; text-align: center;
+            }
+            
+            /* Кнопки */
+            .cta-button { width: 100%; text-align: center; box-sizing: border-box; }
+            
+            /* НаноПут */
+            .nanoput-details { padding: 20px; }
+            
+            /* Пригоди */
+            .adventure-image { height: 180px; }
+        }
     </style>
 </head>
 <body>
@@ -163,38 +235,38 @@
                 
                 <div class="card adventure-card">
                     <h3>Таємниця сірого туману</h3>
-					<img src="img/wadv01.jpg" alt="НаноПут" class="adventure-image">
+                    <img src="img/wadv01.jpg" alt="НаноПут" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Смуток (Демон НаноПут).
                     </p>
                     <div class="moral-lesson">
                         <strong>Моральний Урок:</strong> Навіть найменша радість перемагає найбільший смуток.
                     </div>
-                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.9em;">Читати історію</a>
                 </div>
 
                 <div class="card adventure-card">
                     <h3>Місто Солодких Мрій</h3>
-					<img src="img/wadv02.jpg" alt="Сум" class="adventure-image">
+                    <img src="img/wadv02.jpg" alt="Сум" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Егоїзм (Тінь Сум краде мрії).
                     </p>
                     <div class="moral-lesson">
                         <strong>Моральний Урок:</strong> Щастям не можна володіти, ним можна лише ділитися.
                     </div>
-                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.9em;">Читати історію</a>
                 </div>
 
                 <div class="card adventure-card">
                     <h3>Таємниця Зниклих Зірок</h3>
-					<img src="img/wadv03.jpg" alt="Жучки" class="adventure-image">
+                    <img src="img/wadv03.jpg" alt="Жучки" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Неусвідомлена шкода (Сонні Жучки).
                     </p>
                     <div class="moral-lesson">
                         <strong>Моральний Урок:</strong> Твої мрії та дії впливають на інших.
                     </div>
-                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.9em;">Читати історію</a>
                 </div>
 
             </div>
@@ -250,65 +322,59 @@
 
         tags.forEach(tag => {
             tag.addEventListener('click', function() {
-                // Прибираємо активний клас у всіх
                 tags.forEach(t => t.classList.remove('active'));
-                // Додаємо активний клас натиснутому
                 this.classList.add('active');
 
-                // Отримуємо ключ локації
                 const key = this.getAttribute('data-loc');
                 const data = locationsData[key];
 
                 if (data) {
-                    // Заповнюємо та показуємо блок
                     titleEl.innerText = data.title;
                     textEl.innerText = data.text;
                     descBox.style.display = 'block';
                     
-                    // Невелика анімація перезапуску
+                    // Анімація перезапуску
                     descBox.style.animation = 'none';
                     descBox.offsetHeight; /* trigger reflow */
                     descBox.style.animation = 'fadeIn 0.5s ease-in-out';
+                    
+                    // Прокрутка до опису на мобільних, щоб було видно текст
+                    if (window.innerWidth < 768) {
+                        descBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
                 }
             });
         });
 
-        // 2. ЛОГІКА "МАГІЇ" (Битва з НаноПутом)
+        // 2. ЛОГІКА "МАГІЇ"
         const magicBtn = document.getElementById('magicButton');
         const conflictSection = document.getElementById('conflictSection');
         const nanoputCard = document.getElementById('nanoputCard');
         const conflictText = document.getElementById('conflictText');
 
         magicBtn.addEventListener('click', () => {
-            // Змінюємо стилі на "світлі"
             conflictSection.classList.add('purified');
-            nanoputCard.style.borderColor = '#4CAF50'; // Зелений (Надія)
-            nanoputCard.style.boxShadow = '0 0 20px #FF69B4'; // Світіння радості
+            nanoputCard.style.borderColor = '#4CAF50';
+            nanoputCard.style.boxShadow = '0 0 20px #FF69B4'; 
             
-            // Змінюємо текст
             conflictText.innerText = "УРА! Радість перемогла! НаноПут втік, злякавшись вашого сміху!";
             conflictText.style.color = '#4CAF50';
             
-            // Ховаємо кнопку після перемоги
             magicBtn.innerText = "Перемога! 🎉";
             magicBtn.disabled = true;
             magicBtn.style.background = '#ccc';
             magicBtn.style.cursor = 'default';
         });
 
-        // 3. АНІМАЦІЯ ПОЯВИ КАРТОК ПРИ СКРОЛІ
-        const observerOptions = {
-            threshold: 0.2 // Спрацює, коли 20% елемента з'явиться на екрані
-        };
-
+        // 3. АНІМАЦІЯ ПОЯВИ
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Більше не стежимо за цим елементом
+                    observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         document.querySelectorAll('.card').forEach(card => {
             observer.observe(card);
