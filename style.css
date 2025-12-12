@@ -1,0 +1,147 @@
+/* ======================================= */
+/* 1. БАЗОВІ НАЛАШТУВАННЯ ТА ТИПОГРАФІКА   */
+/* (СТИЛЬ: СТАРИЙ ПАПІР І КОМІКС)        */
+/* ======================================= */
+
+/* Нові шрифти з коміксовою стилістикою */
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Kalam:wght@300;400;700&display=swap');
+
+:root {
+    /* Кольори за архітектурою бренду (Стилізація під Старий Папір) */
+    --color-paper: #FFF8E1;          /* Кремовий/Бежевий (Фон паперу) */
+    --color-ink: #4B371C;            /* Темно-коричневий (Колір чорнила/тексту) */
+    --color-light-accent: #F4D03F;   /* Світлий золотистий (Сяйво/Світло) */
+    
+    /* Акцентні кольори, але більш приглушені */
+    --color-joy: #C73B8F;            /* Рожевий/Пурпуровий (Акцент/Луна) */
+    --color-primary: #38761D;        /* Темний зелений (Надія) */
+    --color-rainbow-start: #ff8c69;  /* Помаранчевий (Веселка 1) */
+    --color-rainbow-end: #6699ff;    /* Блакитний (Веселка 3) */
+
+    /* Шрифти */
+    --font-heading: 'Gochi Hand', cursive;
+    --font-body: 'Kalam', cursive; /* Рукописний стиль для основного тексту */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    line-height: 1.7; /* Трохи більший інтервал для рукописного шрифту */
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--color-ink);
+    /* Імітація обведення коміксного тексту або тіні */
+    text-shadow: 2px 2px 0px var(--color-light-accent), 4px 4px 0px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+}
+
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Кнопки (CTA) - Вигляд Коміксного Баблу --- */
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    /* Яскравий градієнт, як магічний ефект */
+    background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
+    color: white;
+    font-family: var(--font-heading);
+    font-size: 1.3em;
+    text-decoration: none;
+    /* Виразний тіньовий ефект, як наклейка або коміксний бабл */
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3); 
+    border: 3px solid var(--color-ink); /* Чітке чорнильне обведення */
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.cta-button:hover {
+    transform: translate(1px, 1px); /* Легкий ефект натискання */
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Картки (Вигляд сторінки книги) --- */
+.card {
+    background-color: var(--color-paper);
+    border-radius: 15px;
+    padding: 25px;
+    /* М'яка тінь для об'єму */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(75, 55, 28, 0.2); /* Дуже легке обведення чорнилом */
+    transition: all 0.3s;
+    height: 100%;
+    text-align: left;
+}
+
+.card:hover {
+    transform: none; /* Вимикаємо великий scale, щоб зберегти "паперовий" вигляд */
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Секція Hero (Начало книги) --- */
+.hero-section {
+    background: linear-gradient(135deg, var(--color-rainbow-start) 0%, var(--color-light-accent) 50%, var(--color-rainbow-end) 100%);
+    color: var(--color-ink);
+    padding: 100px 20px;
+    border-bottom: 5px dashed var(--color-ink);
+}
+
+.hero-section h1 {
+    color: var(--color-ink);
+    text-shadow: 3px 3px 0px white;
+}
+
+/* Приклад для імітації полів */
+.container {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5); /* Напівпрозорий білий шар для контрасту на фоні */
+    border-radius: 10px;
+}
+
+/* Футер (Край книги) */
+footer {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    padding: 30px 20px;
+    font-size: 1em;
+}
+
+/* ======================================= */
+/* Спеціальні стилі для сторінок           */
+/* ======================================= */
+
+/* Уроки та моральні уроки */
+.moral-lesson, .lesson-card {
+    border-left: 5px solid var(--color-primary);
+    background-color: rgba(216, 239, 199, 0.5); /* Світло-зелений папір */
+}
+
+/* Секція Конфлікту */
+.conflict-section {
+    background-color: #f7e1e6; /* Ледь рожевий відтінок паперу */
+    border-bottom: 5px solid var(--color-ink);
+}
+
+/* Секція Іспиту */
+.exam-section {
+    border-top: 5px dashed var(--color-joy);
+}

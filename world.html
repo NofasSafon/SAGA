@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Світ та Пригоди СилаВолії: Карта та Історії</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* БАЗОВІ СТИЛІ (Збережені)               */
+        /* ======================================= */
+
+        :root {
+            --color-light: #E0F7FA;
+            --color-joy: #FF69B4;
+            --color-primary: #4CAF50;
+            --color-shadow: #455A64;
+            --color-rainbow-start: #ffc0cb;
+            --color-rainbow-end: #9be2fe;
+            --color-dark-conflict: #B71C1C;
+            --font-heading: 'Luckiest Guy', cursive;
+            --font-body: 'Nunito', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); color: var(--color-shadow); background-color: var(--color-light); line-height: 1.6; }
+        h1, h2, h3 { font-family: var(--font-heading); color: var(--color-shadow); text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7); margin-bottom: 0.5em; }
+        section { padding: 60px 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Кнопки */
+        .cta-button {
+            display: inline-block; padding: 15px 30px; border-radius: 50px;
+            background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
+            color: white; font-family: var(--font-heading); font-size: 1.2em;
+            text-decoration: none; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer; margin: 10px;
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
+        
+        /* Картки */
+        .card {
+            background-color: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s;
+            height: 100%; text-align: left;
+            /* Для анімації появи */
+            opacity: 0; 
+            transform: translateY(30px);
+        }
+        
+        /* Клас для активації анімації */
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
+
+        /* Секції */
+        .world-map-section { background-color: #e0f2f1; padding-bottom: 80px; }
+        .map-image { width: 100%; max-width: 1000px; height: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); margin: 40px auto 20px; display: block; }
+
+        .location-list { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+        .location-tag {
+            background-color: var(--color-joy); color: white; padding: 8px 15px;
+            border-radius: 20px; font-weight: bold; cursor: pointer; transition: background-color 0.2s, transform 0.2s;
+        }
+        .location-tag:hover { background-color: #ff45a6; transform: scale(1.1); }
+        .location-tag.active { background-color: var(--color-primary); box-shadow: 0 0 10px var(--color-primary); }
+
+        /* --- НОВЕ: Блок опису локації --- */
+        #location-description {
+            margin-top: 20px; padding: 20px; background: white; border-radius: 15px;
+            border-left: 5px solid var(--color-joy); max-width: 800px; margin-left: auto; margin-right: auto;
+            display: none; /* Приховано за замовчуванням */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .conflict-story { background-color: #fff9c4; transition: background-color 1s ease; }
+        .conflict-story.purified { background: linear-gradient(135deg, #e1f5fe, #f3e5f5); } /* Колір після "перемоги" */
+
+        .nanoput-details {
+            max-width: 800px; margin: 20px auto; background-color: #fff; padding: 20px;
+            border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--color-dark-conflict);
+            transition: border-color 1s ease;
+        }
+        
+        .adventure-catalogue { background-color: white; }
+        .adventure-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .adventure-card h3 { color: var(--color-joy); }
+        .moral-lesson { margin-top: 10px; font-style: italic; border-top: 1px dashed #eee; padding-top: 10px; }
+        .future-adventures { margin-top: 40px; padding: 20px; background-color: #e3f2fd; border-radius: 15px; border-left: 5px solid #42a5f5; }
+		
+		.adventure-image {
+			width: 100%; /* Занимает 100% доступной ширины родителя */
+			height: auto; /* Высота подстраивается автоматически */	
+			}
+        /* Анімація */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <section class="world-map-section">
+        <div class="container">
+            <h1>Безмежний Світ СилаВолії</h1>
+            <p>
+                Натисни на назву місця, щоб дізнатися його таємницю!
+            </p>
+            
+            <img src="img/03.jpg" alt="Інтерактивна карта світу СилаВолії" class="map-image">
+            
+            <div class="location-list" id="locationList">
+                <span class="location-tag" data-loc="dream-city">Місто Солодких Мрій</span>
+                <span class="location-tag" data-loc="whisper-forest">Ліс Шепотів</span>
+                <span class="location-tag" data-loc="cheese-mountains">Сирні гори</span>
+                <span class="location-tag" data-loc="music-spring">Джерело Музики</span>
+                <span class="location-tag" data-loc="sky-clouds">Небесні Хмари</span>
+            </div>
+            
+            <div id="location-description">
+                <h3 id="loc-title"></h3>
+                <p id="loc-text"></p>
+            </div>
+            
+            <a href="#adventures" class="cta-button" style="margin-top: 30px;">ЧИТАТИ ОСТАННІ ПРИГОДИ</a>
+        </div>
+    </section>
+
+    <section class="conflict-story" id="conflictSection">
+        <div class="container">
+            <h2>Світло проти Суму: Битва за Мрії</h2>
+            <p>
+                Головний антагоніст прагне знищити світло. Але ми можемо його зупинити прямо зараз!
+            </p>
+            
+            <div class="nanoput-details" id="nanoputCard">
+                <h3>Головний Антагоніст — НаноПут</h3>
+                <p>
+                    Це демон-темносил у вигляді маленької сірої хмаринки. Він перетворює мрії на камінці.
+                </p>
+                <p style="font-weight: bold; color: var(--color-dark-conflict);" id="conflictText">
+                    Суть конфлікту — це битва не на фізичну силу, а на силу емоцій.
+                </p>
+                
+                <button class="cta-button" id="magicButton" style="margin-top: 20px; font-size: 1rem;">✨ Застосувати Магію Радості ✨</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="adventure-catalogue" id="adventures">
+        <div class="container">
+            <h2>Пригоди, що розкривають головну ідею</h2>
+            
+            <div class="adventure-grid">
+                
+                <div class="card adventure-card">
+                    <h3>Таємниця сірого туману</h3>
+					<img src="img/wadv01.jpg" alt="НаноПут" class="adventure-image">
+                    <p>
+                        <strong>Конфлікт:</strong> Смуток (Демон НаноПут).
+                    </p>
+                    <div class="moral-lesson">
+                        <strong>Моральний Урок:</strong> Навіть найменша радість перемагає найбільший смуток.
+                    </div>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                </div>
+
+                <div class="card adventure-card">
+                    <h3>Місто Солодких Мрій</h3>
+					<img src="img/wadv02.jpg" alt="Сум" class="adventure-image">
+                    <p>
+                        <strong>Конфлікт:</strong> Егоїзм (Тінь Сум краде мрії).
+                    </p>
+                    <div class="moral-lesson">
+                        <strong>Моральний Урок:</strong> Щастям не можна володіти, ним можна лише ділитися.
+                    </div>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                </div>
+
+                <div class="card adventure-card">
+                    <h3>Таємниця Зниклих Зірок</h3>
+					<img src="img/wadv03.jpg" alt="Жучки" class="adventure-image">
+                    <p>
+                        <strong>Конфлікт:</strong> Неусвідомлена шкода (Сонні Жучки).
+                    </p>
+                    <div class="moral-lesson">
+                        <strong>Моральний Урок:</strong> Твої мрії та дії впливають на інших.
+                    </div>
+                    <a href="adventures.html" class="cta-button" style="font-size: 0.8em; padding: 10px 15px;">Читати історію</a>
+                </div>
+
+            </div>
+
+            <div class="future-adventures card visible">
+                <h3>Всесвіт, що постійно розширюється</h3>
+                <p>
+                    Матеріал містить десятки розроблених, але ще не реалізованих ідей:
+                    <br>• <strong>Місто Заводних Сердець:</strong> Боротьба з рутиною.
+                    <br>• <strong>Дзеркальне Озеро:</strong> Боротьба з внутрішніми страхами.
+                </p>
+            </div>
+            
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 СилаВолії. Світ, що живиться дитячим сміхом та мріями.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. ДАНІ ДЛЯ КАРТИ
+        const locationsData = {
+            "dream-city": {
+                title: "Місто Солодких Мрій",
+                text: "Тут будинки зроблені з мармеладу, а дороги викладені печивом. Але головна цінність — це Фабрика Снів, де створюються найяскравіші дитячі мрії."
+            },
+            "whisper-forest": {
+                title: "Ліс Шепотів",
+                text: "Дерева тут вміють розповідати казки, якщо їх ввічливо попросити. Головне правило лісу — не шуміти, щоб не злякати натхнення."
+            },
+            "cheese-mountains": {
+                title: "Сирні гори",
+                text: "Найвищі гори континенту. Кажуть, що на вершині живе Мудрий Мишеня, яке знає відповіді на всі запитання (але бере плату сиром)."
+            },
+            "music-spring": {
+                title: "Джерело Музики",
+                text: "Вода в цьому джерелі не просто тече, вона співає! Кожен ковток дарує новий талант до співу або гри на інструментах."
+            },
+            "sky-clouds": {
+                title: "Небесні Хмари",
+                text: "Літаючі острови, де живуть Хранителі Погоди. Саме звідси починається веселка після дощу."
+            }
+        };
+
+        // Логіка перемикання локацій
+        const tags = document.querySelectorAll('.location-tag');
+        const descBox = document.getElementById('location-description');
+        const titleEl = document.getElementById('loc-title');
+        const textEl = document.getElementById('loc-text');
+
+        tags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Прибираємо активний клас у всіх
+                tags.forEach(t => t.classList.remove('active'));
+                // Додаємо активний клас натиснутому
+                this.classList.add('active');
+
+                // Отримуємо ключ локації
+                const key = this.getAttribute('data-loc');
+                const data = locationsData[key];
+
+                if (data) {
+                    // Заповнюємо та показуємо блок
+                    titleEl.innerText = data.title;
+                    textEl.innerText = data.text;
+                    descBox.style.display = 'block';
+                    
+                    // Невелика анімація перезапуску
+                    descBox.style.animation = 'none';
+                    descBox.offsetHeight; /* trigger reflow */
+                    descBox.style.animation = 'fadeIn 0.5s ease-in-out';
+                }
+            });
+        });
+
+        // 2. ЛОГІКА "МАГІЇ" (Битва з НаноПутом)
+        const magicBtn = document.getElementById('magicButton');
+        const conflictSection = document.getElementById('conflictSection');
+        const nanoputCard = document.getElementById('nanoputCard');
+        const conflictText = document.getElementById('conflictText');
+
+        magicBtn.addEventListener('click', () => {
+            // Змінюємо стилі на "світлі"
+            conflictSection.classList.add('purified');
+            nanoputCard.style.borderColor = '#4CAF50'; // Зелений (Надія)
+            nanoputCard.style.boxShadow = '0 0 20px #FF69B4'; // Світіння радості
+            
+            // Змінюємо текст
+            conflictText.innerText = "УРА! Радість перемогла! НаноПут втік, злякавшись вашого сміху!";
+            conflictText.style.color = '#4CAF50';
+            
+            // Ховаємо кнопку після перемоги
+            magicBtn.innerText = "Перемога! 🎉";
+            magicBtn.disabled = true;
+            magicBtn.style.background = '#ccc';
+            magicBtn.style.cursor = 'default';
+        });
+
+        // 3. АНІМАЦІЯ ПОЯВИ КАРТОК ПРИ СКРОЛІ
+        const observerOptions = {
+            threshold: 0.2 // Спрацює, коли 20% елемента з'явиться на екрані
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Більше не стежимо за цим елементом
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+    </script>
+
+</body>
+</html>

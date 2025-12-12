@@ -1,0 +1,265 @@
++<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Герої СилаВолії: Фін, Краш, Луна</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* БАЗОВІ СТИЛІ (СТИЛЬ: СТАРИЙ ПАПІР І КОМІКС) */
+        /* ======================================= */
+
+        :root {
+            /* Кольори за архітектурою бренду (Стилізація під Старий Папір) */
+            --color-paper: #FFF8E1;          /* Кремовий/Бежевий (Фон паперу) */
+            --color-ink: #4B371C;            /* Темно-коричневий (Колір чорнила/тексту) */
+            --color-light-accent: #F4D03F;   /* Світлий золотистий (Сяйво/Світло) */
+            
+            /* Акцентні кольори, але більш приглушені */
+            --color-joy: #C73B8F;            /* Рожевий/Пурпуровий (Акцент/Луна) */
+            --color-primary: #38761D;        /* Темний зелений (Надія) */
+            --color-rainbow-start: #ff8c69;  /* Помаранчевий (Веселка 1) */
+            --color-rainbow-end: #6699ff;    /* Блакитний (Веселка 3) */
+
+            /* Шрифти */
+            --font-heading: 'Gochi Hand', cursive;
+            --font-body: 'Kalam', cursive; /* Рукописний стиль для основного тексту */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-ink);
+            background-color: var(--color-paper);
+            line-height: 1.7; 
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--color-ink);
+            text-shadow: 2px 2px 0px var(--color-light-accent), 4px 4px 0px rgba(0, 0, 0, 0.1); 
+            margin-bottom: 0.5em;
+            text-transform: uppercase;
+        }
+
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Кнопки (CTA) --- */
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
+            color: white;
+            font-family: var(--font-heading);
+            font-size: 1.3em;
+            text-decoration: none;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3); 
+            border: 3px solid var(--color-ink); 
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .cta-button:hover {
+            transform: translate(1px, 1px); 
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Картки --- */
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
+            border: 1px solid rgba(75, 55, 28, 0.2); 
+            transition: all 0.3s;
+            height: 100%;
+            text-align: left;
+        }
+
+        /* ======================================= */
+        /* СЕКЦІЇ ГЕРОЇВ                           */
+        /* ======================================= */
+
+        .heroes-header {
+            background: linear-gradient(180deg, var(--color-rainbow-end), var(--color-paper));
+            border-bottom: 5px solid var(--color-ink);
+        }
+
+        .heroes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .hero-card {
+            background-color: var(--color-paper);
+            border: 4px solid var(--color-ink);
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.2);
+            padding: 0; 
+            overflow: hidden;
+        }
+        
+        .hero-image-placeholder {
+            height: 250px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            /* Стилі для кожного героя */
+        }
+        
+        #fin-image { background-color: #d1c4e9; color: #673ab7; } /* Фіолетовий, як дим */
+        #krash-image { background-color: #fff9c4; color: #ffeb3b; } /* Жовтий, як світло */
+        #luna-image { background-color: #f8bbd0; color: var(--color-joy); } /* Рожевий, як серце */
+
+
+        .hero-content {
+            padding: 25px;
+        }
+        
+        .hero-content h3 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            color: var(--color-ink);
+            text-shadow: 2px 2px 0px var(--color-light-accent);
+        }
+
+        .hero-title {
+            font-style: italic;
+            color: var(--color-joy);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .hero-magic {
+            margin-top: 15px;
+            border-top: 2px dashed rgba(75, 55, 28, 0.3);
+            padding-top: 15px;
+        }
+        
+        .hero-magic strong {
+            color: var(--color-primary);
+        }
+		
+		.hero-image {
+			width: 100%; /* Занимает 100% доступной ширины родителя */
+			height: auto; /* Высота подстраивается автоматически */	
+			}
+		
+        /* 4. Футер */
+        footer {
+            background-color: var(--color-ink);
+            color: var(--color-paper);
+            padding: 30px 20px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="heroes-header section">
+        <div class="container">
+            <h1>ТРИ СТОВПИ СИЛАВОЛІЇ</h1>
+            <p style="font-size: 1.3em;">
+                У серці кожної пригоди — **Фін**, **Краш** та **Луна**. Кожен із них уособлює одну з трьох ключових сил: **Серце**, **Світло** та **Розум**. Їхня сила — у єдності!
+            </p>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <h2>ОЗНАЙОМСЯ З НАШИМИ СУПЕРГЕРОЯМИ</h2>
+            
+            <div class="heroes-grid">
+                
+                <div class="card hero-card">
+                   	<img src="img/h1.jpg" alt="Фін" class="hero-image">
+					 <div class="hero-image-placeholder" id="fin-image">💖</div>
+                    <div class="hero-content">
+                        <h3>ФІН</h3>
+                        <span class="hero-title">СИМВОЛ: СЕРЦЕ (Kindness)</span>
+                        <p>
+                            Найдобріший дракончик-такса у всьому світі. Фін є чистим втіленням **доброти** та емпатії. Його дим, що переливається всіма кольорами веселки, розганяє будь-який сум.
+                        </p>
+                        <div class="hero-magic">
+                            <strong>Магічний Артефакт:</strong> Веселковий Дим, що перетворює сірі емоції на яскраві.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card hero-card">
+                    <img src="img/h2.jpg" alt="Краш" class="hero-image">
+					<div class="hero-image-placeholder" id="krash-image">✨</div>
+					                    <div class="hero-content">
+                        <h3>КРАШ</h3>
+                        <span class="hero-title">СИМВОЛ: СВІТЛО (Joy)</span>
+                        <p>
+                            Маленький, але неймовірно гучний та енергійний. Краш — це втілення **радості** та оптимізму. Його дзвіночок заряджає всіх навколо енергією і допомагає героям не здаватися.
+                        </p>
+                        <div class="hero-magic">
+                            <strong>Магічний Артефакт:</strong> Дзвіночок Радості, що дарує невичерпну енергію та змушує Краша завжди посміхатися.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card hero-card">
+					<img src="img/h3.jpg" alt="Луна" class="hero-image">
+                    <div class="hero-image-placeholder" id="luna-image">🧠</div>
+                    <div class="hero-content">
+                        <h3>ЛУНА</h3>
+                        <span class="hero-title">СИМВОЛ: РОЗУМ (Wisdom)</span>
+                        <p>
+                            Стратег і мудра болонка. Луна є джерелом **знань** та логіки. Вона завжди знаходить вірне рішення, допомагаючи команді долати пастки НаноПута.
+                        </p>
+                        <div class="hero-magic">
+                            <strong>Магічний Артефакт:</strong> Сяючий Медальйон, який освітлює шлях та допомагає Луні обмірковувати найскладніші проблеми.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <a href="adventures.html" class="cta-button" style="margin-top: 40px;">ГОТОВИЙ ДО ПРИГОД? ЧИТАЙ КАЗКИ!</a>
+        </div>
+    </section>
+    
+    <section>
+        <div class="container">
+            <h2>ЧОМУ ВОНИ НЕПЕРЕМОЖНІ?</h2>
+            <p style="max-width: 800px; margin: 0 auto; font-size: 1.1em; font-weight: 700;">
+                **Фін** (Доброта) знаходить тих, хто сумує. **Краш** (Радість) дає їм енергію, щоб боротися. А **Луна** (Розум) показує їм, як це зробити. Саме ця єдність — **СилаВолії** — перемагає НаноПута!
+            </p>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 СИЛАВОЛІЇ. Світ, що живиться дитячим сміхом та мріями.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
