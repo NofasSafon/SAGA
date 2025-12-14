@@ -2,23 +2,28 @@
 /* 1. НАЛАШТУВАННЯ ТА ЗМІННІ (Variables)   */
 /* ======================================= */
 :root {
-    /* Палітра кольорів */
+    /* --- ПАЛІТРА КОЛЬОРІВ --- */
     --color-light: #E0F7FA;
     --color-joy: #FF69B4;             /* Рожевий */
     --color-primary: #4CAF50;         /* Зелений */
     --color-shadow: #455A64;          /* Темно-сірий для тексту */
+    --color-ink: #4B371C;             /* Темно-коричневий */
+    --color-light-accent: #F4D03F;    /* Жовтий акцент */
+    
     --color-rainbow-start: #ffc0cb;
     --color-rainbow-end: #9be2fe;
-    --color-school-bg: #fff8e1;       /* Колір пергаменту */
+    
+    --color-school-bg: #fff8e1;       /* Колір старого паперу */
+    --color-story-bg: #fffde7;        /* Кремовий для історій */
     --color-artifact-border: #9c27b0; /* Магічний фіолетовий */
     --color-white: #ffffff;
-    --color-dark-border: #4B371C;     /* Для рамок */
-
-    /* --- НОВІ ШРИФТИ --- */
-    /* Amatic SC - ідеально для заголовків "як крейдою" */
-    --font-heading: 'Amatic SC', cursive;
     
-    /* Pangolin - милий, округлий шрифт "як у зошиті" */
+    /* Специфічні для історій та світу */
+    --color-lesson: #8BC34A;          /* Лаймовий для уроків */
+    --color-dark-conflict: #B71C1C;   /* Червоний для конфліктів */
+
+    /* --- ШРИФТИ --- */
+    --font-heading: 'Amatic SC', cursive;
     --font-body: 'Pangolin', cursive;
 }
 
@@ -33,27 +38,29 @@
 
 body {
     font-family: var(--font-body);
-	font-size: 18px;
-    color: var(--color-shadow);
+    font-size: 19px;
+    color: var(--color-ink);
     background-color: var(--color-school-bg);
     line-height: 1.6;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
-/* Додай або онови цей блок для заголовків, бо Amatic SC трохи дрібніший за звичайні шрифти */
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
     color: var(--color-shadow);
     text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7);
     margin-bottom: 0.5em;
-    line-height: 1.5;
+    line-height: 1.2;
     text-transform: uppercase;
-    font-weight: 700; /* Жирний для Amatic SC виглядає краще */
+    font-weight: 700;
 }
-h1 { font-size: 5em; }      /* Було менше */
-h2 { font-size: 4em; }
-h3 { font-size: 3em; }
+
+h1 { font-size: 4.5em; }
+h2 { font-size: 3.5em; }
+h3 { font-size: 2.5em; }
 h4 { font-size: 2em; }
+
 section {
     padding: 60px 20px;
     text-align: center;
@@ -71,10 +78,10 @@ a {
 }
 
 /* ======================================= */
-/* 3. КОМПОНЕНТИ (Buttons & Cards)         */
+/* 3. КОМПОНЕНТИ (Buttons, Cards, Images)  */
 /* ======================================= */
 
-/* Група кнопок */
+/* --- Кнопки --- */
 .cta-group {
     display: flex;
     justify-content: center;
@@ -83,7 +90,6 @@ a {
     margin-top: 20px;
 }
 
-/* Кнопки */
 .cta-button {
     display: inline-block;
     padding: 15px 30px;
@@ -92,7 +98,7 @@ a {
     background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
     color: var(--color-white);
     font-family: var(--font-heading);
-    font-size: 3em;
+    font-size: 2em; 
     text-decoration: none;
     border: none;
     cursor: pointer;
@@ -105,17 +111,16 @@ a {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Вторинна кнопка (біла) */
 .cta-button.secondary {
     background: var(--color-white);
     color: var(--color-shadow);
     border: 2px solid var(--color-primary);
     width: 100%;
     margin-top: 20px;
-    font-size: 1.8em;
+    font-size: 1.5em;
 }
 
-/* Загальний стиль карток */
+/* --- Картки (Базовий стиль) --- */
 .card {
     background-color: var(--color-white);
     border-radius: 20px;
@@ -126,8 +131,23 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    text-align: center;
+    text-align: left; /* Вирівнювання за замовчуванням */
     border: 1px solid rgba(0,0,0,0.05);
+    
+    /* Для анімації появи */
+    opacity: 0; 
+    transform: translateY(30px);
+    animation: fadeInCard 0.8s forwards; /* Автоматична поява */
+}
+
+/* Клас для JS анімацій (якщо використовується IntersectionObserver) */
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeInCard {
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .card:hover {
@@ -135,56 +155,55 @@ a {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Посилання-обгортка картки */
 .card-link {
     display: block;
     height: 100%;
 }
 
+/* --- Зображення --- */
+.hero-image {
+    max-width: 80%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 15px;
+    border: 4px solid var(--color-white);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
 /* ======================================= */
-/* 4. СПЕЦИФІЧНІ СЕКЦІЇ ГОЛОВНОЇ (Home)    */
+/* 4. ГОЛОВНА СТОРІНКА (Index)             */
 /* ======================================= */
 
-/* Hero Section */
 .hero-section {
-    position: relative; /* Необхідно для позиціювання фону і накладення */
-    /* Шлях до вашої картинки */
+    position: relative;
     background-image: url('img/0.jpg'); 
-    /* Картинка покриває весь блок і центрується */
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
-    
-    padding: 100px 20px; /* Збільшуємо відступи зверху і знизу */
-    color: white; /* Текст стає білим для контрасту */
+    padding: 100px 20px;
+    color: white;
     text-align: center;
     overflow: hidden;
 }
 
-/* Затемнення фону (щоб текст був чітким) */
 .hero-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Чорний колір з прозорістю 50% */
-    z-index: 1; /* Рівень нижче тексту, але вище картинки */
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
-/* Контейнер піднімаємо над затемненням */
 .hero-section .container {
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центруємо все по горизонталі */
+    align-items: center;
 }
 
-/* Налаштування заголовка для фону */
 .hero-section h1 {
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Тінь для кращої читабельності */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     margin-bottom: 20px;
 }
 
@@ -193,29 +212,14 @@ a {
     font-size: 1.5em;
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-    margin-bottom: 40px; /* Відступ до кнопок */
+    margin-bottom: 40px;
 }
 
-/* Стилі для кнопок (якщо треба, щоб вони були трохи нижче) */
-.cta-group {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-/* Conflict Section */
 .conflict-section {
-    background-color: #fce4ec; /* Рожевий відтінок */
-    padding-bottom: 80px;
+    background-color: #fce4ec;
     border-bottom: 5px solid var(--color-shadow); 
-    position: relative;
 }
 
-
-/* Trio Section (Три стовпи) */
 .trio-preview-container {
     display: flex;
     justify-content: center;
@@ -235,104 +239,229 @@ a {
     border-radius: 15px;
 }
 
-.trio-block h4 {
-    color: var(--color-joy);
-    font-size: 1.5em;
-    margin-top: 10px;
-    text-shadow: none;
-}
-
 .trio-icon {
     font-size: 4em;
     display: block;
     margin-bottom: 10px;
 }
 
-/* Catalogue Section */
-.content-catalogue {
-    background-color: var(--color-school-bg);
-}
-
+.content-catalogue { background-color: var(--color-school-bg); }
 .content-catalogue-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
-
-.content-catalogue .card h3 {
-    color: var(--color-primary);
-    font-size: 1.8em;
-}
+.content-catalogue .card { text-align: center; }
+.content-catalogue .card h3 { color: var(--color-primary); font-size: 1.8em; }
 
 /* ======================================= */
-/* 5. ІНШІ СЕКЦІЇ (School/Artifacts)       */
+/* 5. СТОРІНКА ГЕРОЇВ (Heroes)             */
 /* ======================================= */
-/* Ці стилі були у твоєму файлі style.css */
 
-.artifacts-section {
-    background-color: var(--color-light);
-    padding-bottom: 80px;
+.heroes-header {
+    background: linear-gradient(180deg, var(--color-rainbow-end), var(--color-school-bg));
+    border-bottom: 5px solid var(--color-ink);
+    padding-top: 80px;
 }
 
-.artifacts-grid, .lesson-grid {
+.heroes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+    padding-bottom: 40px;
+}
+
+.card.hero-card {
+    background-color: var(--color-school-bg);
+    border: 4px solid var(--color-ink);
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.2);
+    padding: 0; 
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.hero-card .hero-image {
+    width: 100%; max-width: 100%; margin-top: 0; border: none;
+    border-bottom: 4px solid var(--color-ink); border-radius: 0;
+}
+
+.hero-symbol-bar {
+    padding: 10px; text-align: center; font-size: 2.5em;
+    border-bottom: 2px dashed var(--color-ink);
+}
+
+#fin-image { background-color: #d1c4e9; color: #673ab7; }
+#krash-image { background-color: #fff9c4; color: #ffeb3b; }
+#luna-image { background-color: #f8bbd0; color: var(--color-joy); }
+
+.hero-content {
+    padding: 25px; flex-grow: 1; display: flex; flex-direction: column; text-align: left;
+}
+.hero-content h3 { font-size: 2.2em; margin-bottom: 5px; color: var(--color-ink); }
+.hero-title { font-style: italic; color: var(--color-joy); font-weight: 700; display: block; margin-bottom: 15px; }
+.hero-magic { margin-top: auto; padding-top: 15px; border-top: 2px dashed rgba(75, 55, 28, 0.3); font-size: 0.95em; }
+
+/* ======================================= */
+/* 6. СТОРІНКА ШКОЛИ (School)              */
+/* ======================================= */
+
+.school-header { background-color: #fff9c4; border-bottom: 5px dashed var(--color-primary); }
+.artifacts-section { background-color: var(--color-light); }
+.artifacts-grid, .lesson-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+
+.artifact-card { border-top: 8px solid var(--color-artifact-border); text-align: left; }
+.artifact-icon { font-size: 3em; display: block; margin-bottom: 10px; }
+.lesson-card { border-bottom: 5px solid var(--color-primary); text-align: left; }
+
+.exam-section { background-color: #fce4ec; border-top: 5px solid var(--color-joy); padding: 50px 20px; }
+.diploma-icon { font-size: 4em; display: block; margin-bottom: 10px; }
+
+/* ======================================= */
+/* 7. СТОРІНКА ІСТОРІЙ (Adventures)        */
+/* ======================================= */
+
+.adventures-header {
+    background: var(--color-light);
+    border-bottom: 5px solid var(--color-joy);
+    padding-top: 80px;
+}
+
+.adventure-catalogue { background-color: white; padding-top: 40px; }
+.adventure-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
 
-.artifact-card {
-    border-top: 8px solid var(--color-artifact-border);
-    text-align: left;
+/* Стилі для карток історій */
+.story-card h3, .adventure-card h3 {
+    color: var(--color-joy);
+    margin-bottom: 5px;
+    font-size: 1.8em;
 }
 
-.lesson-card {
-    border-bottom: 5px solid var(--color-primary);
-    text-align: left;
+.story-image, .adventure-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background-color: #f0f0f0;
 }
 
-.exam-section {
-    background-color: #fce4ec;
-    border-top: 5px solid var(--color-joy);
-    padding: 50px 20px;
+.conflict-tag {
+    display: inline-block;
+    background-color: #ffccbc;
+    color: var(--color-shadow);
+    font-size: 0.85em;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.moral-lesson {
+    margin-top: auto;
+    padding: 10px;
+    border-left: 4px solid var(--color-lesson);
+    background-color: #f1f8e9;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+/* Секція анонсів */
+.announcement-section {
+    background-color: var(--color-light);
+    border-top: 2px dashed var(--color-joy);
+    text-align: left;
+}
+.announcement-section h2 { text-align: center; }
+.announcement-list {
+    list-style: none; padding: 0; margin: 20px auto; max-width: 800px;
+}
+.announcement-list li { padding: 15px 0; border-bottom: 1px dotted #ccc; }
+.announcement-list strong {
+    display: block; color: var(--color-primary);
+    font-family: var(--font-heading); font-size: 1.2em; margin-bottom: 5px;
 }
 
 /* ======================================= */
-/* 6. FOOTER                               */
+/* 8. СТОРІНКА СВІТУ (World & Map)         */
+/* ======================================= */
+
+.world-map-section { background-color: #e0f2f1; padding-bottom: 80px; }
+
+.map-image { 
+    width: 100%; max-width: 1000px; height: auto; 
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+    margin: 40px auto 20px; display: block; 
+}
+
+/* Теги локацій */
+.location-list { 
+    display: flex; justify-content: center; gap: 15px; 
+    flex-wrap: wrap; margin-top: 20px; 
+}
+.location-tag {
+    background-color: var(--color-joy); color: white; padding: 10px 20px;
+    border-radius: 20px; font-weight: bold; cursor: pointer; 
+    transition: background-color 0.2s, transform 0.2s;
+    user-select: none;
+}
+.location-tag:hover { background-color: #ff45a6; transform: scale(1.05); }
+.location-tag.active { background-color: var(--color-primary); box-shadow: 0 0 15px var(--color-primary); transform: scale(1.1); }
+
+/* Опис локації */
+#location-description {
+    margin-top: 30px; padding: 25px; background: white; border-radius: 15px;
+    border-left: 8px solid var(--color-joy); max-width: 800px; margin-left: auto; margin-right: auto;
+    display: none; text-align: left;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* Секція конфлікту (Інтерактив) */
+.conflict-story { background-color: #fff9c4; transition: background-color 1s ease; }
+.conflict-story.purified { background: linear-gradient(135deg, #e1f5fe, #f3e5f5); }
+
+.nanoput-details {
+    max-width: 800px; margin: 20px auto; background-color: #fff; padding: 30px;
+    border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-left: 8px solid var(--color-dark-conflict);
+    transition: border-color 1s ease, box-shadow 1s ease;
+}
+
+.future-adventures { 
+    margin-top: 40px; padding: 30px; 
+    background-color: #e3f2fd; border-radius: 15px; 
+    border-left: 8px solid #42a5f5; 
+    text-align: left;
+}
+
+/* ======================================= */
+/* 9. FOOTER & ADAPTIVE                    */
 /* ======================================= */
 footer {
-    background-color: var(--color-shadow);
-    color: var(--color-white);
-    padding: 40px 20px;
-    text-align: center;
-    margin-top: auto;
+    background-color: var(--color-shadow); color: var(--color-white);
+    padding: 40px 20px; text-align: center; margin-top: auto;
 }
-
 footer .hero-image.footer-img {
-    max-width: 150px;
-    border: 2px solid var(--color-paper);
-    margin-bottom: 20px;
-    margin-top: 0;
-    box-shadow: none;
+    max-width: 150px; border: 2px solid var(--color-school-bg);
+    margin-bottom: 20px; margin-top: 0; box-shadow: none;
 }
-
-/* ======================================= */
-/* 7. МЕДІА-ЗАПИТИ (Адаптивність)          */
-/* ======================================= */
 
 @media (max-width: 768px) {
-    h1 { font-size: 3em; }
-    h2 { font-size: 2.2em; }
-    
+    h1 { font-size: 3em; } h2 { font-size: 2.5em; }
     section { padding: 40px 15px; }
-    .hero-section { padding-top: 40px; }
-
     .cta-group { flex-direction: column; width: 100%; }
     .cta-button { width: 100%; text-align: center; margin: 5px 0; }
+    .heroes-grid, .artifacts-grid, .adventure-grid { gap: 20px; }
     
-    .trio-preview-container { gap: 20px; }
-    .trio-block { width: 100%; max-width: 100%; }
-    
-    .hero-image { max-width: 100%; }
+    /* Для карти */
+    .location-tag { flex: 1 1 40%; text-align: center; font-size: 0.9em; }
+    .adventure-image, .story-image { height: 180px; }
 }

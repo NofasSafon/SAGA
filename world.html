@@ -6,179 +6,7 @@
     <title>Світ та Пригоди СилаВолії: Карта та Історії</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
-     
-
-
-    <style>
-        /* ======================================= */
-        /* БАЗОВІ СТИЛІ                           */
-        /* ======================================= */
-
-        :root {
-            --color-light: #E0F7FA;
-            --color-joy: #FF69B4;
-            --color-primary: #4CAF50;
-            --color-shadow: #455A64;
-            --color-rainbow-start: #ffc0cb;
-            --color-rainbow-end: #9be2fe;
-            --color-dark-conflict: #B71C1C;
-            --font-heading: 'Luckiest Guy', cursive;
-            --font-body: 'Nunito', sans-serif;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            font-family: var(--font-body); 
-            color: var(--color-shadow); 
-            background-color: var(--color-light); 
-            line-height: 1.6;
-            overflow-x: hidden; /* Захист від горизонтального скролу */
-            scroll-behavior: smooth; /* Плавна прокрутка до якорів */
-        }
-
-        h1, h2, h3 { 
-            font-family: var(--font-heading); 
-            color: var(--color-shadow); 
-            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7); 
-            margin-bottom: 0.5em; 
-            line-height: 1.2;
-        }
-
-        section { padding: 60px 20px; text-align: center; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-
-        /* Кнопки */
-        .cta-button {
-            display: inline-block; padding: 15px 30px; border-radius: 50px;
-            background: linear-gradient(45deg, var(--color-joy), var(--color-primary));
-            color: white; font-family: var(--font-heading); font-size: 1.2em;
-            text-decoration: none; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer; margin: 10px;
-        }
-        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
-        
-        /* Картки */
-        .card {
-            background-color: white; border-radius: 20px; padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s;
-            height: 100%; text-align: left;
-            opacity: 0; transform: translateY(30px); /* Для анімації */
-            display: flex; flex-direction: column;
-        }
-        
-        .card.visible { opacity: 1; transform: translateY(0); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
-
-        /* ======================================= */
-        /* СЕКЦІЯ: КАРТА СВІТУ                    */
-        /* ======================================= */
-        .world-map-section { background-color: #e0f2f1; padding-bottom: 80px; }
-        
-        .map-image { 
-            width: 100%; max-width: 1000px; height: auto; 
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
-            margin: 40px auto 20px; display: block; 
-        }
-
-        .location-list { 
-            display: flex; justify-content: center; gap: 15px; 
-            flex-wrap: wrap; margin-top: 20px; 
-        }
-        
-        .location-tag {
-            background-color: var(--color-joy); color: white; padding: 10px 20px;
-            border-radius: 20px; font-weight: bold; cursor: pointer; 
-            transition: background-color 0.2s, transform 0.2s;
-            user-select: none; /* Щоб текст не виділявся при швидкому кліку */
-        }
-        .location-tag:hover { background-color: #ff45a6; transform: scale(1.05); }
-        .location-tag.active { background-color: var(--color-primary); box-shadow: 0 0 15px var(--color-primary); transform: scale(1.1); }
-
-        /* Блок опису локації */
-        #location-description {
-            margin-top: 30px; padding: 25px; background: white; border-radius: 15px;
-            border-left: 8px solid var(--color-joy); max-width: 800px; margin-left: auto; margin-right: auto;
-            display: none; text-align: left;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        /* ======================================= */
-        /* СЕКЦІЯ: КОНФЛІКТ                       */
-        /* ======================================= */
-        .conflict-story { background-color: #fff9c4; transition: background-color 1s ease; }
-        .conflict-story.purified { background: linear-gradient(135deg, #e1f5fe, #f3e5f5); }
-
-        .nanoput-details {
-            max-width: 800px; margin: 20px auto; background-color: #fff; padding: 30px;
-            border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-left: 8px solid var(--color-dark-conflict);
-            transition: border-color 1s ease, box-shadow 1s ease;
-        }
-        
-        /* ======================================= */
-        /* СЕКЦІЯ: ПРИГОДИ                        */
-        /* ======================================= */
-        .adventure-catalogue { background-color: white; }
-        
-        .adventure-grid { 
-            display: grid; 
-            /* Адаптивна сітка */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; margin-top: 40px; 
-        }
-        
-        .adventure-card h3 { color: var(--color-joy); font-size: 1.5em; }
-        
-        .adventure-image {
-            width: 100%; height: 200px; object-fit: cover;
-            border-radius: 10px; margin-bottom: 15px;
-            background-color: #f0f0f0;
-        }
-
-        .moral-lesson { 
-            margin-top: auto; /* Притискає урок до низу перед кнопкою */
-            font-style: italic; border-top: 1px dashed #eee; padding-top: 10px; margin-bottom: 15px;
-        }
-        
-        .future-adventures { 
-            margin-top: 40px; padding: 30px; 
-            background-color: #e3f2fd; border-radius: 15px; 
-            border-left: 8px solid #42a5f5; 
-            text-align: left;
-        }
-
-        footer {
-            background-color: var(--color-shadow);
-            color: white;
-            padding: 30px 20px;
-            font-size: 0.9em;
-        }
-
-        /* ======================================= */
-        /* МЕДІА-ЗАПИТИ (АДАПТИВНІСТЬ)             */
-        /* ======================================= */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2em; }
-            h2 { font-size: 1.8em; }
-            
-            section { padding: 40px 15px; }
-
-            /* Карта */
-            .location-tag { 
-                padding: 8px 12px; font-size: 0.9em; flex: 1 1 40%; text-align: center;
-            }
-            
-            /* Кнопки */
-            .cta-button { width: 100%; text-align: center; box-sizing: border-box; }
-            
-            /* НаноПут */
-            .nanoput-details { padding: 20px; }
-            
-            /* Пригоди */
-            .adventure-image { height: 180px; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -224,7 +52,7 @@
                     Суть конфлікту — це битва не на фізичну силу, а на силу емоцій.
                 </p>
                 
-                <button class="cta-button" id="magicButton" style="margin-top: 20px; font-size: 1rem;">✨ Застосувати Магію Радості ✨</button>
+                <button class="cta-button" id="magicButton" style="margin-top: 20px; font-size: 1.5rem;">✨ Застосувати Магію Радості ✨</button>
             </div>
         </div>
     </section>
@@ -338,9 +166,8 @@
                     // Анімація перезапуску
                     descBox.style.animation = 'none';
                     descBox.offsetHeight; /* trigger reflow */
-                    descBox.style.animation = 'fadeIn 0.5s ease-in-out';
+                    descBox.style.animation = 'fadeInCard 0.5s ease-in-out';
                     
-                    // Прокрутка до опису на мобільних, щоб було видно текст
                     if (window.innerWidth < 768) {
                         descBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
