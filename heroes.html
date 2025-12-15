@@ -22,49 +22,74 @@
 
     <section>
         <div class="container">
-            <h2>ОЗНАЙОМСЯ З НАШИМИ СУПЕРГЕРОЯМИ</h2>
+            <h2>ЗНАЙОМСЯ З НАШИМИ СУПЕРГЕРОЯМИ</h2>
             
             <div class="heroes-grid">
                 
                 <div class="card hero-card">
-                    <img src="img/h1.jpg" alt="Фін" class="hero-image">
-                    <div class="hero-symbol-bar" id="fin-image">💖</div>
-                    
-                    <div class="hero-content">
-                        <h3>ФІН</h3>
-                        <span class="hero-title">СИМВОЛ: СЕРЦЕ (Kindness)</span>
-                        <p>
-                            Найдобріший дракончик-такса у всьому світі. Фін є чистим втіленням <strong>доброти</strong> та емпатії. Його дим, що переливається всіма кольорами веселки, розганяє будь-який сум.
-                        </p>
-                        <div class="hero-magic">
-                            <strong>Магічний Артефакт:</strong> Веселковий Дим, що перетворює сірі емоції на яскраві.
-                        </div>
-                    </div>
-                </div>
+					<div class="hero-img-scene">
+						<div class="hero-img-flipper">
+							<img src="img/h1.jpg" alt="Фін" class="hero-image-face hero-image-front">
+							<img src="img/hm1.jpg" alt="Магія Фіна" class="hero-image-face hero-image-back">
+						</div>
+					</div>
+					<div class="hero-symbol-bar" id="fin-image">
+						<a href="#" class="cta-button flip-trigger" style="font-size: 0.5em;">💖</a>
+					</div>
 
-                <div class="card hero-card">
-                    <img src="img/h2.jpg" alt="Краш" class="hero-image">
-                    <div class="hero-symbol-bar" id="krash-image">✨</div>
-                    
-                    <div class="hero-content">
-                        <h3>КРАШ</h3>
-                        <span class="hero-title">СИМВОЛ: СВІТЛО (Joy)</span>
+					<div class="hero-content">
+						<h3>ФІН</h3>
+						<span class="hero-title">СИМВОЛ: СЕРЦЕ </span>
+						<p>
+							 Найдобріший дракончик-такса у всьому світі. Фін є чистим втіленням <strong>доброти</strong> та емпатії. Його дим, що переливається всіма кольорами веселки, розганяє будь-який сум.
+						</p>
+						<div class="hero-magic">
+							<strong>Магічний Артефакт:</strong> Веселковий Дим, що перетворює сірі емоції на яскраві.
+						</div>
+					</div>
+				</div>
+				
+				<div class="card hero-card">
+					<div class="hero-img-scene">
+						<div class="hero-img-flipper">
+							<img src="img/h2.jpg" alt="Краш" class="hero-image-face hero-image-front">
+							<img src="img/hm2.jpg" alt="Магія Краша" class="hero-image-face hero-image-back">
+						</div>
+					</div>
+					<div class="hero-symbol-bar" id="krash-image">
+						<a href="#" class="cta-button flip-trigger" style="font-size: 0.5em;">💖</a>
+					</div>
+
+					<div class="hero-content">
+						 <h3>КРАШ</h3>
+                        <span class="hero-title">СИМВОЛ: СВІТЛО</span>
                         <p>
                             Маленький, але неймовірно гучний та енергійний. Краш — це втілення <strong>радості</strong> та оптимізму. Його дзвіночок заряджає всіх навколо енергією і допомагає героям не здаватися.
                         </p>
                         <div class="hero-magic">
                             <strong>Магічний Артефакт:</strong> Дзвіночок Радості, що дарує невичерпну енергію та змушує Краша завжди посміхатися.
                         </div>
-                    </div>
-                </div>
+					</div>
+				</div>
+				
+
+
 
                 <div class="card hero-card">
-                    <img src="img/h3.jpg" alt="Луна" class="hero-image">
-                    <div class="hero-symbol-bar" id="luna-image">🧠</div>
-                    
+					<div class="hero-img-scene">
+						<div class="hero-img-flipper">
+							<img src="img/h3.jpg" alt="Луна" class="hero-image-face hero-image-front">
+							<img src="img/hm3.jpg" alt="Магія Луни" class="hero-image-face hero-image-back">
+						</div>
+					</div>
+					<div class="hero-symbol-bar" id="luna-image">
+						<a href="#" class="cta-button flip-trigger" style="font-size: 0.5em;">💖</a>
+					</div>
+
+				                    
                     <div class="hero-content">
                         <h3>ЛУНА</h3>
-                        <span class="hero-title">СИМВОЛ: РОЗУМ (Wisdom)</span>
+                        <span class="hero-title">СИМВОЛ: РОЗУМ </span>
                         <p>
                             Стратег і мудра болонка. Луна є джерелом <strong>знань</strong> та логіки. Вона завжди знаходить вірне рішення, допомагаючи команді долати пастки НаноПута.
                         </p>
@@ -95,5 +120,28 @@
         </div>
     </footer>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Знаходимо всі кнопки з класом flip-trigger
+        const buttons = document.querySelectorAll('.flip-trigger');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Забороняємо перехід за посиланням
+
+                // Знаходимо батьківську картку
+                const card = button.closest('.hero-card');
+                
+                // Знаходимо елемент, який треба крутити
+                const flipper = card.querySelector('.hero-img-flipper');
+                
+                // Перемикаємо клас (туди-сюди)
+                flipper.classList.toggle('is-flipped');
+            });
+        });
+    });
+</script>
+</body>
 </body>
 </html>
