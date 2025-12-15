@@ -1,1 +1,215 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Казка про Фіна</title>
+    <style>
+        /* Основні стилі сторінки */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #2c2c2c; /* Темний фон навколо книги */
+            font-family: 'Georgia', serif; /* Шрифт із зарубками для книжкового вигляду */
+        }
 
+        /* Контейнер книги */
+        #book {
+            width: 900px;
+            height: 600px;
+            background-color: #fdfbf7; /* Колір паперу */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Лінія згину книги */
+        #book::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            margin-left: -20px;
+            background: linear-gradient(to right, 
+                rgba(0,0,0,0.05) 0%, 
+                rgba(0,0,0,0.2) 45%, 
+                rgba(0,0,0,0.2) 55%, 
+                rgba(0,0,0,0.05) 100%);
+            pointer-events: none; /* Щоб не заважало клікам */
+        }
+
+        /* Ліва сторінка (Картинка) */
+        .page-left {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .page-left img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 3px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
+
+        /* Права сторінка (Текст) */
+        .page-right {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer; /* Курсор вказує, що можна клікнути */
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        .page-right:hover {
+            background-color: #f8f5ef; /* Легке підсвічування при наведенні */
+        }
+
+        /* Текст на сторінці */
+        .story-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Підказка знизу */
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Анімація переходу */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Адаптив для мобільних (щоб зручно читати з телефону) */
+        @media (max-width: 920px) {
+            #book {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+            .page-left, .page-right {
+                flex: auto;
+                border: none;
+                padding: 30px;
+            }
+            #book::after {
+                display: none;
+            }
+            .page-left img {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="book">
+        <div class="page-left">
+            <img id="story-image" src="" alt="Ілюстрація до казки">
+        </div>
+        <div class="page-right" onclick="nextPage()">
+            <div id="story-text" class="story-text"></div>
+            <div class="hint">Натисніть сюди, щоб читати далі &rarr;</div>
+        </div>
+    </div>
+
+    <script>
+        // Масив даних книги (Текст + Посилання на картинку)
+        // Ви можете замінити посилання на свої власні файли (наприклад: 'img/dragon.jpg')
+        const pages = [
+            {
+                text: "Жив собі дивовижний герой на ім’я Фін, що був сумішшю епічного червоного дракона і рудого собаки такси. Його вигляд був войовничим, але очі світилися добротою, а вуха, як у такси, смішно звисали, коли він був щасливий. Фін був великим любителем сиру та ковбасок, і це завжди піднімало йому настрій, особливо коли він ділився ними зі своїми друзями. Він не дихав вогнем, а натомість видихав веселковий дим, що міг розганяти сум і створювати дивовижні яскраві ілюзії.",
+                // Тимчасова картинка дракона/собаки з інтернету (placeholder)
+                image: "st01.jpg"
+            },
+            {
+                text: "У своїх подорожах по країні СилаВолія його супроводжували найкращі друзі: веселий білий мальтипу на ім’я Краш та розумниця рожева балонка Луна. Краш, який завжди носив маленький дзвіночок на нашийнику, міг видавати такий дзвін, що розганяв будь-яку темряву, а його пухнаста шерсть спалахувала яскравим світлом, коли він був натхнений. Луна ж мала на шиї медальйон, який починав світитися теплим світлом, коли вона думала над складною загадкою, допомагаючи їй знайти рішення.",
+                image: "https://placehold.co/600x400/pink/white?text=Crash+and+Luna"
+            },
+            {
+                text: "Вони зіткнулися з великою загрозою — демоном-темносилом НаноПутом. Він був схожий на маленьку сіру хмаринку, що пожирала майбутнє. Куди б він не летів, дитячі ігри ставали нудними, а мрії перетворювалися на сірі камінці. НаноПут не кричав, а співав сумну, як осінній вітер, пісню, що змушувала всіх забувати про радісні моменти.",
+                image: "https://placehold.co/600x400/gray/white?text=NanoPoot+Cloud"
+            },
+            {
+                text: "<strong>Мандри казковим світом СилаВолія: Пригоди в Місті Солодких Мрій.</strong><br><br>У центрі СилаВолії, де завжди панує сонце, знаходиться місто, збудоване з льодяників та пряників. Воно живиться дитячим сміхом та радістю. Але одного разу хтось починає красти радісні мрії, і місто втрачає свої кольори та солодкий смак.",
+                image: "https://placehold.co/600x400/cyan/white?text=Sweet+Dreams+City"
+            },
+            {
+                text: "Фіну, Крашу та Луні доведеться знайти винуватця і повернути радість жителям міста, використовуючи веселковий дим, дзвін Краша та мудрість Луни. Це може бути історія про те, що щастя не можна вкрасти, а тільки поділитися ним.<br><br><strong>Кінець.</strong>",
+                image: "https://placehold.co/600x400/gold/white?text=The+End"
+            }
+        ];
+
+        let currentPage = 0;
+
+        // Елементи DOM
+        const textElement = document.getElementById('story-text');
+        const imageElement = document.getElementById('story-image');
+        const rightPageElement = document.querySelector('.page-right');
+
+        // Функція для завантаження сторінки
+        function loadPage(index) {
+            // Додаємо анімацію зникання/появи
+            textElement.classList.remove('fade-in');
+            imageElement.classList.remove('fade-in');
+            
+            // Магія для перезапуску анімації (void offsetWidth)
+            void textElement.offsetWidth; 
+            
+            textElement.innerHTML = pages[index].text;
+            imageElement.src = pages[index].image;
+            
+            textElement.classList.add('fade-in');
+            imageElement.classList.add('fade-in');
+        }
+
+        // Функція переходу вперед
+        function nextPage() {
+            currentPage++;
+            
+            if (currentPage >= pages.length) {
+                // Якщо дійшли до кінця - починаємо спочатку
+                if(confirm("Казка закінчилась. Почати спочатку?")) {
+                    currentPage = 0;
+                } else {
+                    currentPage = pages.length - 1; // Залишитись на останній
+                    return; 
+                }
+            }
+            loadPage(currentPage);
+        }
+
+        // Завантаження першої сторінки при старті
+        loadPage(0);
+
+    </script>
+</body>
+</html>
