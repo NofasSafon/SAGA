@@ -169,43 +169,52 @@
         // Елементи DOM
         const textElement = document.getElementById('story-text');
         const imageElement = document.getElementById('story-image');
-        const rightPageElement = document.querySelector('.page-right');
+        const hintElement = document.querySelector('.hint'); // Отримуємо елемент підказки
 
         // Функція для завантаження сторінки
         function loadPage(index) {
-            // Додаємо анімацію зникання/появи
+            // Скидаємо анімацію
             textElement.classList.remove('fade-in');
             imageElement.classList.remove('fade-in');
+            void textElement.offsetWidth; // Магія для перезапуску CSS анімації
             
-            // Магія для перезапуску анімації (void offsetWidth)
-            void textElement.offsetWidth; 
-            
+            // Оновлюємо контент
             textElement.innerHTML = pages[index].text;
             imageElement.src = pages[index].image;
             
+            // Запускаємо анімацію
             textElement.classList.add('fade-in');
             imageElement.classList.add('fade-in');
+
+            // --- НОВА ЛОГІКА ДЛЯ ПІДКАЗКИ ---
+            if (index === pages.length - 1) {
+                // Якщо це остання сторінка
+                hintElement.innerHTML = "Історія завершена. <b>Клікніть, щоб почати знову &#8634;</b>";
+                hintElement.style.color = "#d35400"; // Зробимо колір більш помітним (помаранчевим)
+            } else {
+                // Якщо це звичайна сторінка
+                hintElement.innerHTML = "Натисніть сюди, щоб читати далі &rarr;";
+                hintElement.style.color = "#888"; // Повертаємо сірий колір
+            }
         }
 
         // Функція переходу вперед
         function nextPage() {
-            currentPage++;
-            
-            if (currentPage >= pages.length) {
-                // Якщо дійшли до кінця - починаємо спочатку
-                if(confirm("Казка закінчилась. Почати спочатку?")) {
-                    currentPage = 0;
-                } else {
-                    currentPage = pages.length - 1; // Залишитись на останній
-                    return; 
-                }
+            // Якщо ми на останній сторінці
+            if (currentPage === pages.length - 1) {
+                currentPage = 0; // Просто скидаємо на початок
+                loadPage(currentPage);
+            } else {
+                // Якщо ні - йдемо далі
+                currentPage++;
+                loadPage(currentPage);
             }
-            loadPage(currentPage);
         }
 
-        // Завантаження першої сторінки при старті
+        // Запуск першої сторінки
         loadPage(0);
 
+    </script>
     </script>
 </body>
 </html>
