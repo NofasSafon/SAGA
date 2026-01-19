@@ -3,24 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ФарбоСвіт: Еко-Баланс 2.0</title>
+    <title>ФарбоСвіт: Квест Охоронця</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Verdana', sans-serif;
+            background-color: #eef;
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0;
             padding: 10px;
-            user-select: none; /* Щоб текст не виділявся при швидкому кліканні */
+            user-select: none;
         }
 
-        h1 { margin: 5px; font-size: 24px; color: #333; }
-
-        #game-wrapper {
-            position: relative;
+        /* Стиль квест-панелі */
+        #quest-panel {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 550px;
+            border: 3px solid #fff;
         }
+        #quest-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+        #quest-goal { font-size: 22px; font-weight: bold; margin-top: 5px; }
 
         #game-container {
             position: relative;
@@ -30,288 +39,307 @@
             border-radius: 15px;
             overflow: hidden;
             background: linear-gradient(to bottom, #87CEEB, #e0f7fa);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             cursor: crosshair;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        canvas { display: block; }
+        /* Перемога / Модальне вікно */
+        #overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 10;
+            display: none; /* Сховано за замовчуванням */
+        }
+        #overlay h2 { font-size: 40px; margin: 0; color: #FFD700; text-shadow: 2px 2px 0 #000; }
+        #next-btn {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #1e7e34;
+        }
+        #next-btn:active { transform: translateY(5px); box-shadow: none; }
 
-        /* Панель керування */
+        /* Панель інструментів */
         #controls {
             margin-top: 15px;
             display: flex;
-            gap: 15px;
-            padding: 10px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            gap: 10px;
         }
-
         .btn {
-            width: 70px;
-            height: 70px;
-            border: none;
-            border-radius: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: #eee;
+            width: 65px; height: 65px;
+            border: none; border-radius: 12px;
+            font-size: 24px; cursor: pointer;
+            background: #fff; border: 2px solid #ccc;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-
-        .btn:active { transform: scale(0.95); }
-        .btn span { font-size: 10px; font-weight: bold; margin-top: 5px; }
-
-        .btn.active { border: 3px solid #333; transform: scale(1.05); }
-
-        #btn-sun { background: #FFD700; color: #fff; text-shadow: 1px 1px 0 #000;}
-        #btn-water { background: #1E90FF; color: #fff; text-shadow: 1px 1px 0 #000;}
-        #btn-plant { background: #32CD32; color: #fff; text-shadow: 1px 1px 0 #000;}
-        #btn-animal { background: #FF69B4; color: #fff; text-shadow: 1px 1px 0 #000;}
-        #btn-clean { background: #fff; border: 2px solid #ccc; color: #333; }
+        .btn.active { border-color: #000; background: #e0e0e0; transform: scale(1.1); }
+        .btn span { font-size: 9px; margin-top: 4px; font-weight: bold; }
 
         /* Індикатори */
-        #stats {
-            width: 600px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-        }
-        
-        .stat-box { display: flex; align-items: center; gap: 5px; font-size: 14px; }
-        .bar-container { width: 80px; height: 10px; background: #ddd; border-radius: 5px; border: 1px solid #333; overflow: hidden;}
-        .bar { height: 100%; transition: width 0.3s; }
-        
-        #message {
-            margin-top: 5px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #d32f2f;
-            min-height: 25px;
-            text-align: center;
-        }
+        #stats { width: 600px; display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold; font-size: 14px; }
+        .bar-wrap { width: 80px; height: 10px; background: #ddd; border: 1px solid #333; border-radius: 5px; overflow: hidden; display: inline-block; vertical-align: middle;}
+        .bar { height: 100%; width: 50%; transition: width 0.3s; }
+
     </style>
 </head>
 <body>
 
-    <h1>🌍 ФарбоСвіт: Жива Планета</h1>
-    
-    <div id="stats">
-        <div class="stat-box">☀️ Тепло: <div class="bar-container"><div id="sun-bar" class="bar" style="background:orange"></div></div></div>
-        <div class="stat-box">💧 Волога: <div class="bar-container"><div id="water-bar" class="bar" style="background:blue"></div></div></div>
-        <div class="stat-box">🌲 Дерев: <span id="tree-count">0</span></div>
-        <div class="stat-box">🐇 Тварин: <span id="animal-count">0</span></div>
+    <div id="quest-panel">
+        <div id="quest-title">Рівень 1: Початок життя</div>
+        <div id="quest-goal">Ціль: Вирости 3 здорових дерева (0/3)</div>
     </div>
 
-    <div id="message"></div>
+    <div id="stats">
+        <div>☀️ <div class="bar-wrap"><div id="sun-bar" class="bar" style="background:orange"></div></div></div>
+        <div>💧 <div class="bar-wrap"><div id="water-bar" class="bar" style="background:blue"></div></div></div>
+        <div id="status-text" style="color: green">Баланс в нормі</div>
+    </div>
 
-    <div id="game-wrapper">
-        <div id="game-container">
-            <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+        
+        <div id="overlay">
+            <h2>🏆 ПЕРЕМОГА!</h2>
+            <p>Ти впорався! Природа оживає.</p>
+            <button id="next-btn" onclick="nextLevel()">Наступний рівень ▶</button>
         </div>
     </div>
 
     <div id="controls">
-        <button class="btn" onclick="setTool('sun')">☀️<span>Сонце</span></button>
-        <button class="btn" onclick="setTool('water')">💧<span>Дощ</span></button>
-        <button class="btn" onclick="setTool('plant')">🌳<span>Саджати</span></button>
-        <button class="btn" onclick="setTool('animal')">🐇<span>Заселити</span></button>
-        <button class="btn" onclick="setTool('clean')">🧹<span>Прибрати</span></button>
+        <button class="btn active" onclick="setTool('sun')" id="btn-sun">☀️<span>Сонце</span></button>
+        <button class="btn" onclick="setTool('water')" id="btn-water">💧<span>Дощ</span></button>
+        <button class="btn" onclick="setTool('plant')" id="btn-plant">🌳<span>Саджати</span></button>
+        <button class="btn" onclick="setTool('animal')" id="btn-animal">🐇<span>Тварини</span></button>
+        <button class="btn" onclick="setTool('clean')" id="btn-clean">🧹<span>Прибрати</span></button>
     </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const msgBox = document.getElementById('message');
+        
+        // --- КОНФІГУРАЦІЯ РІВНІВ ---
+        const levels = [
+            {
+                id: 1,
+                title: "Рівень 1: Початок життя",
+                desc: "Вирости 5 здорових дерев.",
+                goal: (state) => countType(state, 'tree') >= 5,
+                text: "Ціль: 5 дерев (Зараз: {val})"
+            },
+            {
+                id: 2,
+                title: "Рівень 2: Заселення",
+                desc: "Створи ліс і засели 3 зайців.",
+                goal: (state) => countType(state, 'rabbit') >= 3,
+                text: "Ціль: 3 зайці (Зараз: {val})"
+            },
+            {
+                id: 3,
+                title: "Рівень 3: Чистота",
+                desc: "Прибери все сміття та збережи 5 дерев живими.",
+                goal: (state) => countType(state, 'trash') === 0 && countType(state, 'tree') >= 5 && state.totalTrashCleaned >= 5,
+                text: "Прибрати 5 сміття і мати 5 дерев. (Прибрано: {val})"
+            }
+        ];
 
-        // Стан гри
+        let currentLevelIdx = 0;
+        let isLevelComplete = false;
+
+        // --- СТАН ГРИ ---
         let state = {
             sun: 50,
             water: 50,
-            objects: [], // Дерева, тварини, сміття
-            tool: 'sun', // Поточний інструмент
-            gameLoop: null
+            objects: [],
+            tool: 'sun',
+            totalTrashCleaned: 0 // Лічильник для 3 рівня
         };
 
         const GROUND_Y = 350;
 
-        // Обробка кліків по полотну
-        canvas.addEventListener('mousedown', (e) => handleInput(e));
-        
-        function setTool(toolName) {
-            state.tool = toolName;
-            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            // Знаходимо кнопку за текстом або id, тут просто для візуалу
-            msgBox.innerText = `Обрано: ${getToolName(toolName)}`;
-        }
-
-        function getToolName(t) {
-            if(t==='sun') return "Керування Сонцем";
-            if(t==='water') return "Керування Дощем";
-            if(t==='plant') return "Саджання дерев";
-            if(t==='animal') return "Заселення тварин";
-            if(t==='clean') return "Прибирання сміття";
-        }
-
-        function handleInput(e) {
+        // --- УПРАВЛІННЯ ---
+        canvas.addEventListener('mousedown', (e) => {
+            if (isLevelComplete) return;
+            
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
             if (state.tool === 'sun') {
-                state.sun = Math.min(state.sun + 15, 100);
+                state.sun = Math.min(state.sun + 10, 100);
                 state.water = Math.max(state.water - 5, 0);
             } else if (state.tool === 'water') {
-                state.water = Math.min(state.water + 15, 100);
+                state.water = Math.min(state.water + 10, 100);
                 state.sun = Math.max(state.sun - 5, 0);
             } else if (state.tool === 'plant') {
-                // Саджаємо дерево
-                state.objects.push({ type: 'tree', x: x, y: GROUND_Y, status: 'alive', age: 0 });
+                state.objects.push({ type: 'tree', x: x, y: GROUND_Y, status: 'alive' });
             } else if (state.tool === 'animal') {
-                // Заселяємо тварину (тільки якщо є умови)
-                let liveTrees = state.objects.filter(o => o.type === 'tree' && o.status === 'alive').length;
-                if (liveTrees >= 2) {
+                if (countType(state, 'tree') >= 2) {
                     state.objects.push({ type: 'rabbit', x: x, y: GROUND_Y, status: 'alive', dir: 1 });
                 } else {
-                    msgBox.innerText = "❌ Треба більше дерев для зайчиків!";
+                    alert("Спочатку посади більше дерев!");
                 }
             } else if (state.tool === 'clean') {
-                // Видаляємо сміття поруч із кліком
-                state.objects = state.objects.filter(o => {
-                    if (o.type === 'trash') {
-                        let dist = Math.abs(o.x - x);
-                        if (dist < 30) return false; // Видаляємо
-                    }
-                    return true;
-                });
+                // Видалення сміття
+                let beforeCount = state.objects.length;
+                state.objects = state.objects.filter(o => !(o.type === 'trash' && Math.abs(o.x - x) < 30));
+                if (state.objects.length < beforeCount) {
+                    state.totalTrashCleaned++;
+                }
             }
-            updateLogic();
+            updateGameLogic();
+        });
+
+        function setTool(t) {
+            state.tool = t;
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + t).classList.add('active');
         }
 
-        // --- ЛОГІКА ---
-        function updateLogic() {
-            // Перевірка екстремальних умов
-            let isDrought = state.sun > 80;
-            let isFlood = state.water > 80;
+        function countType(st, type) {
+            return st.objects.filter(o => o.type === type && o.status === 'alive').length;
+        }
+
+        // --- ЛОГІКА ГРИ ---
+        function updateGameLogic() {
+            // Екстремальні умови
+            let isBad = state.sun > 80 || state.water > 80;
+            let statusText = document.getElementById('status-text');
+
+            if (state.sun > 80) { statusText.innerText = "🔥 Спека!"; statusText.style.color = "red"; }
+            else if (state.water > 80) { statusText.innerText = "🌊 Повінь!"; statusText.style.color = "blue"; }
+            else { statusText.innerText = "✨ Баланс"; statusText.style.color = "green"; }
 
             // Оновлення об'єктів
             state.objects.forEach(obj => {
                 if (obj.type === 'tree') {
-                    if (isDrought) obj.status = 'dead_dry';
-                    else if (isFlood) obj.status = 'dead_wet';
-                    else if (state.sun > 30 && state.water > 30) obj.status = 'alive';
+                    if (isBad) obj.status = 'dead';
+                    else if (state.sun > 20 && state.water > 20) obj.status = 'alive';
                 }
-                
                 if (obj.type === 'rabbit') {
-                    // Зайці бігають
                     obj.x += obj.dir * 2;
-                    if (obj.x > canvas.width - 20 || obj.x < 20) obj.dir *= -1;
-
-                    // Якщо дерева померли - зайці теж зникають (тікають)
-                    let liveTrees = state.objects.filter(o => o.type === 'tree' && o.status === 'alive').length;
-                    if (liveTrees === 0 || isFlood || isDrought) {
-                        obj.status = 'gone'; 
-                    }
+                    if (obj.x > 580 || obj.x < 20) obj.dir *= -1;
+                    if (countType(state, 'tree') === 0 || isBad) obj.status = 'gone'; // Втікають без лісу
                 }
             });
-
-            // Видаляємо тих, хто втік
             state.objects = state.objects.filter(o => o.status !== 'gone');
+
+            // Перевірка КВЕСТУ
+            checkQuest();
+        }
+
+        function checkQuest() {
+            let lvl = levels[currentLevelIdx];
+            let val = 0;
+            
+            // Оновлюємо текст завдання
+            if (currentLevelIdx === 0) val = countType(state, 'tree');
+            if (currentLevelIdx === 1) val = countType(state, 'rabbit');
+            if (currentLevelIdx === 2) val = state.totalTrashCleaned;
+
+            let goalText = lvl.text.replace("{val}", val);
+            document.getElementById('quest-goal').innerText = goalText;
+
+            // Перевірка перемоги
+            if (lvl.goal(state) && !isLevelComplete) {
+                isLevelComplete = true;
+                document.getElementById('overlay').style.display = 'flex';
+            }
+        }
+
+        function nextLevel() {
+            currentLevelIdx++;
+            if (currentLevelIdx >= levels.length) {
+                alert("Ти пройшов усю гру! Ти справжній майстер природи!");
+                currentLevelIdx = 0; // Почати спочатку
+            }
+            
+            // Скидання рівня
+            state.objects = [];
+            state.sun = 50; state.water = 50;
+            state.totalTrashCleaned = 0;
+            isLevelComplete = false;
+            document.getElementById('overlay').style.display = 'none';
+            
+            // Оновлення заголовків
+            document.getElementById('quest-title').innerText = levels[currentLevelIdx].title;
+            checkQuest();
         }
 
         // --- МАЛЮВАННЯ ---
         function draw() {
-            // Фон неба
-            let r = 135, g = 206, b = 235; // SkyBlue
-            if (state.sun > 70) { r=255; g=240; b=200; } // Жовтувате
-            if (state.water > 70) { r=100; g=100; b=150; } // Темне
+            ctx.clearRect(0,0,600,400);
+
+            // Небо
+            let r=135, g=206, b=235;
+            if (state.sun > 70) { r=255; g=250; b=200; }
+            if (state.water > 70) { r=100; g=100; b=160; }
             ctx.fillStyle = `rgb(${r},${g},${b})`;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0,0,600,400);
 
             // Сонце
-            ctx.beginPath();
-            ctx.arc(500, 60, 40, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 215, 0, ${state.sun / 80})`;
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(500, 60, 40, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(255, 215, 0, ${state.sun/80})`; ctx.fill();
+
+            // Земля
+            let gh = (state.water > 80) ? 120 : 50;
+            ctx.fillStyle = (state.sun > 80) ? "#D2B48C" : "#228B22";
+            if (state.water > 80) ctx.fillStyle = "#1E90FF";
+            ctx.fillRect(0, 400-gh, 600, gh);
+
+            // Об'єкти
+            ctx.font = "30px Arial"; ctx.textAlign = "center";
+            state.objects.forEach(o => {
+                let txt = "";
+                let y = o.y;
+                if (o.type === 'tree') txt = (o.status === 'alive') ? "🌳" : "🍂";
+                if (o.type === 'rabbit') { txt = "🐇"; y -= 10; }
+                if (o.type === 'trash') { txt = "🗑️"; y = GROUND_Y + 10; }
+                
+                if (state.water > 80) y = 400 - gh + 20;
+                ctx.fillText(txt, o.x, y);
+            });
 
             // Дощ
             if (state.water > 60) {
-                ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+                ctx.fillStyle = "rgba(0,0,200,0.5)";
                 for(let i=0; i<state.water; i++) ctx.fillRect(Math.random()*600, Math.random()*400, 2, 8);
             }
 
-            // Земля
-            let groundH = 50;
-            if (state.water > 80) groundH = 120; // Повінь
-            ctx.fillStyle = state.sun > 80 ? "#D2B48C" : "#228B22"; 
-            if (state.water > 80) ctx.fillStyle = "#1E90FF";
-            ctx.fillRect(0, canvas.height - groundH, canvas.width, groundH);
+            // Оновлення шкал
+            document.getElementById('sun-bar').style.width = state.sun + "%";
+            document.getElementById('water-bar').style.width = state.water + "%";
+        }
 
-            // Об'єкти
-            ctx.font = "30px Arial";
-            ctx.textAlign = "center";
-            state.objects.forEach(obj => {
-                let emoji = "";
-                let y = obj.y;
+        // --- ЦИКЛ ГРИ ---
+        setInterval(() => {
+            if (!isLevelComplete) {
+                if (state.sun > 10) state.sun -= 0.5;
+                if (state.water > 10) state.water -= 0.5;
                 
-                if (obj.type === 'tree') {
-                    if (obj.status === 'alive') emoji = "🌳";
-                    else if (obj.status === 'dead_dry') emoji = "🍂";
-                    else if (obj.status === 'dead_wet') { emoji = "🪸"; y += 10; }
-                } else if (obj.type === 'rabbit') {
-                    emoji = "🐇";
-                    y -= 10; // Трохи вище
-                } else if (obj.type === 'trash') {
-                    emoji = "🗑️";
-                    y = GROUND_Y + 10;
+                // Генерація сміття тільки на 3 рівні
+                if (currentLevelIdx === 2 && Math.random() > 0.98) {
+                    state.objects.push({type:'trash', x: Math.random()*580+10, y: GROUND_Y});
                 }
                 
-                if(state.water > 80) y = canvas.height - groundH + 20; // Все під водою
-
-                ctx.fillText(emoji, obj.x, y);
-            });
-
-            // Оновлення UI
-            document.getElementById('sun-bar').style.width = state.sun + '%';
-            document.getElementById('water-bar').style.width = state.water + '%';
-            
-            let trees = state.objects.filter(o => o.type === 'tree' && o.status === 'alive').length;
-            let animals = state.objects.filter(o => o.type === 'rabbit').length;
-            document.getElementById('tree-count').innerText = trees;
-            document.getElementById('animal-count').innerText = animals;
-        }
-
-        // --- ГЕНЕРАТОР ПОДІЙ ---
-        // Раз на 3 секунди може з'явитися сміття
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                state.objects.push({ 
-                    type: 'trash', 
-                    x: Math.random() * (canvas.width - 40) + 20, 
-                    y: GROUND_Y 
-                });
-                msgBox.innerText = "⚠️ Хтось насмітив! Прибери це!";
+                updateGameLogic();
             }
-        }, 3000);
-
-        // Постійне зниження ресурсів
-        setInterval(() => {
-            if(state.sun > 20) state.sun -= 1;
-            if(state.water > 20) state.water -= 1;
-            updateLogic();
-        }, 500);
-
-        // Головний цикл анімації
-        function loop() {
             draw();
-            requestAnimationFrame(loop);
-        }
-        loop();
+        }, 100); // 10 FPS (достатньо для такої гри)
+
+        // Старт
+        checkQuest();
 
     </script>
 </body>
-  </html>
+</html>
