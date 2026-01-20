@@ -20,14 +20,12 @@
             color: #fff;
             text-align: center;
             height: 100vh;
-            /* Підтримка мобільних браузерів з динамічною адресною строкою */
             height: 100dvh; 
             margin: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             user-select: none;
-            /* Відступи для безпечних зон на iPhone */
             padding-bottom: env(safe-area-inset-bottom);
         }
 
@@ -38,7 +36,9 @@
             border-bottom: 2px solid #5d4037;
             display: flex;
             justify-content: center;
-            flex-shrink: 0; /* Щоб панель не стискалася */
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
             z-index: 10;
         }
 
@@ -50,8 +50,22 @@
             font-weight: bold;
             color: #333;
             font-size: clamp(14px, 4vw, 16px);
-            max-width: 100%;
         }
+
+        /* Кнопка музики */
+        .music-btn {
+            background: var(--btn-bg);
+            border: 2px solid #8d6e63;
+            color: #fff;
+            font-size: 20px;
+            width: 40px; height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-btn.active { border-color: #00ff44; color: #00ff44; }
 
         /* --- ІГРОВА ЗОНА --- */
         .game-area {
@@ -59,30 +73,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-evenly; /* Рівномірний розподіл простору */
+            justify-content: space-evenly;
             width: 100%;
-            max-width: 600px; /* Обмеження ширини для ПК */
+            max-width: 600px;
             margin: 0 auto;
             padding: 5px 0;
         }
 
-        h1 { 
-            margin: 0; 
-            font-size: clamp(1rem, 3vh, 1.2rem); 
-            color: #aaa; 
-        }
+        h1 { margin: 0; font-size: clamp(1rem, 3vh, 1.2rem); color: #aaa; }
         
         .target-number {
-            font-size: clamp(3rem, 10vh, 5rem); /* Адаптивний розмір шрифту */
+            font-size: clamp(3rem, 10vh, 5rem);
             font-weight: bold;
             color: var(--gold);
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
             line-height: 1;
         }
 
-        /* КАЗАНОК */
         .cauldron {
-            /* Розмір залежить від висоти екрану, але має межі */
             width: clamp(80px, 15vh, 120px); 
             height: clamp(80px, 15vh, 120px);
             background: rgba(255, 255, 255, 0.05);
@@ -100,7 +108,6 @@
         .cauldron.active { box-shadow: 0 0 30px #00d2ff; background: rgba(0, 210, 255, 0.2); }
         .cauldron.error { border-color: #ff5252; animation: shake 0.4s; background: rgba(255, 82, 82, 0.2); }
 
-        /* --- СЛОТИ ПРОГРЕСУ --- */
         .progress-container {
             min-height: 50px;
             display: flex;
@@ -109,7 +116,7 @@
             align-content: center;
             gap: 8px;
             width: 95%;
-            overflow-y: auto; /* На випадок якщо слотів дуже багато на малому екрані */
+            overflow-y: auto;
             max-height: 15vh;
         }
 
@@ -148,27 +155,25 @@
             color: #fff;
             font-size: clamp(20px, 5vw, 28px);
             border-radius: 10px;
-            /* Висота кнопки адаптивна */
             height: clamp(45px, 8vh, 60px); 
             cursor: pointer;
             box-shadow: 0 3px 0 #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation; /* Покращує відгук на тач-скрінах */
+            touch-action: manipulation;
         }
         
         .num-btn:active { transform: translateY(3px); box-shadow: none; }
         .clear-btn { background: #b71c1c; border-color: #e53935; }
 
-        /* --- СКРИНЯ ДОСЯГНЕНЬ --- */
+        /* --- СКРИНЯ --- */
         .chest-area {
             background: rgba(0,0,0,0.8);
             width: 100%;
             padding: 10px 0;
             border-top: 4px solid #8d6e63;
             flex-shrink: 0;
-            /* Адаптація для iPhone X+ */
             padding-bottom: calc(10px + env(safe-area-inset-bottom)); 
         }
         .chest-title { font-size: 11px; color: #8d6e63; text-transform: uppercase; margin-bottom: 5px; }
@@ -197,9 +202,8 @@
             animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- МЕДІА ЗАПИТИ ДЛЯ ДУЖЕ МАЛИХ ЕКРАНІВ (Ландшафт мобільного) --- */
         @media (max-height: 550px) {
-            h1 { display: none; } /* Ховаємо заголовок */
+            h1 { display: none; }
             .game-area { padding-top: 5px; }
             .target-number { font-size: 3rem; }
             .cauldron { width: 60px; height: 60px; margin: 5px auto; }
@@ -208,12 +212,10 @@
             .chest-area { padding: 5px 0; }
         }
 
-        /* Анімації */
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
         @keyframes popIn { 0%{transform:scale(0)} 80%{transform:scale(1.2)} 100%{transform:scale(1)} }
         @keyframes dropIn { 0%{transform:translateY(-50px);opacity:0} 100%{transform:translateY(0);opacity:1} }
 
-        /* Модальне вікно перемоги */
         .win-modal {
             display: none;
             position: fixed; top:0; left:0; width:100%; height:100%;
@@ -229,6 +231,8 @@
 <body>
 
     <div class="top-bar">
+        <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
+
         <select id="difficulty" onchange="resetGame()">
             <option value="easy">⚡ Одна пара (Тренування)</option>
             <option value="hard">💎 Всі пари (Збір кристалів)</option>
@@ -259,8 +263,7 @@
 
     <div class="chest-area">
         <div class="chest-title">Скриня кристалів (Потрібно 10)</div>
-        <div class="crystals-grid" id="crystal-chest">
-            </div>
+        <div class="crystals-grid" id="crystal-chest"></div>
     </div>
 
     <div class="win-modal" id="win-screen">
@@ -273,14 +276,125 @@
     </div>
 
     <script>
-        // --- ЗМІННІ ---
+        // --- 1. АУДІО ДВИГУН (WEB AUDIO API) ---
+        // Цей код генерує звуки програмно, без mp3 файлів
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        let bgmOscillators = [];
+        let bgmGainNode;
+        let isMusicOn = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Синтезатор звуків (пік, дзижчання, мелодії)
+        function playTone(freq, type, duration, startTime = 0, vol = 0.1) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = type; // 'sine', 'square', 'sawtooth', 'triangle'
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + startTime);
+            
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime + startTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start(audioCtx.currentTime + startTime);
+            osc.stop(audioCtx.currentTime + startTime + duration);
+        }
+
+        // --- ЕФЕКТИ ---
+        
+        function sfxCorrect() {
+            initAudio();
+            // Подвійний високий дзвін
+            playTone(880, 'sine', 0.3, 0);       // A5
+            playTone(1108, 'sine', 0.6, 0.1);    // C#6
+        }
+
+        function sfxWrong() {
+            initAudio();
+            // Низький неприємний звук
+            playTone(150, 'sawtooth', 0.4, 0, 0.15);
+            playTone(140, 'sawtooth', 0.4, 0.1, 0.15);
+        }
+
+        function sfxCrystal() {
+            initAudio();
+            // Магічне арпеджіо
+            playTone(1318, 'sine', 0.5, 0);    // E6
+            playTone(1661, 'sine', 0.5, 0.1);  // G#6
+            playTone(1975, 'sine', 0.8, 0.2);  // B6
+        }
+
+        function sfxWin() {
+            initAudio();
+            // Фанфари
+            playTone(523, 'triangle', 0.5, 0);   // C5
+            playTone(659, 'triangle', 0.5, 0.2); // E5
+            playTone(783, 'triangle', 0.5, 0.4); // G5
+            playTone(1046, 'triangle', 2.0, 0.6, 0.3); // C6
+        }
+
+        // --- ФОНОВА МУЗИКА (AMBIENT DRONE) ---
+        function toggleMusic() {
+            initAudio();
+            const btn = document.getElementById('music-toggle');
+            isMusicOn = !isMusicOn;
+
+            if (isMusicOn) {
+                btn.innerText = "🔊";
+                btn.classList.add('active');
+                startBGM();
+            } else {
+                btn.innerText = "🔇";
+                btn.classList.remove('active');
+                stopBGM();
+            }
+        }
+
+        function startBGM() {
+            if (bgmOscillators.length > 0) return; // Вже грає
+
+            // Створюємо "космічний гул" з двох низьких частот, які трохи розходяться
+            bgmGainNode = audioCtx.createGain();
+            bgmGainNode.gain.value = 0.03; // Дуже тихо
+            bgmGainNode.connect(audioCtx.destination);
+
+            const freqs = [100, 102, 150]; // Частоти акордів
+            
+            freqs.forEach(f => {
+                const osc = audioCtx.createOscillator();
+                osc.type = 'triangle';
+                osc.frequency.value = f;
+                osc.connect(bgmGainNode);
+                osc.start();
+                bgmOscillators.push(osc);
+            });
+        }
+
+        function stopBGM() {
+            bgmOscillators.forEach(osc => osc.stop());
+            bgmOscillators = [];
+        }
+
+
+        // --- 2. ЛОГІКА ГРИ ---
         let targetNum = 0;
         let currentInput = []; 
         let foundPairs = []; 
         let crystals = 0;
         const maxCrystals = 10;
         
-        // Елементи DOM
         const targetEl = document.getElementById('target');
         const cauldronEl = document.getElementById('cauldron-display');
         const progressEl = document.getElementById('progress-slots');
@@ -288,7 +402,6 @@
         const difficultySel = document.getElementById('difficulty');
         const winScreen = document.getElementById('win-screen');
 
-        // --- СТАРТ ---
         function initChest() {
             chestEl.innerHTML = '';
             for(let i=0; i<maxCrystals; i++) {
@@ -308,16 +421,14 @@
 
         function newRound() {
             clearInput();
-            // Генеруємо число від 4 до 10 
             targetNum = Math.floor(Math.random() * 7) + 4; 
             targetEl.innerText = targetNum;
-
             foundPairs = [];
             renderProgress();
         }
 
-        // --- ЛОГІКА ВВОДУ ---
         function addNum(n) {
+            initAudio(); // Ініціалізуємо аудіо при першому кліку
             if (currentInput.length >= 2) {
                 shake();
                 return;
@@ -344,21 +455,24 @@
             }
         }
 
-        // --- ПЕРЕВІРКА ---
         function checkResult() {
             const sum = currentInput[0] + currentInput[1];
             const difficulty = difficultySel.value;
 
             if (sum === targetNum) {
+                // ПРАВИЛЬНО
                 successEffect();
+                
                 let pairSorted = [...currentInput].sort((a,b) => a-b);
                 let pairStr = pairSorted.join('+');
                 let isDuplicate = foundPairs.includes(pairStr);
 
                 if (difficulty === 'easy') {
+                    sfxCorrect(); // Звук правильної відповіді
                     setTimeout(newRound, 1000);
                 } else {
                     if (!isDuplicate) {
+                        sfxCorrect(); // Звук правильної відповіді
                         foundPairs.push(pairStr);
                         renderProgress();
                         
@@ -375,7 +489,9 @@
                     }
                 }
             } else {
+                // НЕПРАВИЛЬНО
                 errorEffect();
+                sfxWrong(); // Звук помилки
             }
         }
 
@@ -403,7 +519,6 @@
             }
         }
 
-        // --- ЕФЕКТИ ---
         function successEffect() {
             cauldronEl.classList.add('active');
         }
@@ -420,6 +535,8 @@
 
         function giveCrystal() {
             if (crystals < maxCrystals) {
+                sfxCrystal(); // Звук отримання кристалу
+
                 const slot = document.getElementById('c-slot-' + crystals);
                 slot.innerHTML = getCrystalIcon(targetNum);
                 slot.style.color = getCrystalColor(targetNum);
@@ -428,8 +545,9 @@
 
                 if (crystals === maxCrystals) {
                     setTimeout(() => {
+                        sfxWin(); // Звук перемоги
                         winScreen.style.display = 'flex';
-                    }, 500);
+                    }, 800);
                 }
             }
         }
