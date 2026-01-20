@@ -10,6 +10,8 @@
             --gold: #ffd700;
             --crystal-slot: rgba(255, 255, 255, 0.1);
             --slot-filled: linear-gradient(45deg, #00c6ff, #0072ff);
+            --btn-bg: linear-gradient(to bottom, #444, #222);
+            --btn-border: #666;
         }
 
         body {
@@ -18,11 +20,15 @@
             color: #fff;
             text-align: center;
             height: 100vh;
+            /* Підтримка мобільних браузерів з динамічною адресною строкою */
+            height: 100dvh; 
             margin: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             user-select: none;
+            /* Відступи для безпечних зон на iPhone */
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* --- ВЕРХНЯ ПАНЕЛЬ --- */
@@ -32,17 +38,19 @@
             border-bottom: 2px solid #5d4037;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            flex-shrink: 0; /* Щоб панель не стискалася */
+            z-index: 10;
         }
 
         select {
             background: #fff;
             border: 2px solid var(--gold);
             border-radius: 8px;
-            padding: 5px 15px;
+            padding: 5px 10px;
             font-weight: bold;
             color: #333;
-            font-size: 16px;
+            font-size: clamp(14px, 4vw, 16px);
+            max-width: 100%;
         }
 
         /* --- ІГРОВА ЗОНА --- */
@@ -51,58 +59,69 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 20px;
+            justify-content: space-evenly; /* Рівномірний розподіл простору */
+            width: 100%;
+            max-width: 600px; /* Обмеження ширини для ПК */
+            margin: 0 auto;
+            padding: 5px 0;
         }
 
-        h1 { margin: 5px 0; font-size: 1.2rem; color: #aaa; }
+        h1 { 
+            margin: 0; 
+            font-size: clamp(1rem, 3vh, 1.2rem); 
+            color: #aaa; 
+        }
         
         .target-number {
-            font-size: 4rem;
+            font-size: clamp(3rem, 10vh, 5rem); /* Адаптивний розмір шрифту */
             font-weight: bold;
             color: var(--gold);
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            margin: 0;
             line-height: 1;
         }
 
-        /* КАЗАНОК (ВІЗУАЛІЗАЦІЯ СУМИ) */
+        /* КАЗАНОК */
         .cauldron {
-            width: 100px; height: 100px;
+            /* Розмір залежить від висоти екрану, але має межі */
+            width: clamp(80px, 15vh, 120px); 
+            height: clamp(80px, 15vh, 120px);
             background: rgba(255, 255, 255, 0.05);
             border: 4px solid #00d2ff;
             border-radius: 50%;
-            margin: 10px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: clamp(24px, 4vh, 36px);
             font-weight: bold;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
         
         .cauldron.active { box-shadow: 0 0 30px #00d2ff; background: rgba(0, 210, 255, 0.2); }
         .cauldron.error { border-color: #ff5252; animation: shake 0.4s; background: rgba(255, 82, 82, 0.2); }
 
-        /* --- СЛОТИ ПРОГРЕСУ (ДЛЯ "ВСІ ПАРИ") --- */
+        /* --- СЛОТИ ПРОГРЕСУ --- */
         .progress-container {
-            min-height: 60px;
+            min-height: 50px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
-            width: 90%;
+            align-content: center;
+            gap: 8px;
+            width: 95%;
+            overflow-y: auto; /* На випадок якщо слотів дуже багато на малому екрані */
+            max-height: 15vh;
         }
 
         .pair-slot {
             background: rgba(0,0,0,0.3);
             border: 1px dashed #666;
-            border-radius: 8px;
-            padding: 5px 10px;
-            min-width: 60px;
-            color: #666;
-            font-size: 14px;
+            border-radius: 6px;
+            padding: 4px 8px;
+            min-width: 50px;
+            color: #888;
+            font-size: clamp(12px, 3vw, 14px);
+            white-space: nowrap;
         }
 
         .pair-slot.found {
@@ -117,23 +136,29 @@
         .keypad {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: clamp(5px, 1vh, 10px);
             width: 95%;
-            max-width: 400px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            flex-shrink: 0;
         }
 
         .num-btn {
-            background: linear-gradient(to bottom, #444, #222);
-            border: 1px solid #666;
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
             color: #fff;
-            font-size: 24px;
+            font-size: clamp(20px, 5vw, 28px);
             border-radius: 10px;
-            height: 55px;
+            /* Висота кнопки адаптивна */
+            height: clamp(45px, 8vh, 60px); 
             cursor: pointer;
-            box-shadow: 0 4px 0 #000;
+            box-shadow: 0 3px 0 #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation; /* Покращує відгук на тач-скрінах */
         }
-        .num-btn:active { transform: translateY(4px); box-shadow: none; }
+        
+        .num-btn:active { transform: translateY(3px); box-shadow: none; }
         .clear-btn { background: #b71c1c; border-color: #e53935; }
 
         /* --- СКРИНЯ ДОСЯГНЕНЬ --- */
@@ -142,28 +167,45 @@
             width: 100%;
             padding: 10px 0;
             border-top: 4px solid #8d6e63;
+            flex-shrink: 0;
+            /* Адаптація для iPhone X+ */
+            padding-bottom: calc(10px + env(safe-area-inset-bottom)); 
         }
-        .chest-title { font-size: 12px; color: #8d6e63; text-transform: uppercase; margin-bottom: 5px; }
+        .chest-title { font-size: 11px; color: #8d6e63; text-transform: uppercase; margin-bottom: 5px; }
         
         .crystals-grid {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 5px;
+            padding: 0 10px;
         }
 
         .crystal-slot {
-            width: 30px; height: 30px;
+            width: clamp(25px, 7vw, 35px); 
+            height: clamp(25px, 7vw, 35px);
             background: var(--crystal-slot);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: clamp(14px, 5vw, 20px);
             border: 1px solid #444;
         }
         .crystal-slot.filled {
-            box-shadow: 0 0 10px currentColor;
+            box-shadow: 0 0 8px currentColor;
             animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- МЕДІА ЗАПИТИ ДЛЯ ДУЖЕ МАЛИХ ЕКРАНІВ (Ландшафт мобільного) --- */
+        @media (max-height: 550px) {
+            h1 { display: none; } /* Ховаємо заголовок */
+            .game-area { padding-top: 5px; }
+            .target-number { font-size: 3rem; }
+            .cauldron { width: 60px; height: 60px; margin: 5px auto; }
+            .progress-container { min-height: 40px; }
+            .num-btn { height: 40px; }
+            .chest-area { padding: 5px 0; }
         }
 
         /* Анімації */
@@ -223,18 +265,18 @@
 
     <div class="win-modal" id="win-screen">
         <div class="win-content">
-            <h1 style="font-size: 60px; margin:0;">🏆</h1>
+            <h1 style="font-size: clamp(40px, 15vw, 80px); margin:0;">🏆</h1>
             <h2>ТИ ПЕРЕМІГ!</h2>
             <p>Скриня повна кристалів!</p>
-            <button class="num-btn" style="padding: 10px 30px;" onclick="resetGame()">Грати ще раз</button>
+            <button class="num-btn" style="padding: 10px 30px; margin-top: 20px; font-size: 18px;" onclick="resetGame()">Грати ще раз</button>
         </div>
     </div>
 
     <script>
         // --- ЗМІННІ ---
         let targetNum = 0;
-        let currentInput = []; // [1, 4]
-        let foundPairs = []; // ["1+4", "2+3"]
+        let currentInput = []; 
+        let foundPairs = []; 
         let crystals = 0;
         const maxCrystals = 10;
         
@@ -266,9 +308,7 @@
 
         function newRound() {
             clearInput();
-            
-            // Генеруємо число від 4 до 10 (найцікавіші для розкладу)
-            // Виключаємо 1, 2, 3 бо там мало пар
+            // Генеруємо число від 4 до 10 
             targetNum = Math.floor(Math.random() * 7) + 4; 
             targetEl.innerText = targetNum;
 
@@ -278,16 +318,13 @@
 
         // --- ЛОГІКА ВВОДУ ---
         function addNum(n) {
-            // Заборона більше 2 чисел
             if (currentInput.length >= 2) {
                 shake();
                 return;
             }
-
             currentInput.push(n);
             updateDisplay();
 
-            // Автоперевірка, коли введено 2 числа
             if (currentInput.length === 2) {
                 setTimeout(checkResult, 300);
             }
@@ -313,26 +350,18 @@
             const difficulty = difficultySel.value;
 
             if (sum === targetNum) {
-                // ПРАВИЛЬНО
                 successEffect();
-
-                // Сортуємо пару (щоб 1+4 і 4+1 були однаковими)
                 let pairSorted = [...currentInput].sort((a,b) => a-b);
                 let pairStr = pairSorted.join('+');
-
-                // Перевірка на дублікат
                 let isDuplicate = foundPairs.includes(pairStr);
 
                 if (difficulty === 'easy') {
-                    // ЛЕГКИЙ РЕЖИМ: Просто йдемо далі
                     setTimeout(newRound, 1000);
                 } else {
-                    // СКЛАДНИЙ РЕЖИМ
                     if (!isDuplicate) {
                         foundPairs.push(pairStr);
                         renderProgress();
                         
-                        // Перевірка чи всі пари знайдено
                         let totalPairsNeeded = Math.floor(targetNum / 2);
                         if (foundPairs.length === totalPairsNeeded) {
                             giveCrystal();
@@ -341,13 +370,11 @@
                             setTimeout(clearInput, 500);
                         }
                     } else {
-                        // Дублікат
                         cauldronEl.innerText = "Вже є!";
                         setTimeout(clearInput, 500);
                     }
                 }
             } else {
-                // НЕПРАВИЛЬНО
                 errorEffect();
             }
         }
@@ -361,15 +388,10 @@
                 return;
             }
 
-            // Рахуємо скільки унікальних пар існує для числа N
-            // Наприклад, для 5: (1,4), (2,3) -> 2 пари.
-            // Формула: floor(N / 2)
             const totalPairs = Math.floor(targetNum / 2);
 
             for (let i = 0; i < totalPairs; i++) {
                 let slot = document.createElement('div');
-                
-                // Якщо ця пара вже знайдена
                 if (foundPairs[i]) {
                     slot.className = 'pair-slot found';
                     slot.innerText = foundPairs[i];
@@ -381,7 +403,7 @@
             }
         }
 
-        // --- ЕФЕКТИ ТА НАГОРОДИ ---
+        // --- ЕФЕКТИ ---
         function successEffect() {
             cauldronEl.classList.add('active');
         }
@@ -422,10 +444,8 @@
             return colors[num % colors.length];
         }
 
-        // Старт
         initChest();
         newRound();
-
     </script>
 </body>
 </html>
