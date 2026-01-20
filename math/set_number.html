@@ -64,8 +64,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s;
         }
-        .music-btn.active { border-color: #00ff44; color: #00ff44; }
+        .music-btn.active { border-color: #00ff44; color: #00ff44; box-shadow: 0 0 10px #00ff44; }
 
         /* --- ІГРОВА ЗОНА --- */
         .game-area {
@@ -230,6 +231,10 @@
 </head>
 <body>
 
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="top-bar">
         <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
 
@@ -276,13 +281,13 @@
     </div>
 
     <script>
-        // --- 1. АУДІО ДВИГУН (WEB AUDIO API) ---
-        // Цей код генерує звуки програмно, без mp3 файлів
+        // --- 1. АУДІО (ЕФЕКТИ + MP3) ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
-        let bgmOscillators = [];
-        let bgmGainNode;
-        let isMusicOn = false;
+        
+        // Фонова музика (MP3)
+        const bgMusicEl = document.getElementById('bg-music');
+        bgMusicEl.volume = 0.3; // Гучність музики 30% (щоб не заглушала ефекти)
 
         function initAudio() {
             if (!audioCtx) {
@@ -293,44 +298,54 @@
             }
         }
 
-        // Синтезатор звуків (пік, дзижчання, мелодії)
+        // Керування музикою
+        function toggleMusic() {
+            const btn = document.getElementById('music-toggle');
+            
+            if (bgMusicEl.paused) {
+                bgMusicEl.play().then(() => {
+                    btn.innerText = "🔊";
+                    btn.classList.add('active');
+                }).catch(e => {
+                    alert("Помилка! Перевір, чи є файл 'music.mp3' у папці з грою.");
+                    console.error(e);
+                });
+            } else {
+                bgMusicEl.pause();
+                btn.innerText = "🔇";
+                btn.classList.remove('active');
+            }
+        }
+
+        // Генератор SFX (залишаємо, щоб не качати зайві файли)
         function playTone(freq, type, duration, startTime = 0, vol = 0.1) {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
-            osc.type = type; // 'sine', 'square', 'sawtooth', 'triangle'
+            osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime + startTime);
-            
             gain.gain.setValueAtTime(vol, audioCtx.currentTime + startTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + startTime + duration);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            
             osc.start(audioCtx.currentTime + startTime);
             osc.stop(audioCtx.currentTime + startTime + duration);
         }
 
-        // --- ЕФЕКТИ ---
-        
         function sfxCorrect() {
             initAudio();
-            // Подвійний високий дзвін
             playTone(880, 'sine', 0.3, 0);       // A5
             playTone(1108, 'sine', 0.6, 0.1);    // C#6
         }
 
         function sfxWrong() {
             initAudio();
-            // Низький неприємний звук
             playTone(150, 'sawtooth', 0.4, 0, 0.15);
             playTone(140, 'sawtooth', 0.4, 0.1, 0.15);
         }
 
         function sfxCrystal() {
             initAudio();
-            // Магічне арпеджіо
             playTone(1318, 'sine', 0.5, 0);    // E6
             playTone(1661, 'sine', 0.5, 0.1);  // G#6
             playTone(1975, 'sine', 0.8, 0.2);  // B6
@@ -338,55 +353,11 @@
 
         function sfxWin() {
             initAudio();
-            // Фанфари
-            playTone(523, 'triangle', 0.5, 0);   // C5
-            playTone(659, 'triangle', 0.5, 0.2); // E5
-            playTone(783, 'triangle', 0.5, 0.4); // G5
-            playTone(1046, 'triangle', 2.0, 0.6, 0.3); // C6
+            playTone(523, 'triangle', 0.5, 0);   
+            playTone(659, 'triangle', 0.5, 0.2); 
+            playTone(783, 'triangle', 0.5, 0.4); 
+            playTone(1046, 'triangle', 2.0, 0.6, 0.3); 
         }
-
-        // --- ФОНОВА МУЗИКА (AMBIENT DRONE) ---
-        function toggleMusic() {
-            initAudio();
-            const btn = document.getElementById('music-toggle');
-            isMusicOn = !isMusicOn;
-
-            if (isMusicOn) {
-                btn.innerText = "🔊";
-                btn.classList.add('active');
-                startBGM();
-            } else {
-                btn.innerText = "🔇";
-                btn.classList.remove('active');
-                stopBGM();
-            }
-        }
-
-        function startBGM() {
-            if (bgmOscillators.length > 0) return; // Вже грає
-
-            // Створюємо "космічний гул" з двох низьких частот, які трохи розходяться
-            bgmGainNode = audioCtx.createGain();
-            bgmGainNode.gain.value = 0.03; // Дуже тихо
-            bgmGainNode.connect(audioCtx.destination);
-
-            const freqs = [100, 102, 150]; // Частоти акордів
-            
-            freqs.forEach(f => {
-                const osc = audioCtx.createOscillator();
-                osc.type = 'triangle';
-                osc.frequency.value = f;
-                osc.connect(bgmGainNode);
-                osc.start();
-                bgmOscillators.push(osc);
-            });
-        }
-
-        function stopBGM() {
-            bgmOscillators.forEach(osc => osc.stop());
-            bgmOscillators = [];
-        }
-
 
         // --- 2. ЛОГІКА ГРИ ---
         let targetNum = 0;
@@ -428,7 +399,7 @@
         }
 
         function addNum(n) {
-            initAudio(); // Ініціалізуємо аудіо при першому кліку
+            initAudio(); 
             if (currentInput.length >= 2) {
                 shake();
                 return;
@@ -460,19 +431,17 @@
             const difficulty = difficultySel.value;
 
             if (sum === targetNum) {
-                // ПРАВИЛЬНО
                 successEffect();
-                
                 let pairSorted = [...currentInput].sort((a,b) => a-b);
                 let pairStr = pairSorted.join('+');
                 let isDuplicate = foundPairs.includes(pairStr);
 
                 if (difficulty === 'easy') {
-                    sfxCorrect(); // Звук правильної відповіді
+                    sfxCorrect();
                     setTimeout(newRound, 1000);
                 } else {
                     if (!isDuplicate) {
-                        sfxCorrect(); // Звук правильної відповіді
+                        sfxCorrect();
                         foundPairs.push(pairStr);
                         renderProgress();
                         
@@ -489,9 +458,8 @@
                     }
                 }
             } else {
-                // НЕПРАВИЛЬНО
                 errorEffect();
-                sfxWrong(); // Звук помилки
+                sfxWrong();
             }
         }
 
@@ -535,7 +503,7 @@
 
         function giveCrystal() {
             if (crystals < maxCrystals) {
-                sfxCrystal(); // Звук отримання кристалу
+                sfxCrystal(); 
 
                 const slot = document.getElementById('c-slot-' + crystals);
                 slot.innerHTML = getCrystalIcon(targetNum);
@@ -545,7 +513,7 @@
 
                 if (crystals === maxCrystals) {
                     setTimeout(() => {
-                        sfxWin(); // Звук перемоги
+                        sfxWin(); 
                         winScreen.style.display = 'flex';
                     }, 800);
                 }
