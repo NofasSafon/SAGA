@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Володар Кристалів</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #2c3e50, #000000);
+            --gold: #ffd700;
+            --crystal-slot: rgba(255, 255, 255, 0.1);
+            --slot-filled: linear-gradient(45deg, #00c6ff, #0072ff);
+        }
+
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: var(--bg-gradient);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* --- ВЕРХНЯ ПАНЕЛЬ --- */
+        .top-bar {
+            padding: 10px;
+            background: rgba(0,0,0,0.6);
+            border-bottom: 2px solid #5d4037;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        select {
+            background: #fff;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            padding: 5px 15px;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* --- ІГРОВА ЗОНА --- */
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        h1 { margin: 5px 0; font-size: 1.2rem; color: #aaa; }
+        
+        .target-number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin: 0;
+            line-height: 1;
+        }
+
+        /* КАЗАНОК (ВІЗУАЛІЗАЦІЯ СУМИ) */
+        .cauldron {
+            width: 100px; height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 4px solid #00d2ff;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .cauldron.active { box-shadow: 0 0 30px #00d2ff; background: rgba(0, 210, 255, 0.2); }
+        .cauldron.error { border-color: #ff5252; animation: shake 0.4s; background: rgba(255, 82, 82, 0.2); }
+
+        /* --- СЛОТИ ПРОГРЕСУ (ДЛЯ "ВСІ ПАРИ") --- */
+        .progress-container {
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            width: 90%;
+        }
+
+        .pair-slot {
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed #666;
+            border-radius: 8px;
+            padding: 5px 10px;
+            min-width: 60px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pair-slot.found {
+            background: var(--slot-filled);
+            border: 1px solid #fff;
+            color: #fff;
+            font-weight: bold;
+            animation: popIn 0.5s;
+        }
+
+        /* --- КЛАВІАТУРА --- */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 95%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+
+        .num-btn {
+            background: linear-gradient(to bottom, #444, #222);
+            border: 1px solid #666;
+            color: #fff;
+            font-size: 24px;
+            border-radius: 10px;
+            height: 55px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #000;
+        }
+        .num-btn:active { transform: translateY(4px); box-shadow: none; }
+        .clear-btn { background: #b71c1c; border-color: #e53935; }
+
+        /* --- СКРИНЯ ДОСЯГНЕНЬ --- */
+        .chest-area {
+            background: rgba(0,0,0,0.8);
+            width: 100%;
+            padding: 10px 0;
+            border-top: 4px solid #8d6e63;
+        }
+        .chest-title { font-size: 12px; color: #8d6e63; text-transform: uppercase; margin-bottom: 5px; }
+        
+        .crystals-grid {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .crystal-slot {
+            width: 30px; height: 30px;
+            background: var(--crystal-slot);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid #444;
+        }
+        .crystal-slot.filled {
+            box-shadow: 0 0 10px currentColor;
+            animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Анімації */
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+        @keyframes popIn { 0%{transform:scale(0)} 80%{transform:scale(1.2)} 100%{transform:scale(1)} }
+        @keyframes dropIn { 0%{transform:translateY(-50px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+
+        /* Модальне вікно перемоги */
+        .win-modal {
+            display: none;
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .win-content { text-align: center; color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <select id="difficulty" onchange="resetGame()">
+            <option value="easy">⚡ Одна пара (Тренування)</option>
+            <option value="hard">💎 Всі пари (Збір кристалів)</option>
+        </select>
+    </div>
+
+    <div class="game-area">
+        <h1>Склад числа:</h1>
+        <div class="target-number" id="target">?</div>
+
+        <div class="cauldron" id="cauldron-display">0</div>
+
+        <div class="progress-container" id="progress-slots"></div>
+
+        <div class="keypad">
+            <button class="num-btn" onclick="addNum(1)">1</button>
+            <button class="num-btn" onclick="addNum(2)">2</button>
+            <button class="num-btn" onclick="addNum(3)">3</button>
+            <button class="num-btn" onclick="addNum(4)">4</button>
+            <button class="num-btn" onclick="addNum(5)">5</button>
+            <button class="num-btn clear-btn" onclick="clearInput()">C</button>
+            <button class="num-btn" onclick="addNum(6)">6</button>
+            <button class="num-btn" onclick="addNum(7)">7</button>
+            <button class="num-btn" onclick="addNum(8)">8</button>
+            <button class="num-btn" onclick="addNum(9)">9</button>
+        </div>
+    </div>
+
+    <div class="chest-area">
+        <div class="chest-title">Скриня кристалів (Потрібно 10)</div>
+        <div class="crystals-grid" id="crystal-chest">
+            </div>
+    </div>
+
+    <div class="win-modal" id="win-screen">
+        <div class="win-content">
+            <h1 style="font-size: 60px; margin:0;">🏆</h1>
+            <h2>ТИ ПЕРЕМІГ!</h2>
+            <p>Скриня повна кристалів!</p>
+            <button class="num-btn" style="padding: 10px 30px;" onclick="resetGame()">Грати ще раз</button>
+        </div>
+    </div>
+
+    <script>
+        // --- ЗМІННІ ---
+        let targetNum = 0;
+        let currentInput = []; // [1, 4]
+        let foundPairs = []; // ["1+4", "2+3"]
+        let crystals = 0;
+        const maxCrystals = 10;
+        
+        // Елементи DOM
+        const targetEl = document.getElementById('target');
+        const cauldronEl = document.getElementById('cauldron-display');
+        const progressEl = document.getElementById('progress-slots');
+        const chestEl = document.getElementById('crystal-chest');
+        const difficultySel = document.getElementById('difficulty');
+        const winScreen = document.getElementById('win-screen');
+
+        // --- СТАРТ ---
+        function initChest() {
+            chestEl.innerHTML = '';
+            for(let i=0; i<maxCrystals; i++) {
+                let d = document.createElement('div');
+                d.className = 'crystal-slot';
+                d.id = 'c-slot-'+i;
+                chestEl.appendChild(d);
+            }
+        }
+
+        function resetGame() {
+            crystals = 0;
+            initChest();
+            winScreen.style.display = 'none';
+            newRound();
+        }
+
+        function newRound() {
+            clearInput();
+            
+            // Генеруємо число від 4 до 10 (найцікавіші для розкладу)
+            // Виключаємо 1, 2, 3 бо там мало пар
+            targetNum = Math.floor(Math.random() * 7) + 4; 
+            targetEl.innerText = targetNum;
+
+            foundPairs = [];
+            renderProgress();
+        }
+
+        // --- ЛОГІКА ВВОДУ ---
+        function addNum(n) {
+            // Заборона більше 2 чисел
+            if (currentInput.length >= 2) {
+                shake();
+                return;
+            }
+
+            currentInput.push(n);
+            updateDisplay();
+
+            // Автоперевірка, коли введено 2 числа
+            if (currentInput.length === 2) {
+                setTimeout(checkResult, 300);
+            }
+        }
+
+        function clearInput() {
+            currentInput = [];
+            updateDisplay();
+            cauldronEl.classList.remove('active', 'error');
+        }
+
+        function updateDisplay() {
+            if (currentInput.length === 0) {
+                cauldronEl.innerText = "0";
+            } else {
+                cauldronEl.innerText = currentInput.join("+");
+            }
+        }
+
+        // --- ПЕРЕВІРКА ---
+        function checkResult() {
+            const sum = currentInput[0] + currentInput[1];
+            const difficulty = difficultySel.value;
+
+            if (sum === targetNum) {
+                // ПРАВИЛЬНО
+                successEffect();
+
+                // Сортуємо пару (щоб 1+4 і 4+1 були однаковими)
+                let pairSorted = [...currentInput].sort((a,b) => a-b);
+                let pairStr = pairSorted.join('+');
+
+                // Перевірка на дублікат
+                let isDuplicate = foundPairs.includes(pairStr);
+
+                if (difficulty === 'easy') {
+                    // ЛЕГКИЙ РЕЖИМ: Просто йдемо далі
+                    setTimeout(newRound, 1000);
+                } else {
+                    // СКЛАДНИЙ РЕЖИМ
+                    if (!isDuplicate) {
+                        foundPairs.push(pairStr);
+                        renderProgress();
+                        
+                        // Перевірка чи всі пари знайдено
+                        let totalPairsNeeded = Math.floor(targetNum / 2);
+                        if (foundPairs.length === totalPairsNeeded) {
+                            giveCrystal();
+                            setTimeout(newRound, 1500);
+                        } else {
+                            setTimeout(clearInput, 500);
+                        }
+                    } else {
+                        // Дублікат
+                        cauldronEl.innerText = "Вже є!";
+                        setTimeout(clearInput, 500);
+                    }
+                }
+            } else {
+                // НЕПРАВИЛЬНО
+                errorEffect();
+            }
+        }
+
+        function renderProgress() {
+            progressEl.innerHTML = '';
+            const difficulty = difficultySel.value;
+
+            if (difficulty === 'easy') {
+                progressEl.innerHTML = '<div style="color:#888; font-size:12px;">Знайди будь-яку пару</div>';
+                return;
+            }
+
+            // Рахуємо скільки унікальних пар існує для числа N
+            // Наприклад, для 5: (1,4), (2,3) -> 2 пари.
+            // Формула: floor(N / 2)
+            const totalPairs = Math.floor(targetNum / 2);
+
+            for (let i = 0; i < totalPairs; i++) {
+                let slot = document.createElement('div');
+                
+                // Якщо ця пара вже знайдена
+                if (foundPairs[i]) {
+                    slot.className = 'pair-slot found';
+                    slot.innerText = foundPairs[i];
+                } else {
+                    slot.className = 'pair-slot';
+                    slot.innerText = "? + ?";
+                }
+                progressEl.appendChild(slot);
+            }
+        }
+
+        // --- ЕФЕКТИ ТА НАГОРОДИ ---
+        function successEffect() {
+            cauldronEl.classList.add('active');
+        }
+
+        function errorEffect() {
+            cauldronEl.classList.add('error');
+            setTimeout(clearInput, 500);
+        }
+
+        function shake() {
+            cauldronEl.style.animation = 'shake 0.3s';
+            setTimeout(() => cauldronEl.style.animation = '', 300);
+        }
+
+        function giveCrystal() {
+            if (crystals < maxCrystals) {
+                const slot = document.getElementById('c-slot-' + crystals);
+                slot.innerHTML = getCrystalIcon(targetNum);
+                slot.style.color = getCrystalColor(targetNum);
+                slot.classList.add('filled');
+                crystals++;
+
+                if (crystals === maxCrystals) {
+                    setTimeout(() => {
+                        winScreen.style.display = 'flex';
+                    }, 500);
+                }
+            }
+        }
+
+        function getCrystalIcon(num) {
+            const icons = ['💎', '🔷', '🔶', '🟣', '🟢', '🔴'];
+            return icons[num % icons.length];
+        }
+        
+        function getCrystalColor(num) {
+            const colors = ['#00ffff', '#4488ff', '#ffaa00', '#aa00ff', '#00ff44', '#ff4444'];
+            return colors[num % colors.length];
+        }
+
+        // Старт
+        initChest();
+        newRound();
+
+    </script>
+</body>
+</html>
