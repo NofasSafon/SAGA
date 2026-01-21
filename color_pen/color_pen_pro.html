@@ -1,1 +1,631 @@
+ <!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Тінь ФарбоСвіту: Audio Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
+        :root {
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            position: relative;
+        }
+
+        /* Фонова анімація */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at center, #2c3e50, #000);
+            transition: background 1s ease;
+        }
+
+        /* --- UI Elements --- */
+        #ui-top {
+            width: 100%; max-width: 600px;
+            margin-bottom: 15px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Кнопка музики */
+        #music-toggle {
+            position: absolute;
+            right: 10px; top: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 20;
+        }
+
+        .soul-label {
+            display: flex; justify-content: space-between;
+            font-size: 12px; font-weight: 900; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 8px;
+            padding-right: 35px; /* Місце для кнопки */
+        }
+
+        #soul-bar-bg {
+            width: 100%; height: 8px;
+            background: rgba(0,0,0,0.5); border-radius: 10px;
+            position: relative; overflow: hidden;
+        }
+
+        #soul-fill {
+            height: 100%; width: 50%;
+            background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- ЕКРАН ГРИ --- */
+        #game-screen {
+            width: 100%; max-width: 600px;
+            height: 45vh; min-height: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            position: relative;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            transition: box-shadow 0.3s;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .shake-screen { animation: shake 0.5s; }
+
+        .scene {
+            display: flex; gap: 10%; align-items: center; z-index: 5;
+            margin-bottom: 60px;
+        }
+        .char {
+            font-size: 80px;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom center;
+        }
+        
+        .hero-mad { filter: drop-shadow(0 0 25px #ff4757); transform: scale(1.2) rotate(-5deg); }
+        .hero-happy { filter: drop-shadow(0 0 25px #2ed573); transform: scale(1.1) translateY(-10px); }
+        .enemy-scared { opacity: 0; transform: translateX(100px) rotate(180deg) scale(0.5); filter: blur(10px); }
+        .enemy-friend { transform: scale(1.2); filter: drop-shadow(0 0 20px gold); }
+
+        /* --- ТЕКСТ --- */
+        #story-box {
+            position: absolute; bottom: 20px; width: 90%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 15px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #story-text { font-size: 16px; line-height: 1.5; margin: 0; min-height: 24px;}
+        .cursor::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        #room-title {
+            position: absolute; top: 15px; 
+            color: rgba(255,255,255,0.5); 
+            font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        #history-icons {
+            position: absolute; top: 15px; left: 15px;
+            font-size: 18px; filter: grayscale(0.5);
+        }
+
+        /* --- КАРТКИ --- */
+        #interaction-panel {
+            width: 100%; max-width: 600px;
+            display: flex; justify-content: space-between; gap: 10px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            color: #fff; flex: 1; height: 130px;
+            border-radius: 16px; cursor: pointer;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative; overflow: hidden;
+        }
+        
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.1), transparent);
+            opacity: 0.5;
+        }
+
+        .card:active { transform: scale(0.95); box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); }
+        .card-icon { font-size: 40px; margin-bottom: 8px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .card-text { font-size: 13px; font-weight: 700; opacity: 0.9; }
+
+        .card.force { border-bottom: 4px solid #ff4757; }
+        .card.kind { border-bottom: 4px solid #2ed573; }
+        .card.smart { border-bottom: 4px solid #ffa502; }
+
+        #next-btn {
+            width: 100%; max-width: 600px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white; padding: 18px; font-size: 18px; font-weight: bold;
+            border: none; border-radius: 15px;
+            cursor: pointer; display: none; margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            text-transform: uppercase; letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* Overlay */
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white; text-align: center;
+        }
+        .start-btn {
+            padding: 15px 30px; font-size: 20px; background: #2ed573; color: white;
+            border: none; border-radius: 50px; cursor: pointer; margin-top: 20px;
+            font-family: inherit; font-weight: bold;
+            box-shadow: 0 0 20px #2ed573;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="start-overlay">
+        <h1>Тінь ФарбоСвіту</h1>
+        <p>Увімкніть звук для повного занурення 🎧</p>
+        <button class="start-btn" onclick="startGame()">ПОЧАТИ ГРУ</button>
+    </div>
+
+    <div id="ui-top">
+        <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+        <div class="soul-label">
+            <span style="color: #ff4757">☠️ Сила</span>
+            <span style="color: #2ed573">❤️ Доброта</span>
+        </div>
+        <div id="soul-bar-bg">
+            <div id="soul-fill"></div>
+        </div>
+    </div>
+
+    <div id="game-screen">
+        <div id="history-icons"></div>
+        <h2 id="room-title"></h2>
+
+        <div class="scene">
+            <div id="hero" class="char">😐</div>
+            <div id="enemy" class="char">🚪</div>
+        </div>
+
+        <div id="story-box">
+            <p id="story-text" class="cursor">Завантаження...</p>
+        </div>
+    </div>
+
+    <div id="interaction-panel"></div>
+    
+    <button id="next-btn" onclick="nextRoom()">Далі ➡</button>
+
+    <script>
+        // --- AUDIO ENGINE ---
+        const AudioFX = {
+            ctx: null,
+            bgNodes: [],
+            isMuted: false,
+            
+            init: function() {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+            },
+
+            // Ефекти (SFX)
+            playTone: function(freq, type, duration, vol = 0.1) {
+                if (!this.ctx || this.isMuted) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                
+                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            },
+            playBoom: function() {
+                this.playTone(80, 'sawtooth', 0.6, 0.2);
+                setTimeout(() => this.playTone(40, 'square', 0.6, 0.2), 50);
+            },
+            playChime: function() {
+                this.playTone(600, 'sine', 0.8, 0.05);
+                setTimeout(() => this.playTone(800, 'sine', 0.8, 0.05), 100);
+                setTimeout(() => this.playTone(1200, 'sine', 1.2, 0.03), 200);
+            },
+            playClick: function() {
+                this.playTone(400, 'triangle', 0.1, 0.05);
+            },
+            playSmart: function() {
+                this.playTone(300, 'sine', 0.3, 0.1);
+                setTimeout(() => this.playTone(450, 'sine', 0.5, 0.1), 100);
+            },
+
+            // Фонова музика (Procedural Dark Ambient)
+            startMusic: function() {
+                if (!this.ctx) return;
+                this.stopMusic(); // Очистити, якщо вже грає
+
+                const now = this.ctx.currentTime;
+                const masterGain = this.ctx.createGain();
+                masterGain.gain.setValueAtTime(0.03, now); // Дуже тихо (3%)
+                masterGain.connect(this.ctx.destination);
+
+                // Oscillator 1: Низький дрон
+                const osc1 = this.ctx.createOscillator();
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(55, now); // Нота A1
+
+                // Oscillator 2: Детьюн (створює вібрацію)
+                const osc2 = this.ctx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(56, now); 
+
+                // Oscillator 3: Повільна модуляція
+                const lfo = this.ctx.createOscillator();
+                lfo.type = 'sine';
+                lfo.frequency.setValueAtTime(0.1, now); // 0.1 Гц (дуже повільно)
+                
+                const lfoGain = this.ctx.createGain();
+                lfoGain.gain.value = 50; 
+                lfo.connect(lfoGain);
+                
+                // Фільтр для м'якості
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(300, now);
+                
+                // Підключення LFO до частоти фільтра (ефект дихання)
+                lfoGain.connect(filter.frequency);
+
+                // З'єднання
+                osc1.connect(filter);
+                osc2.connect(filter);
+                filter.connect(masterGain);
+
+                osc1.start();
+                osc2.start();
+                lfo.start();
+
+                // Зберігаємо посилання, щоб зупинити пізніше
+                this.bgNodes = [osc1, osc2, lfo, masterGain];
+            },
+
+            stopMusic: function() {
+                this.bgNodes.forEach(node => {
+                    try { node.stop(); } catch(e) {}
+                    try { node.disconnect(); } catch(e) {}
+                });
+                this.bgNodes = [];
+            },
+
+            toggleMute: function() {
+                if (this.bgNodes.length > 0) {
+                    this.stopMusic();
+                    this.isMuted = true;
+                    return true; // Тепер без звуку
+                } else {
+                    this.isMuted = false;
+                    this.startMusic();
+                    return false; // Тепер зі звуком
+                }
+            }
+        };
+
+        function toggleMusic() {
+            const isMuted = AudioFX.toggleMute();
+            const btn = document.getElementById('music-toggle');
+            btn.innerText = isMuted ? '🔇' : '🎵';
+        }
+
+        // --- PARTICLE SYSTEM ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 40; i++) particles.push(new Particle());
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // --- GAME DATA ---
+        const rooms = [
+            {
+                name: "Рівень 1: Стара Брама",
+                desc: "Твій друг за замкненими дверима. Чути шурхіт...",
+                bg: "radial-gradient(circle at center, #2c3e50, #000)",
+                hero: "😐", enemy: "🚪",
+                choices: [
+                    { type: "force", icon: "💣", title: "Вибух", res: "БА-БАХ! Тріски летять усюди!", val: -20 },
+                    { type: "kind", icon: "🗝️", title: "Ключ", res: "Клац... Механізм піддався.", val: 20 },
+                    { type: "smart", icon: "🧀", title: "Приманка", res: "Мишка прогризла прохід!", val: 5 }
+                ]
+            },
+            {
+                name: "Рівень 2: Плакучий Привид",
+                desc: "Привид завиває від самотності...",
+                bg: "radial-gradient(circle at center, #4834d4, #130f40)",
+                hero: "😨", enemy: "👻",
+                choices: [
+                    { type: "force", icon: "🔦", title: "Світло", res: "Привид розтанув з криком!", val: -20 },
+                    { type: "kind", icon: "🧸", title: "Друг", res: "Він обійняв іграшку і затих.", val: 20 },
+                    { type: "smart", icon: "📺", title: "Шоу", res: "Він задивився в екран.", val: 10 }
+                ]
+            },
+            {
+                name: "Рівень 3: Жадібний Гоблін",
+                desc: "Він перераховує монети і гарчить.",
+                bg: "radial-gradient(circle at center, #d35400, #2c1e10)",
+                hero: "🤔", enemy: "👺",
+                choices: [
+                    { type: "force", icon: "⚔️", title: "Атака", res: "Ти налякав його до гикавки!", val: -20 },
+                    { type: "kind", icon: "🍎", title: "Їжа", res: "Він з'їв і став добрим.", val: 20 },
+                    { type: "smart", icon: "💰", title: "Обмін", res: "Ви уклали вигідну угоду.", val: 10 }
+                ]
+            },
+            {
+                name: "Рівень 4: Дракон Сну",
+                desc: "Велетенський дракон хропе на шляху.",
+                bg: "radial-gradient(circle at center, #27ae60, #05240a)",
+                hero: "🤫", enemy: "🐲",
+                choices: [
+                    { type: "force", icon: "📢", title: "Гудок", res: "Він прокинувся і дихнув вогнем!", val: -30 },
+                    { type: "kind", icon: "🎻", title: "Колискова", res: "Він заснув ще міцніше.", val: 20 },
+                    { type: "smart", icon: "🍖", title: "М'ясо", res: "Він поїв уві сні і відсунувся.", val: 10 }
+                ]
+            }
+        ];
+
+        let currentRoom = 0;
+        let score = 50;
+        let inventory = [];
+
+        const ui = {
+            title: document.getElementById('room-title'),
+            text: document.getElementById('story-text'),
+            panel: document.getElementById('interaction-panel'),
+            hero: document.getElementById('hero'),
+            enemy: document.getElementById('enemy'),
+            screen: document.getElementById('game-screen'),
+            bar: document.getElementById('soul-fill'),
+            history: document.getElementById('history-icons'),
+            nextBtn: document.getElementById('next-btn'),
+            bgCanvas: document.getElementById('bg-canvas')
+        };
+
+        function startGame() {
+            document.getElementById('start-overlay').style.display = 'none';
+            AudioFX.init();
+            AudioFX.startMusic(); // Старт ембієнту
+            initParticles();
+            loadRoom(0);
+        }
+
+        function typeText(text, element) {
+            element.innerText = "";
+            element.classList.add('cursor');
+            let i = 0;
+            let speed = 30; 
+            function type() {
+                if (i < text.length) {
+                    element.innerText += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.remove('cursor');
+                }
+            }
+            type();
+        }
+
+        function loadRoom(idx) {
+            if (idx >= rooms.length) {
+                showFinal();
+                return;
+            }
+            
+            const r = rooms[idx];
+            ui.title.innerText = r.name;
+            typeText(r.desc, ui.text);
+            ui.bgCanvas.style.background = r.bg;
+            
+            ui.hero.className = "char";
+            ui.hero.innerText = r.hero;
+            ui.enemy.className = "char";
+            ui.enemy.innerText = r.enemy;
+            ui.enemy.style.opacity = 1;
+            ui.screen.classList.remove('shake-screen');
+            ui.screen.style.borderColor = "rgba(255,255,255,0.2)";
+
+            ui.nextBtn.style.display = "none";
+            ui.panel.style.display = "flex";
+            ui.panel.innerHTML = "";
+
+            r.choices.forEach(c => {
+                let card = document.createElement("div");
+                card.className = `card ${c.type}`;
+                card.onclick = () => makeChoice(c);
+                card.innerHTML = `
+                    <div class="card-icon">${c.icon}</div>
+                    <div class="card-text">${c.title}</div>
+                `;
+                ui.panel.appendChild(card);
+            });
+        }
+
+        function makeChoice(choice) {
+            score += choice.val;
+            if (score < 0) score = 0;
+            if (score > 100) score = 100;
+            ui.bar.style.width = score + "%";
+
+            typeText(choice.res, ui.text);
+            inventory.push(choice.icon);
+            let recentInventory = inventory.slice(-5);
+            ui.history.innerText = recentInventory.join(" ");
+
+            if (choice.type === "force") {
+                AudioFX.playBoom();
+                ui.hero.className = "char hero-mad";
+                ui.enemy.className = "char enemy-scared";
+                ui.screen.classList.add('shake-screen');
+                ui.screen.style.borderColor = "#ff4757";
+            } else if (choice.type === "kind") {
+                AudioFX.playChime();
+                ui.hero.className = "char hero-happy";
+                ui.enemy.className = "char enemy-friend";
+                ui.screen.style.borderColor = "#2ed573";
+            } else {
+                AudioFX.playSmart();
+                ui.enemy.style.opacity = 0.5;
+                ui.screen.style.borderColor = "#ffa502";
+            }
+
+            ui.panel.style.display = "none";
+            ui.nextBtn.style.display = "block";
+        }
+
+        function nextRoom() {
+            AudioFX.playClick();
+            currentRoom++;
+            loadRoom(currentRoom);
+        }
+
+        function showFinal() {
+            AudioFX.playChime();
+            ui.panel.style.display = "none";
+            ui.nextBtn.style.display = "none";
+            ui.hero.innerText = "🤴";
+            ui.enemy.innerText = "🙎‍♂️"; 
+            ui.enemy.className = "char";
+            ui.history.style.display = "none";
+
+            let title, msg, color;
+            if (score < 40) {
+                title = "Ти — Воїн Темряви!";
+                msg = "Всі тебе бояться. Друг врятований, але тремтить від твого погляду.";
+                color = "#ff4757";
+            } else if (score > 60) {
+                title = "Ти — Серце Світла!";
+                msg = "Монстри тепер твої друзі. Твоя доброта врятувала світ.";
+                color = "#2ed573";
+            } else {
+                title = "Ти — Майстер Розуму!";
+                msg = "Твій інтелект знайшов вихід з безнадійної ситуації!";
+                color = "#ffa502";
+            }
+
+            ui.title.innerText = "ФІНАЛ ІСТОРІЇ";
+            ui.text.innerHTML = `<span style="color:${color}; font-size:22px; font-weight:bold; text-shadow:0 0 10px ${color}">${title}</span><br><br>${msg}`;
+            
+            let restartBtn = document.createElement("button");
+            restartBtn.innerText = "🔄 Зіграти ще раз";
+            restartBtn.id = "next-btn";
+            restartBtn.style.display = "block";
+            restartBtn.style.background = color;
+            restartBtn.onclick = () => location.reload();
+            ui.panel.parentNode.appendChild(restartBtn);
+        }
+    </script>
+</body>
+</html>
