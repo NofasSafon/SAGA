@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>СилаВолія: Повна Пригода</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+        :root {
+            --primary: #ffd900;
+            --secondary: #0057b7;
+            --danger: #ff4757;
+            --kindness: #2ed573;
+            --dark: #2f3542;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #1e272e;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            user-select: none;
+            touch-action: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%; max-width: 600px;
+            height: 100%; max-height: 900px;
+            background: #000;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+        }
+
+        canvas {
+            display: block;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        /* --- UI LAYER --- */
+        #ui-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 10;
+        }
+
+        /* Top Bar */
+        #top-bar {
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            display: flex; justify-content: space-between;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        .stat { font-weight: 900; font-size: 16px; display: flex; align-items: center; gap: 5px; text-shadow: 1px 1px 0 #000; }
+
+        /* Dialog Box */
+        #dialog-box {
+            background: rgba(20, 25, 35, 0.95);
+            border-top: 4px solid var(--primary);
+            padding: 20px;
+            pointer-events: auto;
+            min-height: 25vh;
+            display: flex; flex-direction: column; gap: 10px;
+            transition: transform 0.3s;
+        }
+        .speaker-name { color: var(--primary); font-size: 14px; text-transform: uppercase; font-weight: bold; }
+        .dialog-text { font-size: 16px; line-height: 1.4; color: #dfe6e9; flex-grow: 1; }
+        
+        /* Buttons */
+        .choices-container { display: flex; gap: 10px; margin-top: 5px; }
+        .btn {
+            flex: 1; padding: 15px; border: none; border-radius: 12px;
+            font-family: inherit; font-weight: bold; font-size: 16px;
+            cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.95); box-shadow: none; transform: translateY(4px); }
+        .btn-power { background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; }
+        .btn-kind { background: linear-gradient(135deg, #7bed9f, #2ed573); color: #1e272e; }
+        .btn-next { background: var(--secondary); color: white; width: 100%; }
+
+        /* --- MINIGAME LAYERS --- */
+        #minigame-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 75%; /* До діалогу */
+            z-index: 20;
+            display: none;
+            align-items: center; justify-content: center;
+            pointer-events: auto;
+        }
+
+        /* Memory Game */
+        .memory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;}
+        .mem-btn {
+            width: 80px; height: 80px; border-radius: 20px; 
+            border: 4px solid rgba(255,255,255,0.2);
+            opacity: 0.5; transition: 0.2s;
+        }
+        .mem-btn.lit { opacity: 1; transform: scale(1.1); box-shadow: 0 0 30px currentColor; border-color: white; }
+
+        /* Riddle Game */
+        .riddle-box { background: white; color: #222; padding: 20px; border-radius: 15px; width: 80%; text-align: center; box-shadow: 0 10px 30px black; }
+        .riddle-eq { font-size: 28px; margin: 15px 0; font-weight: bold; }
+        .riddle-opts { display: flex; gap: 10px; justify-content: center; }
+        .riddle-btn { background: #333; color: white; padding: 10px 20px; border-radius: 8px; border:none; font-size: 20px; }
+
+        /* Boss Battle */
+        #boss-target {
+            position: absolute;
+            font-size: 60px;
+            cursor: pointer;
+            transition: top 0.2s, left 0.2s; /* Плавне переміщення */
+            filter: drop-shadow(0 0 10px red);
+            user-select: none;
+        }
+        .boss-timer {
+            position: absolute; top: 60px; font-size: 24px; font-weight: bold; color: var(--danger);
+            background: rgba(0,0,0,0.7); padding: 5px 15px; border-radius: 20px;
+        }
+
+        /* Screens */
+        #start-screen, #end-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 20, 30, 0.98); z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; pointer-events: auto; padding: 30px; box-sizing: border-box;
+        }
+        .hero-emojis { font-size: 60px; margin-bottom: 20px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Click Effect */
+        .click-fx {
+            position: absolute; pointer-events: none; font-size: 30px; 
+            animation: flyUp 0.6s forwards; z-index: 50;
+        }
+        @keyframes flyUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-50px) scale(1.5); } }
+
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="ui-layer">
+            <div id="top-bar">
+                <div class="stat" style="color:var(--danger)">⚔️ <span id="val-power">0</span></div>
+                <div class="stat" style="color:var(--kindness)">❤️ <span id="val-kind">0</span></div>
+            </div>
+
+            <div id="action-zone" style="flex-grow: 1; pointer-events: auto;" onclick="handleGlobalClick(event)"></div>
+
+            <div id="dialog-box">
+                <div>
+                    <div class="speaker-name" id="speaker">...</div>
+                    <div class="dialog-text" id="text"></div>
+                </div>
+                <div class="choices-container" id="choices"></div>
+            </div>
+        </div>
+
+        <div id="minigame-layer"></div>
+
+        <div id="start-screen">
+            <div class="hero-emojis">🐶🐱🦉</div>
+            <h1 style="color:var(--primary); margin:0;">СИЛА ВОЛІЯ</h1>
+            <h3 style="color:var(--secondary); margin-top:5px;">ПОВНА ПРИГОДА</h3>
+            <p style="color:#ccc; font-size:14px; max-width:300px;">
+                Рівень 1: Клікер<br>
+                Рівень 2: Пам'ять<br>
+                Рівень 3: Логіка<br>
+                Рівень 4: Реакція
+            </p>
+            <button class="btn btn-next" style="width:200px; margin-top:20px;" onclick="startGame()">ПОЧАТИ ГРУ</button>
+        </div>
+        
+        <div id="end-screen" style="display: none;">
+            <div class="hero-emojis" id="end-emoji">🏆</div>
+            <h1 id="end-title" style="color:white">ПЕРЕМОГА</h1>
+            <p id="end-desc" style="color:#ccc; margin-bottom:30px;"></p>
+            <button class="btn btn-next" style="width:200px;" onclick="location.reload()">НОВА ГРА</button>
+        </div>
+    </div>
+
+    <script>
+        // --- AUDIO SYSTEM ---
+        const AudioFX = {
+            ctx: null,
+            init: function() {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+            },
+            playTone: function(freq, type, dur, vol=0.1) {
+                if(!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + dur);
+            },
+            sfxClick: function() { this.playTone(600, 'triangle', 0.05, 0.05); },
+            sfxWin: function() { [400,500,600,800].forEach((f,i)=>setTimeout(()=>this.playTone(f,'sine',0.2,0.1), i*100)); },
+            sfxFail: function() { this.playTone(150, 'sawtooth', 0.5, 0.1); },
+            sfxBossHit: function() { this.playTone(100, 'square', 0.1, 0.1); }
+        };
+
+        // --- GAME CONTENT ---
+        const levels = [
+            {   // Рівень 1
+                name: "Школа", bg: "#2c3e50", enemy: "🔮",
+                steps: [
+                    { sp: "Луна 🦉", txt: "Фіне, твій іспит починається. Цей Артефакт спить вже 100 років." },
+                    { sp: "Краш 🐱", txt: "Він виглядає важким. Може просто штовхнути його?" },
+                    { sp: "Фін 🐶", txt: "Ні, йому потрібна енергія! (Тапай по екрану швидко!)", act: "clicker", target: 10 },
+                    { sp: "Система", txt: "Артефакт вібрує! Обери свій шлях:", choice: true,
+                      opts: [
+                          {t:"💥 Удар (Сила)", type:"power", res:"Ти вдарив по ньому! Він спалахнув.", eff:()=>addStat('p',20)},
+                          {t:"🙏 Прохання (Емпатія)", type:"kind", res:"Ти попросив, і він засяяв.", eff:()=>addStat('k',20)}
+                      ]}
+                ]
+            },
+            {   // Рівень 2
+                name: "Ліс", bg: "#05330e", enemy: "🌲",
+                steps: [
+                    { sp: "Їжачок 🦔", txt: "Ліс Шепотів став злим, бо я забув Пісню Радості..." },
+                    { sp: "Краш 🐱", txt: "Дивись на світлячків! Вони показують ритм!", act: "memory" },
+                    { sp: "Луна 🦉", txt: "Мелодія відновила джерело! Як вчинимо з Їжачком?", choice: true,
+                      opts: [
+                          {t:"⚡ Захистити", type:"power", res:"Ти став щитом для нього.", eff:()=>addStat('p',20)},
+                          {t:"🎶 Співати", type:"kind", res:"Ви заспівали разом!", eff:()=>addStat('k',20)}
+                      ]}
+                ]
+            },
+            {   // Рівень 3
+                name: "Місто", bg: "#6c5ce7", enemy: "👻",
+                steps: [
+                    { sp: "Тінь 👻", txt: "НаноПут наказав заблокувати прохід! Цей цукерковий код незламний!" },
+                    { sp: "Фін 🐶", txt: "Математика – це теж зброя. Я розв'яжу це.", act: "riddle" },
+                    { sp: "Тінь 👻", txt: "Неможливо... Мій код зруйновано!", choice: true,
+                      opts: [
+                          {t:"⚔️ Прогнати", type:"power", res:"Тінь втекла в жаху.", eff:()=>addStat('p',20)},
+                          {t:"🤝 Пробачити", type:"kind", res:"Тінь перейшла на наш бік.", eff:()=>addStat('k',20)}
+                      ]}
+                ]
+            },
+            {   // Рівень 4 (БОС)
+                name: "Фінал", bg: "#2d3436", enemy: "☁️",
+                steps: [
+                    { sp: "НаноПут ☁️", txt: "Ви прийшли дарма. Я поглину вашу радість!" },
+                    { sp: "Всі", txt: "Він занадто швидкий! Ловіть його! (Клікай по НаноПуту)", act: "boss" },
+                    { sp: "Система", txt: "НаноПут ослаб! Останній вибір долі:", choice: true,
+                      opts: [
+                          {t:"⛓️ Ув'язнити (Фінал Воїна)", type:"power", res:"END_POWER", eff:()=>addStat('p',50)},
+                          {t:"🌈 Розсмішити (Фінал Друга)", type:"kind", res:"END_KIND", eff:()=>addStat('k',50)}
+                      ]}
+                ]
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        const state = {
+            power: 0, kind: 0,
+            lvlIdx: 0, stepIdx: 0,
+            actType: null, actTarget: 0, actCurrent: 0,
+            // Mini-game specific
+            memSeq: [], memIdx: 0,
+            bossTimer: null, bossTimeLeft: 0
+        };
+
+        // --- VISUALS (CANVAS) ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [], enemyChar = "";
+
+        function resize() {
+            width = canvas.width = document.getElementById('game-container').offsetWidth;
+            height = canvas.height = document.getElementById('game-container').offsetHeight;
+        }
+        window.addEventListener('resize', resize); resize();
+
+        function render() {
+            // Background
+            ctx.fillStyle = levels[state.lvlIdx] ? levels[state.lvlIdx].bg : "#000";
+            ctx.fillRect(0,0,width,height);
+            
+            // Particles
+            if(Math.random()>0.9) particles.push({x:Math.random()*width, y:height, s:Math.random()*5, c:"rgba(255,255,255,0.3)"});
+            particles.forEach((p,i)=>{
+                p.y -= 2; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill();
+                if(p.y<0) particles.splice(i,1);
+            });
+
+            // Characters
+            let bounce = Math.sin(Date.now()/300)*10;
+            ctx.font = "80px Arial"; ctx.textAlign="center"; 
+            ctx.fillText("🐶", width/2-60, height/2+bounce);
+            ctx.font = "50px Arial";
+            ctx.fillText("🐱", width/2-110, height/2+30+bounce);
+            ctx.fillText("🦉", width/2-140, height/2-40+bounce);
+
+            if(enemyChar && state.actType !== 'boss') { // Hide enemy during boss fight (it's a DOM element)
+                let eb = Math.cos(Date.now()/250)*15;
+                ctx.font = "100px Arial";
+                ctx.fillText(enemyChar, width/2+80, height/2+eb);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // --- LOGIC FLOW ---
+        function startGame() {
+            AudioFX.init();
+            document.getElementById('start-screen').style.display = 'none';
+            state.lvlIdx = 0; state.stepIdx = 0;
+            loadStep(); render();
+        }
+
+        function loadStep() {
+            const lvl = levels[state.lvlIdx];
+            const step = lvl.steps[state.stepIdx];
+            
+            enemyChar = lvl.enemy;
+            document.getElementById('speaker').innerText = step.sp;
+            document.getElementById('text').innerText = step.txt;
+            document.getElementById('choices').innerHTML = "";
+            document.getElementById('minigame-layer').style.display = 'none';
+            document.getElementById('minigame-layer').innerHTML = ""; // Clear old games
+
+            state.actType = step.act || null;
+            state.actTarget = step.target || 0;
+            state.actCurrent = 0;
+
+            if (state.actType === 'clicker') {
+                document.getElementById('text').innerText += ` (0/${state.actTarget})`;
+            } 
+            else if (state.actType === 'memory') initMemoryGame();
+            else if (state.actType === 'riddle') initRiddleGame();
+            else if (state.actType === 'boss') initBossBattle();
+            else if (step.choice) {
+                step.opts.forEach(o => createBtn(o.t, `btn-${o.type}`, () => makeChoice(o)));
+            } else {
+                createBtn("ДАЛІ ▶", "btn-next", nextStep);
+            }
+        }
+
+        function createBtn(txt, cls, onClick) {
+            const btn = document.createElement('button');
+            btn.className = `btn ${cls}`; btn.innerText = txt; btn.onclick = onClick;
+            document.getElementById('choices').appendChild(btn);
+        }
+
+        function nextStep() {
+            AudioFX.sfxClick();
+            state.stepIdx++;
+            loadStep();
+        }
+
+        function addStat(type, val) {
+            if(type==='p') state.power += val; else state.kind += val;
+            document.getElementById('val-power').innerText = state.power;
+            document.getElementById('val-kind').innerText = state.kind;
+        }
+
+        function makeChoice(opt) {
+            opt.eff();
+            if(opt.res.includes("END")) return showEnd(opt.res);
+            document.getElementById('text').innerText = opt.res;
+            document.getElementById('choices').innerHTML = "";
+            createBtn("ПРОДОВЖИТИ ▶", "btn-next", () => {
+                state.lvlIdx++; state.stepIdx=0;
+                if(state.lvlIdx >= levels.length) showEnd("WIN"); else loadStep();
+            });
+        }
+
+        // --- LEVEL 1: CLICKER ---
+        function handleGlobalClick(e) {
+            if(state.actType !== 'clicker') return;
+            state.actCurrent++;
+            AudioFX.sfxClick();
+            showFx(e.clientX, e.clientY, "⚡");
+            
+            document.getElementById('text').innerText = 
+                levels[state.lvlIdx].steps[state.stepIdx].txt + ` (${state.actCurrent}/${state.actTarget})`;
+            
+            if(state.actCurrent >= state.actTarget) {
+                state.actType = null;
+                nextStep();
+            }
+        }
+
+        function showFx(x, y, char) {
+            const el = document.createElement('div'); el.className = 'click-fx';
+            el.innerText = char; el.style.left = x+'px'; el.style.top = y+'px';
+            document.body.appendChild(el); setTimeout(()=>el.remove(), 600);
+        }
+
+        // --- LEVEL 2: MEMORY ---
+        function initMemoryGame() {
+            const layer = document.getElementById('minigame-layer');
+            layer.style.display = 'flex';
+            layer.innerHTML = `
+                <div class="memory-grid">
+                    <div id="m0" class="mem-btn" style="background:#ff4757" onclick="memClick(0)"></div>
+                    <div id="m1" class="mem-btn" style="background:#2ed573" onclick="memClick(1)"></div>
+                    <div id="m2" class="mem-btn" style="background:#3742fa" onclick="memClick(2)"></div>
+                    <div id="m3" class="mem-btn" style="background:#ffa502" onclick="memClick(3)"></div>
+                </div>`;
+            
+            state.memSeq = [0, 2, 1, 3];
+            state.memIdx = 0;
+            
+            let i=0;
+            const iv = setInterval(()=>{
+                if(i>=state.memSeq.length) { clearInterval(iv); return; }
+                flashMem(state.memSeq[i]); i++;
+            }, 800);
+        }
+
+        function flashMem(id) {
+            const el = document.getElementById('m'+id);
+            el.classList.add('lit'); AudioFX.playTone(300+id*100, 'sine', 0.2);
+            setTimeout(()=>el.classList.remove('lit'), 400);
+        }
+
+        window.memClick = (id) => {
+            flashMem(id);
+            if(id === state.memSeq[state.memIdx]) {
+                state.memIdx++;
+                if(state.memIdx >= state.memSeq.length) {
+                    setTimeout(()=>{ AudioFX.sfxWin(); nextStep(); }, 500);
+                }
+            } else {
+                AudioFX.sfxFail(); state.memIdx = 0; // Reset
+            }
+        }
+
+        // --- LEVEL 3: RIDDLE ---
+        function initRiddleGame() {
+            const layer = document.getElementById('minigame-layer');
+            layer.style.display = 'flex';
+            layer.innerHTML = `
+                <div class="riddle-box">
+                    <div class="riddle-eq">🍭 + 🍭 = 12</div>
+                    <div class="riddle-eq">🍭 - 🍬 = 2</div>
+                    <div class="riddle-eq">🍬 = ?</div>
+                    <div class="riddle-opts">
+                        <button class="riddle-btn" onclick="chkRiddle(4)">4</button>
+                        <button class="riddle-btn" onclick="chkRiddle(6)">6</button>
+                        <button class="riddle-btn" onclick="chkRiddle(2)">2</button>
+                    </div>
+                </div>`;
+        }
+        window.chkRiddle = (ans) => {
+            // 🍭=6, 6-🍬=2 => 🍬=4
+            if(ans === 4) { AudioFX.sfxWin(); nextStep(); } 
+            else { AudioFX.sfxFail(); alert("Спробуй ще!"); }
+        }
+
+        // --- LEVEL 4: BOSS BATTLE (Whac-A-Mole) ---
+        function initBossBattle() {
+            const layer = document.getElementById('minigame-layer');
+            layer.style.display = 'block'; // Block allows absolute positioning inside
+            state.actCurrent = 0;
+            state.actTarget = 10;
+            state.bossTimeLeft = 15;
+            
+            layer.innerHTML = `<div class="boss-timer" id="boss-timer">15.00</div>`;
+            
+            const boss = document.createElement('div');
+            boss.id = 'boss-target';
+            boss.innerText = "☁️";
+            boss.onclick = hitBoss;
+            layer.appendChild(boss);
+            
+            moveBoss();
+
+            if(state.bossTimer) clearInterval(state.bossTimer);
+            state.bossTimer = setInterval(() => {
+                state.bossTimeLeft -= 0.1;
+                document.getElementById('boss-timer').innerText = state.bossTimeLeft.toFixed(2);
+                if(state.bossTimeLeft <= 0) {
+                    clearInterval(state.bossTimer);
+                    alert("НаноПут втік! Спробуй ще раз.");
+                    initBossBattle(); // Restart
+                }
+            }, 100);
+        }
+
+        function moveBoss() {
+            const boss = document.getElementById('boss-target');
+            // Random pos within 80% of layer
+            const x = Math.random() * 80 + 10; 
+            const y = Math.random() * 60 + 10;
+            boss.style.left = x + '%';
+            boss.style.top = y + '%';
+        }
+
+        window.hitBoss = (e) => {
+            e.stopPropagation(); // Stop bubbling
+            AudioFX.sfxBossHit();
+            state.actCurrent++;
+            showFx(e.clientX, e.clientY, "💥");
+            
+            if(state.actCurrent >= state.actTarget) {
+                clearInterval(state.bossTimer);
+                document.getElementById('boss-target').remove();
+                nextStep();
+            } else {
+                moveBoss();
+            }
+        }
+
+        // --- ENDING ---
+        function showEnd(type) {
+            const scr = document.getElementById('end-screen');
+            scr.style.display = 'flex';
+            const title = document.getElementById('end-title');
+            const desc = document.getElementById('end-desc');
+            const emoji = document.getElementById('end-emoji');
+            
+            AudioFX.sfxWin();
+
+            if(type === "END_POWER") {
+                title.innerText = "ВАРТОВІ СИЛИ";
+                desc.innerText = "Ви закували НаноПута в кайдани. Спокій повернувся, але ціною свободи. (Шлях Воїна)";
+                emoji.innerText = "🛡️";
+                document.body.style.background = "#2d3436";
+            } else {
+                title.innerText = "ГЕРОЇ РАДОСТІ";
+                desc.innerText = "Сміх розвіяв темряву! НаноПут став доброю хмаринкою. Світ сяє! (Шлях Дружби)";
+                emoji.innerText = "🌈";
+                document.body.style.background = "#fd79a8";
+            }
+        }
+
+    </script>
+</body>
+</html>
