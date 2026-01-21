@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Тінь ФарбоСвіту: Audio Edition</title>
+    <title>Тінь ФарбоСвіту: MP3 Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
@@ -54,7 +54,6 @@
             position: relative;
         }
 
-        /* Кнопка музики */
         #music-toggle {
             position: absolute;
             right: 10px; top: 10px;
@@ -73,7 +72,7 @@
             display: flex; justify-content: space-between;
             font-size: 12px; font-weight: 900; letter-spacing: 1px;
             text-transform: uppercase; margin-bottom: 8px;
-            padding-right: 35px; /* Місце для кнопки */
+            padding-right: 35px;
         }
 
         #soul-bar-bg {
@@ -223,6 +222,11 @@
 </head>
 <body>
 
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        <source src="music.ogg" type="audio/ogg">
+    </audio>
+
     <canvas id="bg-canvas"></canvas>
 
     <div id="start-overlay">
@@ -264,25 +268,24 @@
         // --- AUDIO ENGINE ---
         const AudioFX = {
             ctx: null,
-            bgNodes: [],
-            isMuted: false,
+            musicElement: null,
             
             init: function() {
                 window.AudioContext = window.AudioContext || window.webkitAudioContext;
                 this.ctx = new AudioContext();
+                this.musicElement = document.getElementById('bg-music');
+                this.musicElement.volume = 0.3; // Гучність музики (30%)
             },
 
-            // Ефекти (SFX)
+            // Ефекти (SFX) залишаємо кодом, щоб не вантажити купу файлів
             playTone: function(freq, type, duration, vol = 0.1) {
-                if (!this.ctx || this.isMuted) return;
+                if (!this.ctx) return;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                
                 gain.gain.setValueAtTime(vol, this.ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
-
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
@@ -305,73 +308,22 @@
                 setTimeout(() => this.playTone(450, 'sine', 0.5, 0.1), 100);
             },
 
-            // Фонова музика (Procedural Dark Ambient)
+            // Управління MP3
             startMusic: function() {
-                if (!this.ctx) return;
-                this.stopMusic(); // Очистити, якщо вже грає
-
-                const now = this.ctx.currentTime;
-                const masterGain = this.ctx.createGain();
-                masterGain.gain.setValueAtTime(0.03, now); // Дуже тихо (3%)
-                masterGain.connect(this.ctx.destination);
-
-                // Oscillator 1: Низький дрон
-                const osc1 = this.ctx.createOscillator();
-                osc1.type = 'triangle';
-                osc1.frequency.setValueAtTime(55, now); // Нота A1
-
-                // Oscillator 2: Детьюн (створює вібрацію)
-                const osc2 = this.ctx.createOscillator();
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(56, now); 
-
-                // Oscillator 3: Повільна модуляція
-                const lfo = this.ctx.createOscillator();
-                lfo.type = 'sine';
-                lfo.frequency.setValueAtTime(0.1, now); // 0.1 Гц (дуже повільно)
-                
-                const lfoGain = this.ctx.createGain();
-                lfoGain.gain.value = 50; 
-                lfo.connect(lfoGain);
-                
-                // Фільтр для м'якості
-                const filter = this.ctx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(300, now);
-                
-                // Підключення LFO до частоти фільтра (ефект дихання)
-                lfoGain.connect(filter.frequency);
-
-                // З'єднання
-                osc1.connect(filter);
-                osc2.connect(filter);
-                filter.connect(masterGain);
-
-                osc1.start();
-                osc2.start();
-                lfo.start();
-
-                // Зберігаємо посилання, щоб зупинити пізніше
-                this.bgNodes = [osc1, osc2, lfo, masterGain];
-            },
-
-            stopMusic: function() {
-                this.bgNodes.forEach(node => {
-                    try { node.stop(); } catch(e) {}
-                    try { node.disconnect(); } catch(e) {}
-                });
-                this.bgNodes = [];
+                if (this.musicElement) {
+                    this.musicElement.play().catch(e => {
+                        console.log("Автозапуск музики заблоковано, чекаємо взаємодії:", e);
+                    });
+                }
             },
 
             toggleMute: function() {
-                if (this.bgNodes.length > 0) {
-                    this.stopMusic();
-                    this.isMuted = true;
-                    return true; // Тепер без звуку
+                if (this.musicElement.paused) {
+                    this.musicElement.play();
+                    return false; // Грає (не зам'ючено)
                 } else {
-                    this.isMuted = false;
-                    this.startMusic();
-                    return false; // Тепер зі звуком
+                    this.musicElement.pause();
+                    return true; // Пауза (зам'ючено)
                 }
             }
         };
@@ -496,7 +448,7 @@
         function startGame() {
             document.getElementById('start-overlay').style.display = 'none';
             AudioFX.init();
-            AudioFX.startMusic(); // Старт ембієнту
+            AudioFX.startMusic();
             initParticles();
             loadRoom(0);
         }
