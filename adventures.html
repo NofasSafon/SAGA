@@ -3,144 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Історії СилаВолії: Перемога Радості та Дружби</title>
-
+    <meta name="description" content="Пригоди Фіна, Краша і Луни — казкові історії де радість, дружба та доброта перемагають.">
+    <title>Пригоди СилаВолії: Перемога Радості та Дружби</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="adventures-header section">
-        <div class="container">
-            <h1>ПРИГОДИ, ЩО РОЗКРИВАЮТЬ ГОЛОВНУ ІДЕЮ</h1>
-            <p style="font-size: 1.3em;">
-                Кожна історія — це битва на силу емоцій, де радість, дружба та доброта завжди перемагають.
-            </p>
-        </div>
-    </header>
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">Головна</a></li>
+            <li><a href="heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="adventures.html" class="nav-link active">Пригоди</a></li>
+            <li><a href="world.html" class="nav-link">Світ</a></li>
+            <li><a href="school.html" class="nav-link">Школа</a></li>
+            <li><a href="shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <section class="adventure-catalogue">
-        <div class="container">
-            <h2>Архів Світу СилаВолії</h2>
-            
-            <div class="adventure-grid">
-                
-				<div class="card story-card">
-                    <img src="img/adv00.jpg" alt="Таємниця сірого туману" class="story-image">
-                    <h3>Подорож крізь СилаВолію</h3>
-                    <div><span class="conflict-tag">Конфлікт: Небезпека	(Демон НаноПут)</span></div>
-                    <p>
-                        Фін, Краш і Луна - маленькі оберіги великої країни.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong> Тільки серце, сповнене віри, знайде дорогу.
-                    </div>
-                    <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
-                </div>
-				
-                <div class="card story-card">
-                    <img src="img/adv01.jpg" alt="Таємниця сірого туману" class="story-image">
-                    <h3>Таємниця сірого туману</h3>
-                    <div><span class="conflict-tag">Конфлікт: Смуток </span></div>
-                    <p>
-                        Фін, Краш і Луна стикаються з першою великою загрозою, вчаться використовувати веселковий дим, дзвін радості та мудрість разом.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong> Навіть найменша радість перемагає найбільший смуток.
-                    </div>
-                    <a href="stor/story00.pdf" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
-                </div>
+<header class="adventures-header section">
+    <div class="container">
+        <h1>ПРИГОДИ, ЩО РОЗКРИВАЮТЬ ГОЛОВНУ ІДЕЮ</h1>
+        <p style="font-size: 1.3em;">
+            Кожна історія — це битва на силу емоцій, де радість, дружба та доброта завжди перемагають.
+        </p>
+    </div>
+</header>
 
-                <div class="card story-card">
-                    <img src="img/adv02.jpg" alt="Цукерковий будинок" class="story-image">
-                    <h3>Місто Солодких Мрій</h3>
-                    <div><span class="conflict-tag">Конфлікт: Егоїзм (Тінь Сум)</span></div>
-                    <p>
-                        Герої вирушають до міста, збудованого з льодяників, щоб повернути вкрадені мрії. Вони дізнаються, що щастя має бути спільним.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong> Щастям не можна володіти, ним можна лише ділитися.
-                    </div>
-                    <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
-                </div>
+<section class="adventure-catalogue">
+    <div class="container">
+        <h2>Архів Світу СилаВолії</h2>
+        <div class="adventure-grid">
 
-                <div class="card story-card">
-                    <img src="img/adv03.jpg" alt="Сонні Жучки" class="story-image">
-                    <h3>Таємниця Зниклих Зірок</h3>
-                    <div><span class="conflict-tag">Конфлікт: Неусвідомлена шкода</span></div>
-                    <p>
-                        Подорож на Небесні Хмари, де мешкають Сонні Жучки. Герої з'ясовують, як їхні власні дії впливають на світ.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong> Твої мрії та дії впливають на інших.
-                    </div>
-                    <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
+            <div class="card story-card">
+                <img src="img/adv00.jpg" alt="Подорож крізь СилаВолію" class="story-image" loading="lazy">
+                <h3>Подорож крізь СилаВолію</h3>
+                <div><span class="conflict-tag">Конфлікт: Небезпека (Демон НаноПут)</span></div>
+                <p>Фін, Краш і Луна — маленькі обереги великої країни.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Тільки серце, сповнене віри, знайде дорогу.
                 </div>
-                
-                <div class="card story-card">
-                    <img src="img/adv04.jpg" alt="Павук і веселка" class="story-image">
-                    <h3>Дерево Кольорових Мрій</h3>
-                    <div><span class="conflict-tag">Конфлікт: Жадібність</span></div>
-                    <p>
-                        Пригода в Лісі Шепотів, де герої протистоять жадібності, яка загрожує поглинути всі кольори світу.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong> Мрії стають яскравішими, коли ними ділишся.
-                    </div>
-                    <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
-                </div>
-				
-				<div class="card story-card">
-                    <img src="img/adv05.jpg" alt="Їжачок" class="story-image">
-                    <h3>Подорож до Джерела Музики</h3>
-                    <div><span class="conflict-tag">Конфлікт: Самотність </span></div>
-                    <p>
-                        Друзі доводять - іноді найтихіша мелодія, розділена з друзями, є найпрекраснішою.
-                    </p>
-                    <div class="moral-lesson">
-                        <strong>Урок:</strong>Найвеличніша магія - це доброта, якою ти ділишся.
-                    </div>
-                    <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
-                </div>
-
+                <a href="stor/story00.html" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ</a>
             </div>
-        </div>
-    </section>
 
-    <section class="announcement-section">
-        <div class="container">
-            <h2>Скоро на сайті: Нові Битви за Мрії!</h2>
-            <p>Наш всесвіт постійно розширюється, готуючи десятки нових пригод, які допоможуть героям рости:</p>
-            
-            <ul class="announcement-list">
-                <li>
-                    <strong>Місто Заводних Сердець</strong>
-                    Історія про боротьбу не зі смутком, а з емоційною порожнечею та рутиною.
-                </li>
-                <li>
-                    <strong>Дзеркальне Озеро</strong>
-                    Пригода, де герої борються не із зовнішнім ворогом, а з власними внутрішніми страхами.
-                </li>
-                <li>
-                    <strong>Садівник Сумних Дурниць</strong>
-                    Дослідження ідеї про те, що всі емоції, навіть меланхолія, мають свою красу та цінність.
-                </li>
-            </ul>
-        </div>
-		 <div style="text-align: center; margin-top: 40px;">
-                <a href="index.html" class="cta-button" style="background-color: #999;">СИЛАВОЛІЯ ↑</a>
+            <div class="card story-card">
+                <img src="img/adv01.jpg" alt="Таємниця сірого туману" class="story-image" loading="lazy">
+                <h3>Таємниця сірого туману</h3>
+                <div><span class="conflict-tag">Конфлікт: Смуток</span></div>
+                <p>Фін, Краш і Луна стикаються з першою великою загрозою, вчаться використовувати веселковий дим, дзвін радості та мудрість разом.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Навіть найменша радість перемагає найбільший смуток.
+                </div>
+                <a href="stor/story00.pdf" class="cta-button" style="font-size: 1.2em;">ЧИТАТИ ПРИГОДУ (PDF)</a>
             </div>
-    </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 СилаВолії. Світ, що живиться дитячим сміхом та мріями.</p>
+            <div class="card story-card story-coming-soon">
+                <img src="img/adv02.jpg" alt="Місто Солодких Мрій" class="story-image" loading="lazy">
+                <div class="soon-badge">Незабаром</div>
+                <h3>Місто Солодких Мрій</h3>
+                <div><span class="conflict-tag">Конфлікт: Егоїзм (Тінь Сум)</span></div>
+                <p>Герої вирушають до міста, збудованого з льодяників, щоб повернути вкрадені мрії. Вони дізнаються, що щастя має бути спільним.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Щастям не можна володіти, ним можна лише ділитися.
+                </div>
+                <span class="cta-button cta-soon">НЕЗАБАРОМ</span>
+            </div>
+
+            <div class="card story-card story-coming-soon">
+                <img src="img/adv03.jpg" alt="Таємниця Зниклих Зірок" class="story-image" loading="lazy">
+                <div class="soon-badge">Незабаром</div>
+                <h3>Таємниця Зниклих Зірок</h3>
+                <div><span class="conflict-tag">Конфлікт: Неусвідомлена шкода</span></div>
+                <p>Подорож на Небесні Хмари, де мешкають Сонні Жучки. Герої з'ясовують, як їхні власні дії впливають на світ.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Твої мрії та дії впливають на інших.
+                </div>
+                <span class="cta-button cta-soon">НЕЗАБАРОМ</span>
+            </div>
+
+            <div class="card story-card story-coming-soon">
+                <img src="img/adv04.jpg" alt="Дерево Кольорових Мрій" class="story-image" loading="lazy">
+                <div class="soon-badge">Незабаром</div>
+                <h3>Дерево Кольорових Мрій</h3>
+                <div><span class="conflict-tag">Конфлікт: Жадібність</span></div>
+                <p>Пригода в Лісі Шепотів, де герої протистоять жадібності, яка загрожує поглинути всі кольори світу.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Мрії стають яскравішими, коли ними ділишся.
+                </div>
+                <span class="cta-button cta-soon">НЕЗАБАРОМ</span>
+            </div>
+
+            <div class="card story-card story-coming-soon">
+                <img src="img/adv05.jpg" alt="Подорож до Джерела Музики" class="story-image" loading="lazy">
+                <div class="soon-badge">Незабаром</div>
+                <h3>Подорож до Джерела Музики</h3>
+                <div><span class="conflict-tag">Конфлікт: Самотність</span></div>
+                <p>Друзі доводять — іноді найтихіша мелодія, розділена з друзями, є найпрекраснішою.</p>
+                <div class="moral-lesson">
+                    <strong>Урок:</strong> Найвеличніша магія — це доброта, якою ти ділишся.
+                </div>
+                <span class="cta-button cta-soon">НЕЗАБАРОМ</span>
+            </div>
+
         </div>
-    </footer>
+    </div>
+</section>
 
+<section class="announcement-section">
+    <div class="container">
+        <h2>Скоро на сайті: Нові Битви за Мрії!</h2>
+        <p>Наш всесвіт постійно розширюється, готуючи десятки нових пригод, які допоможуть героям рости:</p>
+        <ul class="announcement-list">
+            <li>
+                <strong>Місто Заводних Сердець</strong>
+                Історія про боротьбу не зі смутком, а з емоційною порожнечею та рутиною.
+            </li>
+            <li>
+                <strong>Дзеркальне Озеро</strong>
+                Пригода, де герої борються не із зовнішнім ворогом, а з власними внутрішніми страхами.
+            </li>
+            <li>
+                <strong>Садівник Сумних Дурниць</strong>
+                Дослідження ідеї про те, що всі емоції, навіть меланхолія, мають свою красу та цінність.
+            </li>
+        </ul>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="shop.html" class="cta-button">📖 ЗАМОВИТИ КНИГУ</a>
+            <a href="index.html" class="cta-button secondary" style="background-color: #999;">СИЛАВОЛІЯ ↑</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 СилаВолія. Світ, що живиться дитячим сміхом та мріями.</p>
+    </div>
+</footer>
+
+<script>
+const nav = document.getElementById('site-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+document.getElementById('nav-burger').addEventListener('click', () =>
+    document.getElementById('nav-links').classList.toggle('open'));
+</script>
 </body>
-
 </html>
-
-
-

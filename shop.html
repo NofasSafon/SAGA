@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Книжкова Крамниця СилаВолії — Друковані Пригоди</title>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --joy: #ff6b9d;
+    --joy-light: #ffd6e7;
+    --sun: #ffb347;
+    --sun-light: #fff0d4;
+    --mint: #56c596;
+    --mint-light: #d4f5e9;
+    --sky: #5ba4d8;
+    --sky-light: #daeeff;
+    --lavender: #a78bfa;
+    --lavender-light: #ede9fe;
+    --coral: #ff7c5c;
+    --parchment: #fdf6e3;
+    --ink: #3a2a1a;
+    --ink-soft: #6b4f3a;
+    --cream: #fffbf4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Pangolin', cursive;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  .shop-header {
+    background: linear-gradient(135deg, #fff0d4 0%, #ffd6e7 40%, #daeeff 100%);
+    padding: 0 0 40px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px dashed var(--joy);
+  }
+
+  .header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(6px);
+    border-bottom: 2px solid rgba(255,107,157,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--joy);
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    background: var(--joy);
+    color: white;
+  }
+
+  .cart-btn {
+    position: relative;
+    background: var(--joy);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cart-btn:hover { transform: scale(1.05); background: #e0527a; }
+
+  .cart-badge {
+    background: var(--sun);
+    color: var(--ink);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7em;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    transition: transform 0.3s;
+  }
+
+  .cart-badge.bump { animation: bump 0.3s ease; }
+
+  @keyframes bump {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+  }
+
+  /* Header content */
+  .header-content {
+    text-align: center;
+    padding: 40px 20px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-eyebrow {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.4em;
+    color: var(--coral);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .header-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 3.8em;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .header-title span { color: var(--joy); }
+
+  .header-subtitle {
+    font-size: 1.15em;
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+
+  .trio-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 2em;
+  }
+
+  /* Floating decorations */
+  .floater {
+    position: absolute;
+    opacity: 0.18;
+    font-size: 3em;
+    animation: float 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .floater:nth-child(1) { top: 20%; left: 5%;  animation-delay: 0s; }
+  .floater:nth-child(2) { top: 60%; left: 8%;  animation-delay: 1s; }
+  .floater:nth-child(3) { top: 30%; right: 5%; animation-delay: 0.5s; }
+  .floater:nth-child(4) { top: 65%; right: 7%; animation-delay: 1.5s; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-14px) rotate(5deg); }
+  }
+
+  /* ===== FILTERS ===== */
+  .filters-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 28px 20px;
+    background: white;
+    border-bottom: 2px solid var(--joy-light);
+  }
+
+  .filter-btn {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.25em;
+    font-weight: 700;
+    padding: 8px 22px;
+    border-radius: 30px;
+    border: 2px solid var(--joy-light);
+    background: white;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover { border-color: var(--joy); color: var(--joy); }
+  .filter-btn.active { background: var(--joy); color: white; border-color: var(--joy); }
+
+  /* ===== GRID ===== */
+  .catalogue-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 30px 80px;
+  }
+
+  .section-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .section-title span { color: var(--joy); }
+
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  /* ===== BOOK CARD ===== */
+  .book-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(58,42,26,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid transparent;
+  }
+
+  .book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(58,42,26,0.15);
+    border-color: var(--joy-light);
+  }
+
+  .book-card.soon {
+    opacity: 0.75;
+  }
+
+  .book-card.soon:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Book cover mockup */
+  .book-cover {
+    position: relative;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cover-visual {
+    width: 160px;
+    height: 220px;
+    border-radius: 4px 12px 12px 4px;
+    position: relative;
+    box-shadow: -6px 6px 20px rgba(0,0,0,0.25), inset -3px 0 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    transition: transform 0.3s;
+    z-index: 2;
+  }
+
+  .book-card:hover .cover-visual {
+    transform: rotate(2deg) scale(1.04);
+  }
+
+  /* Spine illusion */
+  .cover-visual::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 14px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .cover-emoji { font-size: 2.8em; }
+
+  .cover-book-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    line-height: 1.2;
+  }
+
+  .cover-book-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72em;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Cover bg colors per book */
+  .cover-0 { background: linear-gradient(145deg, #ff6b9d, #ff9ec4); }
+  .cover-1 { background: linear-gradient(145deg, #5ba4d8, #85c5f0); }
+  .cover-2 { background: linear-gradient(145deg, #ffb347, #ffcc7a); }
+  .cover-3 { background: linear-gradient(145deg, #56c596, #8ae5be); }
+  .cover-4 { background: linear-gradient(145deg, #a78bfa, #c4b0ff); }
+  .cover-5 { background: linear-gradient(145deg, #ff7c5c, #ffa48a); }
+
+  .cover-bg-0 { background: linear-gradient(180deg, #ffd6e7 0%, #fff0f6 100%); }
+  .cover-bg-1 { background: linear-gradient(180deg, #daeeff 0%, #f0f8ff 100%); }
+  .cover-bg-2 { background: linear-gradient(180deg, #fff0d4 0%, #fffbf4 100%); }
+  .cover-bg-3 { background: linear-gradient(180deg, #d4f5e9 0%, #f0fdf6 100%); }
+  .cover-bg-4 { background: linear-gradient(180deg, #ede9fe 0%, #f8f6ff 100%); }
+  .cover-bg-5 { background: linear-gradient(180deg, #ffe4dd 0%, #fff5f2 100%); }
+
+  /* Shadow book behind */
+  .book-shadow {
+    position: absolute;
+    width: 150px;
+    height: 210px;
+    border-radius: 4px 12px 12px 4px;
+    background: rgba(0,0,0,0.08);
+    transform: translate(8px, 8px);
+    z-index: 1;
+  }
+
+  /* Badge */
+  .badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.1em;
+    font-weight: 700;
+    z-index: 3;
+  }
+
+  .badge-new { background: var(--mint); color: white; }
+  .badge-soon { background: var(--lavender); color: white; }
+  .badge-hit { background: var(--sun); color: var(--ink); }
+
+  /* Card body */
+  .card-body {
+    padding: 20px 22px 22px;
+  }
+
+  .book-conflict-tag {
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75em;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: var(--joy-light);
+    color: var(--joy);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .book-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.65em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .book-desc {
+    font-size: 0.92em;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .book-meta {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8em;
+    color: var(--ink-soft);
+  }
+
+  .book-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .book-moral {
+    font-size: 0.84em;
+    color: var(--mint);
+    font-style: italic;
+    margin-bottom: 18px;
+    padding: 8px 12px;
+    background: var(--mint-light);
+    border-radius: 10px;
+    border-left: 3px solid var(--mint);
+  }
+
+  /* Price + action */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .price-block { display: flex; flex-direction: column; }
+
+  .price-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72em;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .price-value {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--joy);
+    line-height: 1;
+  }
+
+  .price-soon {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--lavender);
+    line-height: 1;
+  }
+
+  .add-to-cart-btn {
+    background: var(--joy);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .add-to-cart-btn:hover {
+    background: #e0527a;
+    transform: scale(1.04);
+  }
+
+  .add-to-cart-btn:active {
+    transform: scale(0.97);
+  }
+
+  .add-to-cart-btn:disabled {
+    background: var(--lavender);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 2px solid var(--joy-light);
+    border-radius: 30px;
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    background: white;
+    border: none;
+    width: 32px; height: 36px;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: var(--joy);
+    font-weight: 700;
+    transition: background 0.15s;
+  }
+
+  .qty-btn:hover { background: var(--joy-light); }
+
+  .qty-num {
+    width: 36px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1em;
+    color: var(--ink);
+  }
+
+  /* ===== CART DRAWER ===== */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(58,42,26,0.45);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(3px);
+  }
+
+  .cart-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .cart-drawer {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: min(440px, 100vw);
+    background: white;
+    z-index: 101;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -8px 0 40px rgba(58,42,26,0.15);
+  }
+
+  .cart-drawer.open {
+    transform: translateX(0);
+  }
+
+  .drawer-header {
+    padding: 24px 28px;
+    border-bottom: 2px dashed var(--joy-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--joy-light), var(--sun-light));
+  }
+
+  .drawer-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .close-btn {
+    background: var(--joy);
+    color: white;
+    border: none;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .close-btn:hover { background: #e0527a; transform: rotate(90deg); }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+  }
+
+  .cart-empty-icon { font-size: 3em; margin-bottom: 12px; }
+
+  .cart-empty p {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 14px;
+    background: var(--parchment);
+    border-radius: 14px;
+    border: 1px solid var(--joy-light);
+  }
+
+  .cart-item-cover {
+    width: 48px; height: 64px;
+    border-radius: 2px 8px 8px 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    box-shadow: -2px 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .cart-item-info { flex: 1; min-width: 0; }
+
+  .cart-item-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cart-item-price {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85em;
+    color: var(--joy);
+    font-weight: 700;
+  }
+
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cart-qty-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--joy-light);
+    background: white;
+    color: var(--joy);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .cart-qty-btn:hover { background: var(--joy); color: white; }
+
+  .cart-qty-num {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    width: 20px;
+    text-align: center;
+  }
+
+  .cart-remove-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 4px;
+    transition: color 0.15s;
+  }
+
+  .cart-remove-btn:hover { color: var(--coral); }
+
+  /* Cart footer */
+  .cart-footer {
+    padding: 24px 28px;
+    border-top: 2px dashed var(--joy-light);
+    background: var(--parchment);
+  }
+
+  .cart-total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .cart-total-label {
+    font-size: 1em;
+    color: var(--ink-soft);
+  }
+
+  .cart-total-value {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2.2em;
+    font-weight: 700;
+    color: var(--joy);
+  }
+
+  .cart-note {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.78em;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--joy), var(--coral));
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.7em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(255,107,157,0.4);
+  }
+
+  .checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,107,157,0.5);
+  }
+
+  /* ===== ORDER MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(58,42,26,0.55);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(58,42,26,0.25);
+    transform: scale(0.9);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.open .modal {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    padding: 28px 28px 20px;
+    background: linear-gradient(135deg, var(--joy-light), var(--sun-light));
+    border-radius: 24px 24px 0 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .modal-header .close-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+  }
+
+  .modal-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2.2em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .modal-subtitle {
+    font-size: 0.95em;
+    color: var(--ink-soft);
+  }
+
+  .modal-body { padding: 24px 28px; }
+
+  .order-summary {
+    background: var(--parchment);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 22px;
+    border: 1px solid var(--joy-light);
+  }
+
+  .order-summary-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .order-summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88em;
+    color: var(--ink-soft);
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.07);
+  }
+
+  .order-summary-item:last-child { border-bottom: none; }
+
+  .order-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 2px solid var(--joy-light);
+  }
+
+  .order-total-text {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .order-total-price {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--joy);
+  }
+
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--joy-light);
+    border-radius: 12px;
+    font-family: 'Pangolin', cursive;
+    font-size: 1em;
+    color: var(--ink);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--joy);
+  }
+
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .delivery-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .delivery-opt {
+    border: 2px solid var(--joy-light);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .delivery-opt:hover { border-color: var(--joy); }
+  .delivery-opt.selected { border-color: var(--joy); background: var(--joy-light); }
+
+  .delivery-opt-icon { font-size: 1.5em; display: block; margin-bottom: 4px; }
+
+  .delivery-opt-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75em;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .submit-order-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--joy), var(--coral));
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.8em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(255,107,157,0.4);
+    margin-top: 8px;
+  }
+
+  .submit-order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,107,157,0.5);
+  }
+
+  /* ===== SUCCESS STATE ===== */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 28px;
+  }
+
+  .success-screen.show { display: block; }
+  .modal-body.hide { display: none; }
+
+  .success-icon { font-size: 4em; margin-bottom: 16px; animation: pop 0.5s ease; }
+
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .success-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: var(--mint);
+    margin-bottom: 10px;
+  }
+
+  .success-text {
+    font-size: 1em;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 340px;
+    margin: 0 auto 24px;
+  }
+
+  .success-close-btn {
+    background: var(--mint);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .success-close-btn:hover { background: #3a9e72; transform: scale(1.04); }
+
+  /* ===== INFO STRIP ===== */
+  .info-strip {
+    background: linear-gradient(135deg, var(--sun-light), var(--mint-light));
+    border-top: 2px dashed var(--sun);
+    border-bottom: 2px dashed var(--sun);
+    padding: 40px 30px;
+  }
+
+  .info-strip-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 28px;
+    text-align: center;
+  }
+
+  .info-item { }
+
+  .info-icon { font-size: 2.2em; margin-bottom: 10px; }
+
+  .info-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .info-text {
+    font-size: 0.9em;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ===== FOOTER ===== */
+  .shop-footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.9em;
+  }
+
+  .shop-footer a {
+    color: var(--joy-light);
+    text-decoration: none;
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3em;
+    font-weight: 700;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== MESSENGER BUTTONS ===== */
+  .messenger-note {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85em;
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 16px 0 12px;
+    line-height: 1.5;
+  }
+
+  .messenger-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .msg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.7em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  }
+
+  .msg-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.2); }
+  .msg-btn:active { transform: scale(0.97); }
+
+  .tg-btn { background: linear-gradient(135deg, #2AABEE, #229ED9); }
+  .vb-btn { background: linear-gradient(135deg, #7D3DAF, #9B5CC9); }
+
+  .msg-icon { font-size: 0.75em; }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 600px) {
+    .header-title { font-size: 2.6em; }
+    .nav-links { display: none; }
+    .books-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .delivery-options { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER NAV -->
+<header class="shop-header">
+  <nav class="header-nav">
+    <a href="index.html" class="nav-logo">💖 СилаВолія</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Головна</a></li>
+      <li><a href="heroes.html">Герої</a></li>
+      <li><a href="adventures.html">Пригоди</a></li>
+      <li><a href="world.html">Світ</a></li>
+      <li><a href="school.html">Школа</a></li>
+      <li><a href="shop.html" class="active">📚 Крамниця</a></li>
+    </ul>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Кошик
+      <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+  </nav>
+
+  <!-- Floating decorations -->
+  <div class="floater">📚</div>
+  <div class="floater">⭐</div>
+  <div class="floater">🌈</div>
+  <div class="floater">✨</div>
+
+  <div class="header-content">
+    <div class="header-eyebrow">Книжкова Крамниця</div>
+    <h1 class="header-title">Справжні <span>пригоди</span><br>у твоїх руках</h1>
+    <p class="header-subtitle">
+      Друковані книги серії СилаВолія — яскраві ілюстрації, якісний папір
+      та казковий світ, який можна тримати в долонях.
+      Замовляй — і Фін, Краш та Луна прийдуть до тебе додому!
+    </p>
+    <div class="trio-icons">💖 <span style="font-size:0.5em;margin:0 4px;line-height:2.5">+</span> ✨ <span style="font-size:0.5em;margin:0 4px;line-height:2.5">+</span> 🧠</div>
+  </div>
+</header>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <button class="filter-btn active" onclick="filterBooks('all', this)">Всі книги</button>
+  <button class="filter-btn" onclick="filterBooks('available', this)">В наявності</button>
+  <button class="filter-btn" onclick="filterBooks('soon', this)">Незабаром</button>
+</div>
+
+<!-- CATALOGUE -->
+<section class="catalogue-section">
+  <h2 class="section-title">Колекція <span>СилаВолія</span></h2>
+  <div class="books-grid" id="books-grid">
+    <!-- Cards generated by JS -->
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<section class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-item">
+      <div class="info-icon">🚀</div>
+      <div class="info-title">Швидка доставка</div>
+      <div class="info-text">Нова Пошта або Укрпошта. Відправляємо протягом 1–2 робочих днів</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🎁</div>
+      <div class="info-title">Подарункове пакування</div>
+      <div class="info-text">Кожна книга запакована в фірмовий пакет СилаВолії. Ідеальний подарунок!</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📖</div>
+      <div class="info-title">Якісний друк</div>
+      <div class="info-text">Щільний папір, соковиті кольори, тверда обкладинка. Витримає тисячі перечитувань</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">💌</div>
+      <div class="info-title">З підписом автора</div>
+      <div class="info-text">За бажанням — особистий підпис та побажання на вибраній сторінці</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="shop-footer">
+  <p>&copy; 2025 СилаВолія · <a href="index.html">На головну</a> · Питання: <a href="mailto:silavoliya@gmail.com">silavoliya@gmail.com</a></p>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="drawer-header">
+    <div class="drawer-title">🛒 Кошик</div>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer">
+    <div class="cart-total-line">
+      <span class="cart-total-label">Разом до оплати:</span>
+      <span class="cart-total-value" id="cart-total">0 ₴</span>
+    </div>
+    <p class="cart-note">💡 Оплата при отриманні. Доставка розраховується окремо по тарифах перевізника.</p>
+    <button class="checkout-btn" onclick="openOrderModal()">
+      📦 Оформити замовлення
+    </button>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📦 Оформлення замовлення</div>
+      <div class="modal-subtitle">Заповни форму і натисни зручний месенджер</div>
+      <button class="close-btn" onclick="closeOrderModal()">✕</button>
+    </div>
+
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Замовлення прийнято!</div>
+      <p class="success-text">
+        Дякуємо! Ми отримали твоє замовлення і зв'яжемося з тобою найближчим часом.
+        Фін, Краш та Луна вже мандрують до тебе! ✨
+      </p>
+      <button class="success-close-btn" onclick="closeSuccess()">💖 Чудово!</button>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+      <!-- Order summary -->
+      <div class="order-summary" id="order-summary"></div>
+
+      <!-- Name & Phone -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ім'я *</label>
+          <input type="text" class="form-input" id="field-name" placeholder="Твоє ім'я" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Телефон *</label>
+          <input type="tel" class="form-input" id="field-phone" placeholder="+38 (0__) ___-__-__" required>
+        </div>
+      </div>
+
+      <!-- Delivery -->
+      <div class="form-group">
+        <label class="form-label">Спосіб доставки</label>
+        <div class="delivery-options">
+          <div class="delivery-opt selected" data-delivery="nova" onclick="selectDelivery(this)">
+            <span class="delivery-opt-icon">🚚</span>
+            <div class="delivery-opt-label">Нова Пошта</div>
+          </div>
+          <div class="delivery-opt" data-delivery="ukr" onclick="selectDelivery(this)">
+            <span class="delivery-opt-icon">📮</span>
+            <div class="delivery-opt-label">Укрпошта</div>
+          </div>
+          <div class="delivery-opt" data-delivery="pickup" onclick="selectDelivery(this)">
+            <span class="delivery-opt-icon">🤝</span>
+            <div class="delivery-opt-label">Самовивіз</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" id="city-field">
+        <label class="form-label">Місто та відділення</label>
+        <input type="text" class="form-input" id="field-city" placeholder="напр. Київ, відд. №15">
+      </div>
+
+      <!-- Comment -->
+      <div class="form-group">
+        <label class="form-label">Коментар / побажання</label>
+        <textarea class="form-textarea" id="field-comment" placeholder="Підпис автора, особливі запити..."></textarea>
+      </div>
+
+      <div class="messenger-note">
+        Натисни зручний месенджер — відкриється чат із готовим текстом замовлення 👇
+      </div>
+
+      <div class="messenger-btns">
+        <button class="msg-btn tg-btn" onclick="submitOrder('telegram')">
+          <span class="msg-icon">✈️</span> Telegram
+        </button>
+        <button class="msg-btn vb-btn" onclick="submitOrder('viber')">
+          <span class="msg-icon">📲</span> Viber
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const BOOKS = [
+  {
+    id: 0,
+    title: 'Подорож крізь СилаВолію',
+    conflict: 'Небезпека (Демон НаноПут)',
+    desc: 'Фін, Краш і Луна — маленькі оберіги великої країни. Перше знайомство з дивовижним світом де добро завжди перемагає.',
+    moral: 'Тільки серце, сповнене віри, знайде дорогу.',
+    pages: 48, age: '4–8', price: 320,
+    emoji: '🐉', coverClass: 'cover-0', bgClass: 'cover-bg-0',
+    available: true, badge: 'hit', badgeText: 'Хіт'
+  },
+  {
+    id: 1,
+    title: 'Таємниця сірого туману',
+    conflict: 'Смуток',
+    desc: 'Перша велика загроза — сірий туман накриває СилаВолію. Друзі вчаться використовувати веселковий дим, дзвін радості та мудрість разом.',
+    moral: 'Навіть найменша радість перемагає найбільший смуток.',
+    pages: 56, age: '4–8', price: 340,
+    emoji: '🌈', coverClass: 'cover-1', bgClass: 'cover-bg-1',
+    available: true, badge: 'new', badgeText: 'Новинка'
+  },
+  {
+    id: 2,
+    title: 'Місто Солодких Мрій',
+    conflict: 'Егоїзм (Тінь Сум)',
+    desc: 'Герої вирушають до міста, збудованого з льодяників, щоб повернути вкрадені мрії. Вони дізнаються, що щастя має бути спільним.',
+    moral: 'Щастям не можна володіти, ним можна лише ділитися.',
+    pages: 52, age: '5–9', price: 340,
+    emoji: '🍭', coverClass: 'cover-2', bgClass: 'cover-bg-2',
+    available: false, badge: 'soon', badgeText: 'Незабаром'
+  },
+  {
+    id: 3,
+    title: 'Таємниця Зниклих Зірок',
+    conflict: 'Неусвідомлена шкода',
+    desc: 'Подорож на Небесні Хмари, де мешкають Сонні Жучки. Герої з'ясовують, як їхні власні дії впливають на навколишній світ.',
+    moral: 'Твої мрії та дії впливають на інших.',
+    pages: 60, age: '5–9', price: 360,
+    emoji: '⭐', coverClass: 'cover-3', bgClass: 'cover-bg-3',
+    available: false, badge: 'soon', badgeText: 'Незабаром'
+  },
+  {
+    id: 4,
+    title: 'Дерево Кольорових Мрій',
+    conflict: 'Жадібність',
+    desc: 'Пригода в Лісі Шепотів, де герої протистоять жадібності, яка загрожує поглинути всі кольори світу.',
+    moral: 'Мрії стають яскравішими, коли ними ділишся.',
+    pages: 56, age: '6–10', price: 360,
+    emoji: '🌳', coverClass: 'cover-4', bgClass: 'cover-bg-4',
+    available: false, badge: 'soon', badgeText: 'Незабаром'
+  },
+  {
+    id: 5,
+    title: 'Подорож до Джерела Музики',
+    conflict: 'Самотність',
+    desc: 'Друзі доводять: іноді найтихіша мелодія, розділена з друзями, є найпрекраснішою. Магічне путешествіє у світ звуків.',
+    moral: 'Найвеличніша магія — це доброта, якою ти ділишся.',
+    pages: 64, age: '5–9', price: 380,
+    emoji: '🎵', coverClass: 'cover-5', bgClass: 'cover-bg-5',
+    available: false, badge: 'soon', badgeText: 'Незабаром'
+  }
+];
+
+// ===== STATE =====
+let cart = {};
+let currentFilter = 'all';
+
+// ===== RENDER BOOKS =====
+function renderBooks() {
+  const grid = document.getElementById('books-grid');
+  let filtered = BOOKS;
+  if (currentFilter === 'available') filtered = BOOKS.filter(b => b.available);
+  if (currentFilter === 'soon')      filtered = BOOKS.filter(b => !b.available);
+
+  grid.innerHTML = filtered.map(book => {
+    const qty = cart[book.id] || 0;
+    const badgeHtml = book.badge ? `<div class="badge badge-${book.badge}">${book.badgeText}</div>` : '';
+    const priceHtml = book.available
+      ? `<div class="price-block"><div class="price-label">Ціна</div><div class="price-value">${book.price} ₴</div></div>`
+      : `<div class="price-block"><div class="price-soon">Незабаром</div></div>`;
+    const actionHtml = book.available
+      ? (qty === 0
+          ? `<button class="add-to-cart-btn" onclick="addToCart(${book.id})">🛒 У кошик</button>`
+          : `<div class="qty-control">
+               <button class="qty-btn" onclick="changeQty(${book.id},-1)">−</button>
+               <span class="qty-num">${qty}</span>
+               <button class="qty-btn" onclick="changeQty(${book.id},1)">+</button>
+             </div>`)
+      : `<button class="add-to-cart-btn" disabled>⏳ Чекати</button>`;
+
+    return `
+      <div class="book-card ${book.available ? '' : 'soon'}" data-available="${book.available}">
+        <div class="book-cover ${book.bgClass}">
+          ${badgeHtml}
+          <div class="book-shadow ${book.coverClass}"></div>
+          <div class="cover-visual ${book.coverClass}">
+            <div class="cover-book-num">Книга ${book.id + 1}</div>
+            <div class="cover-emoji">${book.emoji}</div>
+            <div class="cover-book-title">${book.title}</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="book-conflict-tag">${book.conflict}</div>
+          <h3 class="book-title">${book.title}</h3>
+          <p class="book-desc">${book.desc}</p>
+          <div class="book-meta">
+            <span>📄 ${book.pages} стор.</span>
+            <span>👶 ${book.age} років</span>
+          </div>
+          <div class="book-moral">📌 ${book.moral}</div>
+          <div class="card-footer">
+            ${priceHtml}
+            ${actionHtml}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ===== CART LOGIC =====
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartUI();
+  renderBooks();
+  showToast(`💖 "${BOOKS[id].title}" додано до кошика!`);
+  bumpBadge();
+}
+
+function changeQty(id, delta) {
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if (cart[id] === 0) delete cart[id];
+  updateCartUI();
+  renderBooks();
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+  renderBooks();
+}
+
+function cartTotal() {
+  return Object.entries(cart).reduce((sum, [id, qty]) => sum + BOOKS[id].price * qty, 0);
+}
+
+function cartCount() {
+  return Object.values(cart).reduce((s, q) => s + q, 0);
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cart-badge');
+  badge.textContent = cartCount();
+
+  // total
+  document.getElementById('cart-total').textContent = cartTotal() + ' ₴';
+
+  // items list
+  const list = document.getElementById('cart-items-list');
+  const ids = Object.keys(cart);
+  if (ids.length === 0) {
+    list.innerHTML = `<div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <p>Кошик порожній</p>
+      <p style="font-size:0.9em;margin-top:8px;color:var(--ink-soft)">Обери книгу — і вони підуть у подорож до тебе!</p>
+    </div>`;
+    return;
+  }
+  list.innerHTML = ids.map(id => {
+    const book = BOOKS[id];
+    const qty  = cart[id];
+    return `<div class="cart-item">
+      <div class="cart-item-cover ${book.coverClass}">${book.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-title">${book.title}</div>
+        <div class="cart-item-price">${book.price} ₴ × ${qty} = ${book.price * qty} ₴</div>
+      </div>
+      <div class="cart-item-qty">
+        <button class="cart-qty-btn" onclick="changeQty(${id},-1)">−</button>
+        <span class="cart-qty-num">${qty}</span>
+        <button class="cart-qty-btn" onclick="changeQty(${id},1)">+</button>
+      </div>
+      <button class="cart-remove-btn" onclick="removeFromCart(${id})" title="Видалити">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ===== FILTER =====
+function filterBooks(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBooks();
+}
+
+// ===== CART DRAWER =====
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== ORDER MODAL =====
+function openOrderModal() {
+  if (cartCount() === 0) { showToast('🛒 Кошик порожній!'); return; }
+  closeCart();
+
+  // fill summary
+  const ids = Object.keys(cart);
+  const summaryHtml = `
+    <div class="order-summary-title">📋 Ваше замовлення:</div>
+    ${ids.map(id => `
+      <div class="order-summary-item">
+        <span>${BOOKS[id].emoji} ${BOOKS[id].title}</span>
+        <span>${BOOKS[id].price} × ${cart[id]} = <b>${BOOKS[id].price * cart[id]} ₴</b></span>
+      </div>`).join('')}
+    <div class="order-total-row">
+      <span class="order-total-text">Разом:</span>
+      <span class="order-total-price">${cartTotal()} ₴</span>
+    </div>`;
+  document.getElementById('order-summary').innerHTML = summaryHtml;
+
+  document.getElementById('success-screen').classList.remove('show');
+  document.getElementById('modal-body').classList.remove('hide');
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectDelivery(el) {
+  document.querySelectorAll('.delivery-opt').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  const type = el.dataset.delivery;
+  document.getElementById('city-field').style.display = type === 'pickup' ? 'none' : 'block';
+}
+
+function submitOrder(messenger) {
+  const name  = document.getElementById('field-name').value.trim();
+  const phone = document.getElementById('field-phone').value.trim();
+  if (!name || !phone) { showToast('⚠️ Вкажи ім\'я та телефон!'); return; }
+
+  const ids      = Object.keys(cart);
+  const delivery = document.querySelector('.delivery-opt.selected')?.dataset.delivery || '';
+  const deliveryLabels = { nova: 'Нова Пошта', ukr: 'Укрпошта', pickup: 'Самовивіз' };
+  const city    = document.getElementById('field-city').value.trim();
+  const comment = document.getElementById('field-comment').value.trim();
+
+  const lines = [
+    '📦 *Замовлення СилаВолія*',
+    '',
+    `👤 Ім'я: ${name}`,
+    `📞 Телефон: ${phone}`,
+    '',
+    '📚 Книги:',
+    ...ids.map(id => `  • ${BOOKS[id].emoji} ${BOOKS[id].title} × ${cart[id]} = ${BOOKS[id].price * cart[id]} ₴`),
+    '',
+    `💰 Разом: ${cartTotal()} ₴`,
+    `🚚 Доставка: ${deliveryLabels[delivery] || delivery}`,
+    city ? `📍 Місто/відділення: ${city}` : '',
+    comment ? `💬 Коментар: ${comment}` : '',
+  ].filter(l => l !== null).join('\n');
+
+  const encoded = encodeURIComponent(lines);
+
+  // ⚠️ ЗАМІНІТЬ на реальний номер/username
+  const TG_USERNAME = 'silavoliya';   // ваш @username в Telegram
+  const VIBER_PHONE = '380XXXXXXXXX'; // ваш номер без + для Viber
+
+  if (messenger === 'telegram') {
+    window.open(`https://t.me/${TG_USERNAME}?text=${encoded}`, '_blank');
+  } else {
+    window.open(`viber://chat?number=%2B${VIBER_PHONE}&text=${encoded}`, '_blank');
+  }
+
+  // Show success + clear cart
+  setTimeout(() => {
+    document.getElementById('modal-body').classList.add('hide');
+    document.getElementById('success-screen').classList.add('show');
+    cart = {};
+    updateCartUI();
+    renderBooks();
+  }, 300);
+}
+
+function closeSuccess() {
+  closeOrderModal();
+  document.getElementById('success-screen').classList.remove('show');
+  document.getElementById('modal-body').classList.remove('hide');
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ===== BADGE BUMP =====
+function bumpBadge() {
+  const b = document.getElementById('cart-badge');
+  b.classList.remove('bump');
+  void b.offsetWidth;
+  b.classList.add('bump');
+}
+
+// ===== INIT =====
+renderBooks();
+updateCartUI();
+</script>
+</body>
+</html>

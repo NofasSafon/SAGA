@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Школа «ШляхдоМрій» | Магічні Уроки СилаВолії</title>
     
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
   
 
@@ -12,6 +13,35 @@
    
 </head>
 <body>
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link">Світ</a></li>
+            <li><a href="../school.html" class="nav-link active">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link">Світ</a></li>
+            <li><a href="../school.html" class="nav-link active">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
 
     <header class="school-header section">
 	      
@@ -23,13 +53,13 @@
                 Щоб стати справжнім СилаВолієм, потрібно вчитися! Разом із Луною, нашим Розумом, ми вивчаємо найважливіші предмети: 
                 <strong>Заклинання Радості</strong>, <strong>Зілля Зоряного Сяйва</strong> та <strong>Мову Дружби</strong>.
             </p>
-<img src="img/s0.jpg" alt="school СилаВолії" class="hero-image"> 
+<img loading="lazy" src="img/s0.jpg" alt="school СилаВолії" class="hero-image"> 
         
         </div>
     </header>
 
     <section class="artifacts-section">
-		<img src="img/16.jpg" alt="school СилаВолії" class="hero-image"> 
+		<img loading="lazy" src="img/16.jpg" alt="school СилаВолії" class="hero-image"> 
 	<div class="container">
             <h2>Чарівні Артефакти: Інструменти для Твоєї Магії</h2>
             
@@ -88,7 +118,7 @@
 
                 <div class="card lesson-card">
                     <span class="artifact-icon" style="color: var(--color-rainbow-end);">🪬</span>
-                    <h3>Ментальна арифметика</h3></h3>
+                    <h3>Ментальна арифметика</h3>
                     <span class="lecturer">Викладач: Фін</span>
                     <p>
                         Як перетворювати сумні думки на світлі ідеї.
@@ -131,5 +161,12 @@
         </div>
     </footer>
 
+
+<script>
+const nav = document.getElementById('site-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+document.getElementById('nav-burger').addEventListener('click', () =>
+    document.getElementById('nav-links').classList.toggle('open'));
+</script>
 </body>
 </html>

@@ -3,162 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СилаВолії: Радість, Дружба, Доброта</title>
+    <meta name="description" content="СилаВолія — казковий світ, де радість, дружба та доброта перемагають будь-яку темряву. Пригоди Фіна, Краша та Луни.">
+    <meta property="og:title" content="СилаВолія: Радість, Дружба, Доброта">
+    <meta property="og:description" content="Казковий світ, де смуток завжди відступає. Читай пригоди, навчайся у школі магії та замовляй книги!">
+    <meta property="og:type" content="website">
+    <title>СилаВолія: Радість, Дружба, Доброта</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Плавний скрол до секцій */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body>
 
+<!-- ===== STICKY NAVBAR ===== -->
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link active">Головна</a></li>
+            <li><a href="heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="world.html" class="nav-link">Світ</a></li>
+            <li><a href="school.html" class="nav-link">Школа</a></li>
+            <li><a href="shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
+
 <header class="hero-section" id="top">
-    <div class="hero-overlay"></div> 
-    
+    <div class="hero-overlay"></div>
     <div class="container">
         <h1>РАДІСТЬ, ДРУЖБА ТА ДОБРОТА — ЦЕ НАЙМОГУТНІША МАГІЯ.</h1>
         <p>Ласкаво просимо до світу, де смуток завжди відступає.</p>
-        
         <div class="cta-group">
-            <a href="#section-world"      class="cta-button"> СВІТ </a>
-            <a href="#section-heroes"     class="cta-button"> ГЕРОЇ </a>
-            <a href="#section-stories"    class="cta-button"> ПРИГОДИ </a>
-            <a href="#section-catalogue"  class="cta-button"> ШКОЛА </a>
+            <a href="#section-world"     class="cta-button">СВІТ</a>
+            <a href="#section-heroes"    class="cta-button">ГЕРОЇ</a>
+            <a href="#section-stories"   class="cta-button">ПРИГОДИ</a>
+            <a href="#section-catalogue" class="cta-button">ШКОЛА</a>
         </div>
     </div>
 </header>
 
-    <section id="section-world" style="background-color: #fce4ec;">
-        <div class="container">
-            <h2>Ласкаво просимо до СилаВолії.</h2>
-            <p>Далеко-далеко, за горами й лісами, лежала чарівна країна
-				СилаВолія. Тут все було наповнене світлом і родістю.
-				Повітря звеніло від детячого сміху, пахло свіжими 
-				булочками, а дерева розповідали вітрові найсмішніші
-				історії. Це світ, де дива ростуть просто на деревах, а
-				xмаринки пахнуть веселковим зефіром.
-              </p>
-            <img src="img/x1.jpg" alt="СилаВолія" class="hero-image">        
-            
-            <div class="cta-group" style="margin-top: 30px;">
-                <a href="world.html" class="cta-button">ДІЗНАЙСЯ ПРО КРАЇНУ МАГІЇ</a>
-                <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
+<section id="section-world" style="background-color: #fce4ec;">
+    <div class="container">
+        <h2>Ласкаво просимо до СилаВолії.</h2>
+        <p>Далеко-далеко, за горами й лісами, лежала чарівна країна
+        СилаВолія. Тут все було наповнене світлом і радістю.
+        Повітря звеніло від дитячого сміху, пахло свіжими
+        булочками, а дерева розповідали вітрові найсмішніші
+        історії. Це світ, де дива ростуть просто на деревах, а
+        хмаринки пахнуть веселковим зефіром.</p>
+        <img src="img/x1.jpg" alt="СилаВолія" class="hero-image" loading="lazy">
+        <div class="cta-group" style="margin-top: 30px;">
+            <a href="world.html" class="cta-button">ДІЗНАЙСЯ ПРО КРАЇНУ МАГІЇ</a>
+            <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
+        </div>
+    </div>
+</section>
+
+<section id="section-heroes">
+    <div class="container">
+        <h2>Кожну пригоду освітлює світло надзвичайної дружби.</h2>
+        <p>У цьому дивовижному світі живуть
+        троє нерозлучних друзів, чия
+        хоробрість, мудрість та доброта
+        здатні подолати будь-яку темряву.
+        Разом вони подорожують
+        СилаВолією, захищаючи її радість
+        і відкриваючи нові таємниці.
+        Вони — обереги цієї країни.</p>
+        <img src="img/14.jpg" alt="Герої СилаВолії" class="hero-image" loading="lazy">
+
+        <div class="trio-preview-container">
+            <div class="trio-block">
+                <span class="trio-icon">💖</span>
+                <h4>ФІН — СЕРЦЕ</h4>
+                <p>Найдобріший дракончик-такса, що розганяє сум веселковим димом.</p>
+            </div>
+            <div class="trio-block">
+                <span class="trio-icon">✨</span>
+                <h4>КРАШ — СВІТЛО</h4>
+                <p>Втілення чистої радості, чий дзвіночок заряджає енергією та оптимізмом.</p>
+            </div>
+            <div class="trio-block">
+                <span class="trio-icon">🧠</span>
+                <h4>ЛУНА — РОЗУМ</h4>
+                <p>Стратег і мудра болонка, чий сяючий медальйон допомагає знайти вірне рішення.</p>
             </div>
         </div>
-    </section>
 
-    <section id="section-heroes">
-        <div class="container">
-            <h2>Кожну пригоду освітлює світло надзвичайної дружби.</h2>
-            <p>У цьому дивовижному світі жівуть
-			троє нерозлучних друзів, чия 
-			хоробрість, мулрість та доброта 
-			здатні подалати будь-яку темряву.
-			Разомм вони подорожують 
-			СилаВолією, захищаючи її родість
-			і відкриваючи нові таємниці.
-			Вони - оборіги цієї країни</p>
-			
-            <img src="img/14.jpg" alt="Герої СилаВолії" class="hero-image">        
-            
-            <div class="trio-preview-container">
-                <div class="trio-block">
-                    <span class="trio-icon">💖</span>
-                    <h4>ФІН — СЕРЦЕ</h4>
-                    <p>Найдобріший дракончик-такса, що розганяє сум веселковим димом.</p>
-                </div>
-
-                <div class="trio-block">
-                    <span class="trio-icon">✨</span>
-                    <h4>КРАШ — СВІТЛО</h4>
-                    <p>Втілення чистої радості, чий дзвіночок заряджає енергією та оптимізмом.</p>
-                </div>
-
-                <div class="trio-block">
-                    <span class="trio-icon">🧠</span>
-                    <h4>ЛУНА — РОЗУМ</h4>
-                    <p>Стратег і мудра болонка, чий сяючий медальйон допомагає знайти вірне рішення.</p>
-                </div>
-
-            <div class="cta-group" style="margin-top: 30px;">
-                <a href="heroes.html" class="cta-button">ДІЗНАЙСЯ ПРО МАГІЮ ДРУЗІВ</a>
-                <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
-            </div>
+        <div class="cta-group" style="margin-top: 30px;">
+            <a href="heroes.html" class="cta-button">ДІЗНАЙСЯ ПРО МАГІЮ ДРУЗІВ</a>
+            <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="conflict-section" id="section-stories">
-        <div class="container">
-               <h2>Ласкаво просимо до СИЛАВОЛІЇ - світу, де радість живе у всьому.</h2>
-            <p>
-             В подорож світом СилаВолії   
-            </p>
-            <br>
-            <h3><strong>Всесвіт історій: вже розказаних та майбутніх.</strong></h3>
-        </div>
-			<img src="img/13.jpg" alt="Пригоди СилаВолії" class="hero-image">
-            
-            <div class="cta-group" style="margin-top: 30px;">
-                <a href="adventures.html" class="cta-button">ЧИТАТИ ПРИГОДИ</a>
-                <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
-            </div>
-        </div>
-    </section>
+<section class="conflict-section" id="section-stories">
+    <div class="container">
+        <h2>Ласкаво просимо до СИЛАВОЛІЇ — світу, де радість живе у всьому.</h2>
+        <p>В подорож світом СилаВолії</p>
+        <br>
+        <h3><strong>Всесвіт історій: вже розказаних та майбутніх.</strong></h3>
+    </div>
+    <img src="img/13.jpg" alt="Пригоди СилаВолії" class="hero-image" loading="lazy">
+    <div class="cta-group" style="margin-top: 30px;">
+        <a href="adventures.html" class="cta-button">ЧИТАТИ ПРИГОДИ</a>
+        <a href="#top" class="cta-button secondary" style="background-color: #999;">ВГОРУ ↑</a>
+    </div>
+</section>
 
-    <section class="content-catalogue" id="section-catalogue">
-        <div class="container">
-            <h2>ТВОЯ ПРИГОДА ПОЧИНАЄТЬСЯ ТУТ</h2>
-            
-            <div class="content-catalogue-container">
-                 <a href="world.html" class="card-link">
-                    <div class="card">
-                        <div>
-                            <span class="trio-icon">🗺️</span>
-                            <h3>СВІТ</h3>
-                            <p>Досліджуй інтерактивну карту чарівних локацій — від Міста Солодких Мрій до Сирних Гір.</p>
-                        </div>
-                        <p class="cta-button secondary">ДО КАРТИ</p>
+<section class="content-catalogue" id="section-catalogue">
+    <div class="container">
+        <h2>ТВОЯ ПРИГОДА ПОЧИНАЄТЬСЯ ТУТ</h2>
+        <div class="content-catalogue-container">
+            <a href="world.html" class="card-link">
+                <div class="card">
+                    <div>
+                        <span class="trio-icon">🗺️</span>
+                        <h3>СВІТ</h3>
+                        <p>Досліджуй інтерактивну карту чарівних локацій — від Міста Солодких Мрій до Сирних Гір.</p>
                     </div>
-                </a>
-
-                <a href="adventures.html" class="card-link">
-                    <div class="card">
-                        <div>
-                            <span class="trio-icon">📚</span>
-                            <h3>ІСТОРІЇ</h3>
-                            <p>Читай нові глави про перемогу світла над смутком. Кожна розповідь — це урок доброти.</p>
-                        </div>
-                        <p class="cta-button secondary">ЧИТАТИ ЗАРАЗ</p>
+                    <p class="cta-button secondary">ДО КАРТИ</p>
+                </div>
+            </a>
+            <a href="adventures.html" class="card-link">
+                <div class="card">
+                    <div>
+                        <span class="trio-icon">📚</span>
+                        <h3>ІСТОРІЇ</h3>
+                        <p>Читай нові глави про перемогу світла над смутком. Кожна розповідь — це урок доброти.</p>
                     </div>
-                </a>
-
-                <a href="school.html" class="card-link">
-                    <div class="card">
-                        <div>
-                            <span class="trio-icon">🎓</span>
-                            <h3>ШКОЛА</h3>
-                            <p>Пройди магічні уроки Луни, познайомся з артефактами та отримай Диплом СилаВолія.</p>
-                        </div>
-                        <p class="cta-button secondary">ПРОЙТИ ТЕСТ</p>
+                    <p class="cta-button secondary">ЧИТАТИ ЗАРАЗ</p>
+                </div>
+            </a>
+            <a href="school.html" class="card-link">
+                <div class="card">
+                    <div>
+                        <span class="trio-icon">🎓</span>
+                        <h3>ШКОЛА</h3>
+                        <p>Пройди магічні уроки Луни, познайомся з артефактами та отримай Диплом СилаВолія.</p>
                     </div>
-                </a>
-            </div>
-
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="#top" class="cta-button" style="background-color: #999;">ПОВЕРНУТИСЯ ДО ПОЧАТКУ ↑</a>
-            </div>
+                    <p class="cta-button secondary">ПРОЙТИ ТЕСТ</p>
+                </div>
+            </a>
+            <a href="shop.html" class="card-link">
+                <div class="card" style="border: 2px solid #FF69B4;">
+                    <div>
+                        <span class="trio-icon">📖</span>
+                        <h3>КРАМНИЦЯ</h3>
+                        <p>Замов друковані книги серії СилаВолія — яскраві ілюстрації та справжня магія у твоїх руках!</p>
+                    </div>
+                    <p class="cta-button secondary">ПЕРЕГЛЯНУТИ КНИГИ</p>
+                </div>
+            </a>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <img src="img/12.jpg" alt="Герої СилаВолії" class="hero-image footer-img">
-            <p>&copy; 2025 СИЛАВОЛІЇ. Світ, що живиться дитячим сміхом та мріями.</p>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="#top" class="cta-button" style="background-color: #999;">ПОВЕРНУТИСЯ ДО ПОЧАТКУ ↑</a>
         </div>
-    </footer>
+    </div>
+</section>
 
+<footer>
+    <div class="container">
+        <img src="img/12.jpg" alt="Герої СилаВолії" class="hero-image footer-img" loading="lazy">
+        <p>&copy; 2025 СилаВолія. Світ, що живиться дитячим сміхом та мріями.</p>
+    </div>
+</footer>
+
+<script>
+// Sticky nav shrink on scroll
+const nav = document.getElementById('site-nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+// Burger menu
+document.getElementById('nav-burger').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+});
+</script>
 </body>
 </html>

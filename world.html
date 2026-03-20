@@ -5,15 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Світ та Пригоди СилаВолії: Карта та Історії</title>
     
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link active">Світ</a></li>
+            <li><a href="../school.html" class="nav-link">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link active">Світ</a></li>
+            <li><a href="../school.html" class="nav-link">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
 
     <section class="world-map-section">
         <div class="container">
             <h1>Безмежний Світ СилаВолії</h1>
-            <img src="img/33.jpg" alt="Інтерактивна карта світу СилаВолії" class="hero-image">
+            <img loading="lazy" src="img/33.jpg" alt="Інтерактивна карта світу СилаВолії" class="hero-image">
             <p>
                 Натисни на назву місця, щоб дізнатися його таємницю!
             </p>
@@ -63,7 +93,7 @@
                 
                 <div class="card adventure-card">
                     <h3>Таємниця сірого туману</h3>
-                    <img src="img/wadv01.jpg" alt="НаноПут" class="adventure-image">
+                    <img loading="lazy" src="img/wadv01.jpg" alt="НаноПут" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Смуток (Демон НаноПут).
                     </p>
@@ -75,7 +105,7 @@
 
                 <div class="card adventure-card">
                     <h3>Місто Солодких Мрій</h3>
-                    <img src="img/wadv02.jpg" alt="Сум" class="adventure-image">
+                    <img loading="lazy" src="img/wadv02.jpg" alt="Сум" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Егоїзм (Тінь Сум краде мрії).
                     </p>
@@ -87,7 +117,7 @@
 
                 <div class="card adventure-card">
                     <h3>Таємниця Зниклих Зірок</h3>
-                    <img src="img/wadv03.jpg" alt="Жучки" class="adventure-image">
+                    <img loading="lazy" src="img/wadv03.jpg" alt="Жучки" class="adventure-image">
                     <p>
                         <strong>Конфлікт:</strong> Неусвідомлена шкода (Сонні Жучки).
                     </p>
@@ -211,5 +241,12 @@
 
     </script>
 
+
+<script>
+const nav = document.getElementById('site-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+document.getElementById('nav-burger').addEventListener('click', () =>
+    document.getElementById('nav-links').classList.toggle('open'));
+</script>
 </body>
 </html>

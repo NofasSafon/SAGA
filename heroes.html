@@ -5,11 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Герої СилаВолії: Фін, Краш, Луна</title>
 
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
   
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link active">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link">Світ</a></li>
+            <li><a href="../school.html" class="nav-link">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo">💖 СилаВолія</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Меню">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html" class="nav-link">Головна</a></li>
+            <li><a href="../heroes.html" class="nav-link active">Герої</a></li>
+            <li><a href="../adventures.html" class="nav-link">Пригоди</a></li>
+            <li><a href="../world.html" class="nav-link">Світ</a></li>
+            <li><a href="../school.html" class="nav-link">Школа</a></li>
+            <li><a href="../shop.html" class="nav-link nav-shop">📚 Крамниця</a></li>
+        </ul>
+    </div>
+</nav>
 
     <header class="heroes-header section">
         <div class="container">
@@ -29,8 +59,8 @@
                 <div class="card hero-card">
 					<div class="hero-img-scene">
 						<div class="hero-img-flipper">
-							<img src="img/h1.jpg" alt="Фін" class="hero-image-face hero-image-front">
-							<img src="img/hm1.jpg" alt="Магія Фіна" class="hero-image-face hero-image-back">
+							<img loading="lazy" src="img/h1.jpg" alt="Фін" class="hero-image-face hero-image-front">
+							<img loading="lazy" src="img/hm1.jpg" alt="Магія Фіна" class="hero-image-face hero-image-back">
 						</div>
 					</div>
 					<div class="hero-symbol-bar" id="fin-image">
@@ -52,8 +82,8 @@
 				<div class="card hero-card">
 					<div class="hero-img-scene">
 						<div class="hero-img-flipper">
-							<img src="img/h2.jpg" alt="Краш" class="hero-image-face hero-image-front">
-							<img src="img/hm2.jpg" alt="Магія Краша" class="hero-image-face hero-image-back">
+							<img loading="lazy" src="img/h2.jpg" alt="Краш" class="hero-image-face hero-image-front">
+							<img loading="lazy" src="img/hm2.jpg" alt="Магія Краша" class="hero-image-face hero-image-back">
 						</div>
 					</div>
 					<div class="hero-symbol-bar" id="krash-image">
@@ -78,8 +108,8 @@
                 <div class="card hero-card">
 					<div class="hero-img-scene">
 						<div class="hero-img-flipper">
-							<img src="img/h3.jpg" alt="Луна" class="hero-image-face hero-image-front">
-							<img src="img/hm3.jpg" alt="Магія Луни" class="hero-image-face hero-image-back">
+							<img loading="lazy" src="img/h3.jpg" alt="Луна" class="hero-image-face hero-image-front">
+							<img loading="lazy" src="img/hm3.jpg" alt="Магія Луни" class="hero-image-face hero-image-back">
 						</div>
 					</div>
 					<div class="hero-symbol-bar" id="luna-image">
@@ -119,7 +149,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 СИЛАВОЛІЇ. Світ, що живиться дитячим сміхом та мріями.</p>
+            <p>&copy; 2025 СилаВолія. Світ, що живиться дитячим сміхом та мріями.</p>
         </div>
     </footer>
 
@@ -145,6 +175,12 @@
         });
     });
 </script>
-</body>
+
+<script>
+const nav = document.getElementById('site-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+document.getElementById('nav-burger').addEventListener('click', () =>
+    document.getElementById('nav-links').classList.toggle('open'));
+</script>
 </body>
 </html>
